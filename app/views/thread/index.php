@@ -9,4 +9,4 @@
 	<?php endforeach ?>
 </ul>
 
-<a class="btn btn-large btn-primary" href="<?php eh(url('thread/crate')) ?>">Create</a>
+<a class="btn btn-large btn-primary" href="<?php eh(url('thread/create')) ?>">Create</a>

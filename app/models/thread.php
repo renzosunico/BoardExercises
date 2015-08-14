@@ -42,7 +42,7 @@ class Thread extends AppModel
 		return $comments;
 	}
 
-	public static function write(Comment $comment)
+	public function write(Comment $comment)
 	{
 		if(!$comment->validate()) {
 			throw new ValidationException('Invalid comment.');
@@ -52,5 +52,25 @@ class Thread extends AppModel
 		'INSERT INTO comment SET thread_id = ?, username = ?, body = ?, created = NOW()',
 		array($comment->id, $comment->username, $comment->body)
 		);
+	}
+
+	public function create(Comment $comment)
+	{
+		$this->validate();
+		$comment->validate();
+
+		if($this->hasError() || $comment->hasError()) {
+			throw new ValidationException('Invalid thread or comment.');
+		}
+
+		$db = DB::conn();
+		$db->begin();
+		$db->query('INSERT INTO thread SET title = ?, created = NOW()', array($this->title));
+
+		$comment->id = $db->lastInsertId();
+
+		$this->write($comment);
+
+		$db->commit();
 	}
 }
