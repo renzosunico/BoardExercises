@@ -20,8 +20,8 @@
 
 	<?php if(!empty($comment->validation_errors['body']['length'])): ?>
 		<div><em>Comment</em> must be between
-			<?php eh($comment->validation_errors['body']['length'][1]) ?> and
-			<?php eh($comment->validation_errors['body']['length'][2]) ?> characters in length.
+			<?php eh($comment->validation['body']['length'][1]) ?> and
+			<?php eh($comment->validation['body']['length'][2]) ?> characters in length.
 		</div>
 	<?php endif ?>
 
