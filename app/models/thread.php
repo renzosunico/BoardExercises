@@ -2,7 +2,14 @@
 
 class Thread extends AppModel
 {
-
+	public $validation = array(
+		'title' => array(
+			'length' => array(
+				'validate_between',1,30,
+				),
+			),
+		);
+	
 	public static function get($id)
 	{
 		$db = DB::conn();
