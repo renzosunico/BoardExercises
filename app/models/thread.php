@@ -21,17 +21,23 @@ class Thread extends AppModel
 		return new self($row);
 	}
 
-	public static function getAll()
+	public static function getAll($offset, $limit)
 	{
 		$threads = array();
 		$db = DB::conn();
-		$rows = $db->rows('SELECT * FROM thread');
+		$rows = $db->rows("SELECT * FROM thread LIMIT {$offset}, {$limit}");
 
 		foreach($rows as $row) {
 			$threads[] = new Thread($row);
 		}
 
 		return $threads;
+	}
+
+	public static function countAll()
+	{
+		$db = DB::conn();
+		return (int)$db->value("SELECT COUNT(*) FROM thread");
 	}
 
 	public function getComments()
@@ -72,8 +78,9 @@ class Thread extends AppModel
 
 		$db = DB::conn();
 		$db->begin();
+		for($i = 0; $i<500; $i++) {
 		$db->query('INSERT INTO thread SET title = ?, created = NOW()', array($this->title));
-
+		}
 		$comment->id = $db->lastInsertId();
 
 		$this->write($comment);
