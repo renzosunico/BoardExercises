@@ -9,6 +9,7 @@
 	<?php endforeach ?>
 </ul>
 
+<?php if($pages > 1): ?>
 	<?php if($pagination->current > 1): ?>
 		<a href='?page=<?php echo $pagination->prev ?>'>Previous</a>
 	<?php else: ?>
@@ -28,7 +29,8 @@
 	<?php else: ?>
 	Next
 	<?php endif ?>
-	
-	<br/><br/>
+<?php endif ?>
+
+<br/><br/>
 
 <a class="btn btn-large btn-primary" href="<?php eh(url('thread/create')) ?>">Create</a>
