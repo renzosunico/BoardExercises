@@ -5,7 +5,7 @@
 <div class="comment">
 
 <div class="meta">
-	<?php eh($k + 1) ?>: <?php eh($v->username) ?> <?php eh($v->created) ?>
+	<?php eh($starting_index++) ?>: <?php eh($v->username) ?> <?php eh($v->created) ?>
 </div>
 
 <div><?php echo readable_text($v->body) ?></div>
