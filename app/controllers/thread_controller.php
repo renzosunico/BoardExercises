@@ -19,12 +19,13 @@ class ThreadController extends AppController
 	public function view()
 	{
 		$thread = Thread::get(Param::get('thread_id'));
-		$comments = $thread->getComments();
+		$comment = new Comment();
+		$comments = $comment->getAll();
 
 		$this->set(get_defined_vars());
 	}
 
-	public function write()
+/*	public function write()
 	{
 		$thread = Thread::get(Param::get('thread_id'));
 		$comment = new Comment();
@@ -52,7 +53,7 @@ class ThreadController extends AppController
 		$this->set(get_defined_vars());
 		$this->render($page);
 	}
-
+*/
 	public function create()
 	{
 		$thread = new Thread();

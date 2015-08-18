@@ -40,7 +40,7 @@ class Thread extends AppModel
 		return (int)$db->value("SELECT COUNT(*) FROM thread");
 	}
 
-	public function getComments()
+/*	public function getComments()
 	{
 		$comments = array();
 		$db = DB::conn();
@@ -66,7 +66,7 @@ class Thread extends AppModel
 		array($comment->id, $comment->username, $comment->body)
 		);
 	}
-
+*/
 	public function create(Comment $comment)
 	{
 		$this->validate();
@@ -81,7 +81,7 @@ class Thread extends AppModel
 		$db->query('INSERT INTO thread SET title = ?, created = NOW()', array($this->title));
 		$comment->id = $db->lastInsertId();
 
-		$this->write($comment);
+		$comment->write($comment);
 
 		$db->commit();
 	}
