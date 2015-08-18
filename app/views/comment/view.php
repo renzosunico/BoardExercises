@@ -14,6 +14,34 @@
 
 <?php endforeach ?>
 
+<!--Pagination Here -->
+<?if ($pages > 1): ?>
+
+	<?php if($pagination->current > 1): ?>
+		<a href="?thread_id=<?php echo $thread->id ?>
+		&page=<?php echo $pagination->prev ?>">Previous</a>
+	<?php else: ?>
+		Previous
+	<?php endif ?>
+
+	<?php for($i=1; $i<=$pages; $i++): ?>
+		<?php if($i == $page): ?>
+			<?php echo $i ?>
+		<?php else: ?>
+			<a href="?thread_id=<?php echo $thread->id ?>
+				&page=<?php echo $i ?>"?><?php echo $i ?>
+			</a>
+		<?php endif ?>
+	<?php endfor ?>
+
+	<?php if(!$pagination->is_last_page): ?>
+		<a href="?thread_id=<?php echo $thread->id ?>
+			&page=<?php echo $pagination->next ?>">Next</a>
+	<?php else: ?>
+		Next
+	<?php endif ?>
+
+<?php endif ?>
 <hr>
 
 <form class="well" method="post" action="<?php eh(url('comment/write')) ?>">

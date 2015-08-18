@@ -15,20 +15,27 @@ class Comment extends AppModel
 			),
 		);
 
-	public function getAll()
+	public function getAll($offset, $limit)
 	{
 		$comments = array();
 		$thread = Param::get('thread_id');
 		$db = DB::conn();
 
 		$rows = $db->rows(
-		'SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC', array($thread));
+		"SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC LIMIT {$offset},{$limit}", array($thread));
 
 		foreach ($rows as $row) {
 			$comments[] = new Comment($row);
 		}
 
 		return $comments;
+	}
+
+	public static function countAll()
+	{
+		$db = DB::conn();
+		$id = Param::get('thread_id');
+		return (int)$db->value("SELECT COUNT(*) FROM comment WHERE thread_id = {$id}");
 	}
 
 	public function write(Comment $comment)
