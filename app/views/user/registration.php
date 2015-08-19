@@ -73,7 +73,7 @@
 	</div>
 <?php endif ?>
 
-	<form class="well large" method="post" action="<?php eh(url('')) ?>">
+	<form class="well well-large pull-left" autocomplete="off" method="post" action="<?php eh(url('')) ?>">
 		<label>Name:</label>
 		<input type="text" class="span3" name="fname">
 		<label>Last Name:</label>
@@ -89,6 +89,7 @@
 		<button type="submit" class="btn btn-primary btn-large span3 offset-1">Sign up </button>
 		<br><br>
 		<p align="center" class="span3 offset-1">
+		<br/>
 		Already have an account? <br/>
 		<a href="<?php eh(url('user/login')) ?>"> Login here </a>
 		</p>

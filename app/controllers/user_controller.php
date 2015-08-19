@@ -66,14 +66,13 @@ class UserController extends AppController
 				$user->password = $clean_hashed_password;
 				$isAuthorized = $user->isRegistered($user);
 				
-				if(!$isAuthorized)
-				{
+				if(!$isAuthorized) {
 					$page = "login";
 				}
-
+				else {
 				session_start();
 				$_SESSION['username'] = $clean_username;
-				
+				}
 				break;
 			default :
 				throw new RecordNotFoundException;

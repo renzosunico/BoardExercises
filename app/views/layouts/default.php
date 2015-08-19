@@ -21,9 +21,12 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">Instathread</a>
+          <a class="brand" href="<?php echo isset($_SESSION['username']) ? eh(url('thread/index')) : "" ?>">Instathread</a>
         <ul class="nav pull-right">
           <li> <a href="<?php echo isset($_SESSION['username']) ? eh(url('thread/index')) : "" ?>">Home</a></a>
+        <?php if(preg_match('/user\/login/', $_SERVER['REQUEST_URI'])): ?>
+          <li><a href="<?php echo(url('user/registration')) ?>">Sign up</a></li>
+        <?php endif ?>
         <?php if(isset($_SESSION['username'])): ?>
           <li class="dropdown">
             <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo isset($_SESSION['username']) ? "{$_SESSION['username']}" : "" ?>

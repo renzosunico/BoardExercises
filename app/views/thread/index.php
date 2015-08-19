@@ -1,11 +1,16 @@
+<style>
+.smallsize {font-size:11px;}
+</style>
+
+
 <h1 class="white">All Threads</h1>
 
 <ul>
 	<?php foreach($threads as $v): ?>
-	<div class="well well-small">
-		<a href="<?php eh(url('comment/view', array('thread_id' => $v->id))) ?>">
-		<?php eh($v->title) ?></a>
-	</div>
+		<div class="well well-small" onclick="location.href='<?php eh(url('comment/view', array('thread_id' => $v->id))) ?>'" style="cursor:pointer;">
+			<p class="smallsize">Posted: <?php echo readable_text($v->created) ?> </p>
+			<?php eh($v->title) ?>
+		</div>
 	<?php endforeach ?>
 </ul>
 
@@ -32,5 +37,5 @@
 <?php endif ?>
 
 <br/><br/>
-
+<hr>
 <a class="btn btn-large btn-primary span3 middle" href="<?php eh(url('thread/create')) ?>">Create</a>
