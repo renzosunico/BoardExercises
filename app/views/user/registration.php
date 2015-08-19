@@ -85,7 +85,12 @@
 		<label>Password:</label>
 		<input type="password" class="span3" name="password">
 		<input type="hidden" name="page_next" value="registration_end">
-	</br><br>
-		<button type="submit" class="btn btn-primary">Sign up </button>
-		
+	</br>
+		<button type="submit" class="btn btn-primary btn-large span3 offset-1">Sign up </button>
+		<br><br>
+		<p align="center" class="span3 offset-1">
+		Already have an account? <br/>
+		<a href="<?php eh(url('user/login')) ?>"> Login here </a>
+		</p>
+		<br/><br/><br/>
 	</form>

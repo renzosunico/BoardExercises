@@ -7,7 +7,7 @@
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <style>
       body {
-        background:url("bootstrap/img/bg1.jpg");
+        background:url("/bootstrap/img/bg1.jpg");
         background-repeat: no-repeat;
         background-attachment: fixed;
         background-position: center;

@@ -49,7 +49,7 @@ class User extends AppModel
 			array($user->fname, $user->lname, $user->username, $user->email, $user->password));
 	}
 
-	public static function isValidUsername($value, $type)
+	public static function isValidUsernameEmail($value, $type)
 	{
 		switch($type) {
 			case "username" :
@@ -71,5 +71,13 @@ class User extends AppModel
 				}
 				break;
 		}
+	}
+
+	public function isRegistered(User $user)
+	{
+		$db = DB::conn();
+		$row = $db->row("SELECT * FROM user WHERE username=? AND password=?", array($user->username, $user->password));
+		
+		return $row !== false;
 	}
 }

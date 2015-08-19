@@ -24,5 +24,5 @@ function validate_email($check)
 
 function validate_existence($check, $type)
 {
-	return User::isValidUsername($check, $type);
+	return User::isValidUsernameEmail($check, $type);
 }
