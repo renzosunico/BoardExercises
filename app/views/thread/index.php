@@ -1,11 +1,11 @@
-<h1>All threads</h1>
+<h1 class="white">All Threads</h1>
 
 <ul>
 	<?php foreach($threads as $v): ?>
-	<li>
+	<div class="well well-small">
 		<a href="<?php eh(url('comment/view', array('thread_id' => $v->id))) ?>">
 		<?php eh($v->title) ?></a>
-	</li>
+	</div>
 	<?php endforeach ?>
 </ul>
 
@@ -33,4 +33,4 @@
 
 <br/><br/>
 
-<a class="btn btn-large btn-primary" href="<?php eh(url('thread/create')) ?>">Create</a>
+<a class="btn btn-large btn-primary span3 middle" href="<?php eh(url('thread/create')) ?>">Create</a>

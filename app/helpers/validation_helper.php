@@ -26,3 +26,8 @@ function validate_existence($check, $type)
 {
 	return User::isValidUsernameEmail($check, $type);
 }
+
+function redirect($url)
+{
+	header("Location: " . $url);
+}

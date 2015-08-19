@@ -21,11 +21,23 @@
     <div class="navbar navbar-fixed-top">
       <div class="navbar-inner">
         <div class="container">
-          <a class="brand" href="#">DietCake Hello</a>
+          <a class="brand" href="#">Instathread</a>
+        <ul class="nav pull-right">
+          <li> <a href="<?php echo isset($_SESSION['username']) ? eh(url('thread/index')) : "" ?>">Home</a></a>
+        <?php if(isset($_SESSION['username'])): ?>
+          <li class="dropdown">
+            <a class="dropdown-toggle" data-toggle="dropdown" href="#"><?php echo isset($_SESSION['username']) ? "{$_SESSION['username']}" : "" ?>
+            <span class="caret"></span></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">Edit profile</a></li>
+              <li><a href="<?php eh(url('user/logout')) ?>">Logout</a></li> 
+            </ul>
+          </li>
+        <?php endif ?>
+        </ul>
         </div>
       </div>
     </div>
-
     <div class="container">
 
       <?php echo $_content_ ?>
@@ -35,6 +47,7 @@
     <script>
     console.log(<?php eh(round(microtime(true) - TIME_START, 3)) ?> + 'sec');
     </script>
-
-  </body>
+   <script src="/bootstrap/js/jquery-2.1.4.min.js"></script>
+   <script src="/bootstrap/js/bootstrap.min.js"></script>
+   </body>
 </html>

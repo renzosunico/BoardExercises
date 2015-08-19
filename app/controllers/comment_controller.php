@@ -1,5 +1,4 @@
 <?php
-
 class CommentController extends AppController
 {
 	CONST MAX_ITEM_PER_PAGE = 5;
@@ -7,6 +6,7 @@ class CommentController extends AppController
 
 	public function view()
 	{
+		session_start();
 		$page = Param::get('page', 1);
 		$pagination = new SimplePagination($page, self::MAX_ITEM_PER_PAGE);
 
@@ -26,16 +26,17 @@ class CommentController extends AppController
 
 	public function write()
 	{
+		session_start();
 		$thread = Thread::get(Param::get('thread_id'));
 		$comment = new Comment();
-		$page = Param::get('page_next');
+		$page = Param::get('page_next','write');
 
 		switch($page) {
 			case 'write':
 				break;
 			case 'write_end':
 				$comment->id = $thread->id;
-				$comment->username = Param::get('username');
+				$comment->username = $_SESSION['username'];
 				$comment->body = Param::get('body');
 				try {
 				$comment->write($comment);
