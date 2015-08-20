@@ -1,20 +1,18 @@
 <br/><br/>
-
 <h1><font color="white"> Create an account </font></h1>
-
 <br/>
 <?php if($user->hasError()): ?>
-	<div class="alert alert-error">
-		<h4><b>Validation Error!</b></h4>
+	<div class="alert alert-block">
+		<h4><b>Warning</b></h4>
 			<?php if(!empty($user->validation_errors['fname']['length'])): ?>	
-				<div><em>Your name</em> must be between
+				<div><em>Your first name</em> must be between
 				<?php eh($user->validation['fname']['length'][1]) ?> and
 				<?php eh($user->validation['fname']['length'][2]) ?> characters in length.
 				</div>
 			<?php endif ?>
 
 			<?php if(!empty($user->validation_errors['fname']['alphachars'])): ?>	
-				<div><em>Your name</em> must contain alphabetic characters only.
+				<div><em>Your first name</em> must contain alphabetic characters only.
 				</div>
 			<?php endif ?>
 
@@ -68,30 +66,29 @@
 				<div><em>Email address</em> is already associated with other user. 
 				</div>
 			<?php endif ?>
-
-
 	</div>
 <?php endif ?>
 
-	<form class="well well-large pull-left" autocomplete="off" method="post" action="<?php eh(url('')) ?>">
-		<label>Name:</label>
-		<input type="text" class="span3" name="fname">
-		<label>Last Name:</label>
-		<input type="text" class="span3" name="lname">
-		<label>Username:</label>
-		<input type="text" class="span3" name="username">
-		<label>Your Email:</label>
-		<input type="text" class="span3" name="email">
-		<label>Password:</label>
-		<input type="password" class="span3" name="password">
-		<input type="hidden" name="page_next" value="registration_end">
+<form class="well well-large pull-left" autocomplete="off" method="post" action="<?php eh(url('')) ?>">
+	<label>First Name:</label>
+	<input type="text" class="span3" name="fname" value="<?php echo readable_text(Param::get('fname')); ?>">
+	<label>Last Name:</label>
+	<input type="text" class="span3" name="lname" value="<?php echo readable_text(Param::get('lname')); ?>">
+	<label>Username:</label>
+	<input type="text" class="span3" name="username" value="<?php echo readable_text(Param::get('username')); ?>">
+	<label>Email:</label>
+	<input type="text" class="span3" name="email" value="<?php echo readable_text(Param::get('email')); ?>">
+	<label>Password:</label>
+	<input type="password" class="span3" name="password" value="<?php echo readable_text(Param::get('password')); ?>">
+	<input type="hidden" name="page_next" value="registration_end">
 	</br>
-		<button type="submit" class="btn btn-primary btn-large span3 offset-1">Sign up </button>
-		<br><br>
-		<p align="center" class="span3 offset-1">
-		<br/>
-		Already have an account? <br/>
-		<a href="<?php eh(url('user/login')) ?>"> Login here </a>
-		</p>
-		<br/><br/><br/>
-	</form>
+	<button type="submit" class="btn btn-primary btn-large span3 offset-1">Sign up </button>
+	<br><br>
+	<p align="center" class="span3 offset-1">
+	<br/>
+	Already have an account?
+	<br/>
+	<a href="<?php eh(url('user/login')) ?>"> Login here </a>
+	</p>
+	<br/><br/><br/>
+</form>

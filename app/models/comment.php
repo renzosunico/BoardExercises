@@ -1,5 +1,4 @@
 <?php
-
 class Comment extends AppModel
 {
 	public $validation = array(
@@ -20,7 +19,7 @@ class Comment extends AppModel
 		"SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC LIMIT {$offset},{$limit}", array($thread));
 
 		foreach ($rows as $row) {
-			$comments[] = new Comment($row);
+			$comments[] = new self($row);
 		}
 
 		return $comments;

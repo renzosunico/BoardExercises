@@ -1,5 +1,4 @@
 <?php
-
 class Thread extends AppModel
 {
 	public $validation = array(
@@ -40,33 +39,6 @@ class Thread extends AppModel
 		return (int)$db->value("SELECT COUNT(*) FROM thread");
 	}
 
-/*	public function getComments()
-	{
-		$comments = array();
-		$db = DB::conn();
-
-		$rows = $db->rows(
-		'SELECT * FROM comment WHERE thread_id = ? ORDER BY created ASC', array($this->id));
-
-		foreach ($rows as $row) {
-			$comments[] = new Comment($row);
-		}
-
-		return $comments;
-	}
-
-	public function write(Comment $comment)
-	{
-		if(!$comment->validate()) {
-			throw new ValidationException('Invalid comment.');
-		}
-		$db = DB::conn();
-		$db->query(
-		'INSERT INTO comment SET thread_id = ?, username = ?, body = ?, created = NOW()',
-		array($comment->id, $comment->username, $comment->body)
-		);
-	}
-*/
 	public function create(Comment $comment)
 	{
 		$this->validate();

@@ -1,3 +1,4 @@
+<?php redirect_to_login() ?>
 <h1 class="white"><?php eh($thread->title) ?></h1>
 
 <div class="well">
@@ -7,7 +8,7 @@
 <div class="comment">
 
 <div class="meta">
-	<?php eh($starting_index++) ?>: <?php eh($v->username) ?> <?php eh($v->created) ?>
+	<?php eh(++$starting_index) ?>: <?php eh($v->username) ?> <?php eh($v->created) ?>
 </div>
 
 <div><?php echo readable_text($v->body) ?></div>

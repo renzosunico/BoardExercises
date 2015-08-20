@@ -46,11 +46,14 @@ class User extends AppModel
 		$db = DB::conn();
 		$db->query(
 			"INSERT INTO user SET fname=?, lname=?, username=?, email=?, password=?",
-			array($user->fname, $user->lname, $user->username, $user->email, $user->password));
+			array($user->fname, $user->lname, $user->username, $user->email, hash('sha1', $user->password)));
 	}
 
-	public static function isValidUsernameEmail($value, $type)
+	public static function is_valid_username_email($value, $type)
 	{
+		if(empty($value)) {
+			return true;
+		}
 		switch($type) {
 			case "username" :
 				if($value) {
@@ -73,10 +76,10 @@ class User extends AppModel
 		}
 	}
 
-	public function isRegistered(User $user)
+	public function is_registered(User $user)
 	{
 		$db = DB::conn();
-		$row = $db->row("SELECT * FROM user WHERE username=? AND password=?", array($user->username, $user->password));
+		$row = $db->row("SELECT * FROM user WHERE username LIKE BINARY ? AND password LIKE BINARY ?", array($user->username, hash('sha1', $user->password)));
 		
 		return $row !== false;
 	}

@@ -1,17 +1,16 @@
 <?php
 class CommentController extends AppController
 {
-	CONST MAX_ITEM_PER_PAGE = 5;
-
+	CONST MAX_ITEM_PER_PAGE = 10;
 
 	public function view()
 	{
 		session_start();
-		$page = Param::get('page', 1);
-		$pagination = new SimplePagination($page, self::MAX_ITEM_PER_PAGE);
-
 		$thread = Thread::get(Param::get('thread_id'));
 		$comment = new Comment();
+
+		$page = Param::get('page', 1);
+		$pagination = new SimplePagination($page, self::MAX_ITEM_PER_PAGE);
 
 		$comments = $comment->getAll($pagination->start_index-1, $pagination->count+1);
 		$pagination->checkLastPage($comments);
@@ -19,7 +18,7 @@ class CommentController extends AppController
 		$total = Comment::countAll();
 		$pages = ceil($total / self::MAX_ITEM_PER_PAGE);
 
-		$starting_index = (($page-1)*self::MAX_ITEM_PER_PAGE) + 1;
+		$starting_index = (($page-1)*self::MAX_ITEM_PER_PAGE);
 
 		$this->set(get_defined_vars());
 	}
@@ -27,6 +26,7 @@ class CommentController extends AppController
 	public function write()
 	{
 		session_start();
+
 		$thread = Thread::get(Param::get('thread_id'));
 		$comment = new Comment();
 		$page = Param::get('page_next','write');
@@ -44,7 +44,6 @@ class CommentController extends AppController
 					$page = 'write';
 				}
 				break;
-
 			default:
 				throw new NotFoundException("{$page} is not found");
 				break;

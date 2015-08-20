@@ -1,13 +1,13 @@
 <?php
-
 class UserController extends AppController
 {
 	public function registration()
 	{
 		session_start();
 		if(isset($_SESSION['username'])) {
-			header('Location: thread/index');
+			redirect('thread/index');
 		}
+
 		$page = Param::get('page_next','registration');
 		$user = new User();
 
@@ -16,7 +16,7 @@ class UserController extends AppController
 				break;
 			case "registration_end":
 				$user->fname = Param::get('fname');
-				$user->lname = Param::get('username');
+				$user->lname = Param::get('lname');
 				$user->username = Param::get('username');
 				$user->email = Param::get('email');
 				$user->password = Param::get('password');
@@ -64,7 +64,7 @@ class UserController extends AppController
 			case "login_end":
 				$user->username = $clean_username;
 				$user->password = $clean_hashed_password;
-				$isAuthorized = $user->isRegistered($user);
+				$isAuthorized = $user->is_registered($user);
 				
 				if(!$isAuthorized) {
 					$page = "login";
@@ -86,6 +86,6 @@ class UserController extends AppController
 	{
 		session_start();
 		session_destroy();
-		redirect('/user/login');
+		redirect(url('user/login'));
 	}
 }
