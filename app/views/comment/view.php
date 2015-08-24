@@ -45,6 +45,10 @@
 	<?php endif ?>
 
 <?php endif ?>
+
+<br/><br/>
+<a href="<?php eh(url('thread/index')) ?>" class="btn btn-default">Back to Thread</a>
+
 </div>
 
 <hr>

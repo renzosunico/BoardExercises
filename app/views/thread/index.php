@@ -1,8 +1,8 @@
 <?php redirect_to_login() ?>
-<h1 class="white middle">All Threads</h1>
+<h1 class="white" style="text-align: center">Threads</h1>
 <ul>
 	<?php if(empty($threads)): ?>
-		<div class="well well-small" onclick="location.href='<?php eh(url('comment/view', array('thread_id' => $v->id))) ?>'" style="cursor:pointer;">
+		<div class="well well-small" onclick="location.href='<?php eh(url('thread/index')) ?>'" style="cursor:pointer;">
 			<p><em>Sorry, there are no posted threads yet. Write yours now!</em></p>
 		</div>
 	<?php endif ?>
