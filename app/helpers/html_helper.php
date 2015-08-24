@@ -6,9 +6,9 @@ function eh($string)
     echo htmlspecialchars($string, ENT_QUOTES);
 }
 
-function readable_text($s)
+function readable_text($no_br_string)
 {
-    $s = htmlspecialchars($s, ENT_QUOTES);
-    $s = nl2br($s);
-    return $s;
+    $no_br_string = htmlspecialchars($no_br_string, ENT_QUOTES);
+    $no_br_string = nl2br($no_br_string);
+    return $no_br_string;
 }
