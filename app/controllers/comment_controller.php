@@ -6,7 +6,7 @@ class CommentController extends AppController
     public function view()
     {
         session_start();
-        $thread = Thread::get(Param::get('thread_id'));
+        $thread = Thread::getById(Param::get('thread_id'));
         $comment = new Comment();
 
         $page = Param::get('page', 1);
@@ -27,7 +27,7 @@ class CommentController extends AppController
     {
         session_start();
 
-        $thread = Thread::get(Param::get('thread_id'));
+        $thread = Thread::getById(Param::get('thread_id'));
         $comment = new Comment();
         $page = Param::get('page_next','write');
 

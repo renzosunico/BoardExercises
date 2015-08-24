@@ -2,6 +2,7 @@
 class ThreadController extends AppController
 {
     CONST MAX_THREADS_PER_PAGE = 15;
+    
     public function index()
     {
         session_start();

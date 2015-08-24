@@ -9,7 +9,7 @@ class Thread extends AppModel
             ),
         );
     
-    public static function get($id)
+    public static function getById($id)
     {
         $db = DB::conn();
         $row = $db->row('SELECT * FROM thread WHERE id=?', array($id));
