@@ -37,6 +37,9 @@ class User extends AppModel
             ),
         );
 
+    CONST START_RAND_NO = 0;
+    CONST END_RAND_NO = 7;
+
     public function register(User $user)
     {
         if(!$user->validate()) {
@@ -59,8 +62,7 @@ class User extends AppModel
                 if($value) {
                     $db = DB::conn();
                     return count($db->search('user','username=?',array($value))) == 0;
-                }
-                else {
+                } else {
                     return false;
                 }
                 break;
@@ -68,8 +70,7 @@ class User extends AppModel
                 if($value) {
                     $db = DB::conn();
                     return count($db->search('user','email=?',array($value))) == 0;
-                }
-                else {
+                } else {
                     return false;
                 }
                 break;
@@ -82,5 +83,21 @@ class User extends AppModel
         $row = $db->row("SELECT * FROM user WHERE username LIKE BINARY ? AND password LIKE BINARY ?", array($user->username, hash('sha1', $user->password)));
         
         return $row !== false;
+    }
+
+    public function get_welcome_message()
+    {
+       $welcome_messages = array(
+                    'Welcome ',
+                    'Good To See You ',
+                    'Good Day ',
+                    'Hi-ya ',
+                    'Nice To See You ',
+                    'Hey ',
+                    'Hey Good Looking ',
+                    'What\'s Up '
+                    );
+
+       return $welcome_messages[rand(self::START_RAND_NO, self::END_RAND_NO)];
     }
 }

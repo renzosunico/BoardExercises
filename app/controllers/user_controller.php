@@ -46,17 +46,7 @@ class UserController extends AppController
         
         $isAuthorized = true;
 
-        $message = array(
-                    'Welcome ',
-                    'Good To See You ',
-                    'Good Day ',
-                    'Hi-ya ',
-                    'Nice To See You ',
-                    'Hey ',
-                    'Hey Good Looking ',
-                    'What\'s Up '
-                    );
-        $pickgreeting = rand(0,7);
+        $message = $user->get_welcome_message();
 
         switch($page) {
             case "login":

@@ -1,18 +1,18 @@
 <?php
 class ThreadController extends AppController
 {
+    CONST MAX_THREADS_PER_PAGE = 15;
     public function index()
     {
         session_start();
         
         $page = Param::get('page', 1);
-        $per_page = 15;
-        $pagination = new SimplePagination($page, $per_page);
+        $pagination = new SimplePagination($page, self::MAX_THREADS_PER_PAGE);
 
         $threads = Thread::getAll($pagination->start_index -1, $pagination->count + 1);
         $pagination->checkLastPage($threads);
         $total = Thread::countAll();
-        $pages = ceil($total/$per_page);
+        $pages = ceil($total/self::MAX_THREADS_PER_PAGE);
 
         $this->set(get_defined_vars());
     }
