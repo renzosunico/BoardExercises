@@ -26,7 +26,6 @@ class CommentController extends AppController
     public function write()
     {
         session_start();
-
         $thread = Thread::getById(Param::get('thread_id'));
         $comment = new Comment();
         $page = Param::get('page_next','write');
@@ -39,7 +38,7 @@ class CommentController extends AppController
                 $comment->username = $_SESSION['username'];
                 $comment->body = Param::get('body');
                 try {
-                $comment->write($comment);
+                $comment->write();
                 } catch (ValidationException $e) {
                     $page = 'write';
                 }

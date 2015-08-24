@@ -32,16 +32,16 @@ class Comment extends AppModel
         return $db->value("SELECT COUNT(*) FROM comment WHERE thread_id = {$id}");
     }
 
-    public function write(Comment $comment)
+    public function write()
     {
-        if(!$comment->validate()) {
+        if(!$this->validate()) {
             throw new ValidationException('Invalid comment.');
         }
 
         $params = array(
-            'thread_id' => $comment->id,
-            'username' => $comment->username,
-            'body' => $comment->body
+            'thread_id' => $this->id,
+            'username' => $this->username,
+            'body' => $this->body
             );
 
         $db = DB::conn();

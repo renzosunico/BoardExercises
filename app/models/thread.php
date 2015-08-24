@@ -57,8 +57,7 @@ class Thread extends AppModel
         $db->begin();
         $db->insert('thread', $params);
         $comment->id = $db->lastInsertId();
-
-        $comment->write($comment);
+        $comment->write();
 
         $db->commit();
     }
