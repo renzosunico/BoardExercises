@@ -46,10 +46,16 @@ class User extends AppModel
             throw new ValidationException('Invalid data.');
         }
 
+        $params = array(
+            'fname'    => $user->fname,
+            'lname'    => $user->lname,
+            'username' => $user->username,
+            'email'    => $user->email,
+            'password' => hash('sha1', $user->password)
+            );
+
         $db = DB::conn();
-        $db->query(
-            "INSERT INTO user SET fname=?, lname=?, username=?, email=?, password=?",
-            array($user->fname, $user->lname, $user->username, $user->email, hash('sha1', $user->password)));
+        $db->insert('user',$params);
     }
 
     public static function is_valid_username_email($value, $type)
