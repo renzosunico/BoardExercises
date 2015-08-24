@@ -5,8 +5,6 @@ class ThreadController extends AppController
     
     public function index()
     {
-        session_start();
-        
         $page = Param::get('page', 1);
         $pagination = new SimplePagination($page, self::MAX_THREADS_PER_PAGE);
 
@@ -20,8 +18,6 @@ class ThreadController extends AppController
 
     public function create()
     {
-        session_start();
-        
         $thread = new Thread();
         $comment = new Comment();
         $page = Param::get('page_next', 'create');

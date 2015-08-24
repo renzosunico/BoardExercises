@@ -20,6 +20,8 @@ require_once CONFIG_DIR.'database.php';
 //lib
 require_once LIB_DIR.'SimplePagination/SimplePagination.php';
 
+session_start();
+
 spl_autoload_register(function($name) {
     $filename = Inflector::underscore($name) . '.php';
     if (strpos($name, 'Controller') !== false) {

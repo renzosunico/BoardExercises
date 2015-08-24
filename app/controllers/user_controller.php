@@ -3,7 +3,6 @@ class UserController extends AppController
 {
     public function registration()
     {
-        session_start();
         if(isset($_SESSION['username'])) {
             redirect('thread/index');
         }
@@ -59,7 +58,6 @@ class UserController extends AppController
                 if(!$isAuthorized) {
                     $page = "login";
                 } else {
-                    session_start();
                     $_SESSION['username'] = $clean_username;
                 }
                 break;
@@ -73,7 +71,6 @@ class UserController extends AppController
 
     public function logout()
     {
-        session_start();
         session_destroy();
         redirect(url('user/login'));
     }
