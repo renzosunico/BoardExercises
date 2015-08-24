@@ -29,7 +29,7 @@ class Comment extends AppModel
     {
         $db = DB::conn();
         $id = Param::get('thread_id');
-        return (int)$db->value("SELECT COUNT(*) FROM comment WHERE thread_id = {$id}");
+        return $db->value("SELECT COUNT(*) FROM comment WHERE thread_id = {$id}");
     }
 
     public function write(Comment $comment)
@@ -37,10 +37,14 @@ class Comment extends AppModel
         if(!$comment->validate()) {
             throw new ValidationException('Invalid comment.');
         }
+
+        $params = array(
+            'thread_id' => $comment->id,
+            'username' => $comment->username,
+            'body' => $comment->body
+            );
+
         $db = DB::conn();
-        $db->query(
-        'INSERT INTO comment SET thread_id = ?, username = ?, body = ?, created = NOW()',
-        array($comment->id, $comment->username, $comment->body)
-        );
+        $db->insert('comment',$params);
     }
 } 

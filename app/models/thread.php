@@ -48,9 +48,14 @@ class Thread extends AppModel
             throw new ValidationException('Invalid thread or comment.');
         }
 
+        $params = array(
+            'title' => $this->title,
+            'created' => date('Y-m-d H:i:s')
+            );
+
         $db = DB::conn();
         $db->begin();
-        $db->query('INSERT INTO thread SET title = ?, created = NOW()', array($this->title));
+        $db->insert('thread', $params);
         $comment->id = $db->lastInsertId();
 
         $comment->write($comment);
