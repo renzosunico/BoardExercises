@@ -1,4 +1,3 @@
-<?php redirect_to_login() ?>
 <h1 class="white" style="text-align: center">Threads</h1>
 <ul>
     <?php if(empty($threads)): ?>

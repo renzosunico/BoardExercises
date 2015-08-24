@@ -27,7 +27,8 @@
 
           <?php if(isset($page) && (!preg_match('/(registration)|^(login)$/',$page))): ?>
             <li> <a href="<?php echo isset($_SESSION['username']) ? eh(url('thread/index')) : "" ?>">Home</a>
-           <?php endif?>
+            <?php redirect_to_login() ?>
+          <?php endif ?>
 
           <?php if(isset($page) && preg_match('/^login$/', $page)): ?>
             <li><a href="<?php echo(url('user/registration')) ?>">Sign up</a></li>

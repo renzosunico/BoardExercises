@@ -1,4 +1,3 @@
-<?php redirect_to_login() ?>
 <h1 class="white"><?php eh($thread->title) ?></h1>
 
 <div class="well">
