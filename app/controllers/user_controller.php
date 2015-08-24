@@ -68,10 +68,9 @@ class UserController extends AppController
                 
                 if(!$isAuthorized) {
                     $page = "login";
-                }
-                else {
-                session_start();
-                $_SESSION['username'] = $clean_username;
+                } else {
+                    session_start();
+                    $_SESSION['username'] = $clean_username;
                 }
                 break;
             default :
