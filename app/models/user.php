@@ -49,26 +49,19 @@ class User extends AppModel
 
     public static function is_valid_username_email($value, $type)
     {
-        if(empty($value)) {
-            return true;
-        }
         switch($type) {
             case "username" :
                 if($value) {
                     $db = DB::conn();
                     return count($db->search('user','username=?',array($value))) == 0;
-                } else {
-                    return false;
                 }
-                break;
+                return false;
             case "email" :
                 if($value) {
                     $db = DB::conn();
                     return count($db->search('user','email=?',array($value))) == 0;
-                } else {
-                    return false;
                 }
-                break;
+                return false;
         }
     }
 
