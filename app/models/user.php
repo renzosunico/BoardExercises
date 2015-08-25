@@ -3,39 +3,28 @@
 class User extends AppModel
 {
     public $validation = array(
-        'fname' => array(
-            'length' => array(
-                'validate_between',1,30),
-            'alphachars' => array(
-                'validate_alpha')
-            ),
-        'lname' => array(
-            'length' => array(
-                'validate_between',1,30),
-            'alphachars' => array(
-                'validate_alpha'),
-            ),
-        'username' => array(
-            'length' => array(
-                'validate_between',6,30),
-            'chars' => array(
-                'validate_chars'),
-            'exist' => array(
-                'validate_existence','username'),
-            ),
-        'email' => array(
-            'email' => array(
-                'validate_email'),
-            'exist' => array(
-                'validate_existence','email'),
-            ),
-        'password' => array(
-            'length' => array(
-                'validate_between',6,30),
-            'chars' => array(
-                'validate_chars'),
-            ),
-        );
+        'fname'          => array(
+            'length'     => array('validate_between',1,30),
+            'alphachars' => array('validate_alpha')
+        ),
+        'lname'          => array(
+            'length'     => array('validate_between',1,30),
+            'alphachars' => array('validate_alpha'),
+        ),
+        'username'       => array(
+            'length'     => array('validate_between',6,30),
+            'chars'      => array('validate_chars'),
+            'exist'      => array('validate_existence','username'),
+        ),
+        'email'          => array(
+            'email'      => array('validate_email'),
+            'exist'      => array('validate_existence','email'),
+        ),
+        'password'       => array(
+            'length'     => array('validate_between',6,30),
+            'chars' => array('validate_chars'),
+        ),
+    );
 
     CONST START_RAND_NO = 0;
     CONST END_RAND_NO = 7;
