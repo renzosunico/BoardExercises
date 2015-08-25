@@ -12,3 +12,15 @@ function readable_text($no_br_string)
     $no_br_string = nl2br($no_br_string);
     return $no_br_string;
 }
+
+function redirect($url)
+{
+    header("Location: " . $url);
+}
+
+function redirect_to_login()
+{
+    if(!isset($_SESSION['username'])) {
+        redirect(url('user/login'));
+    }
+}

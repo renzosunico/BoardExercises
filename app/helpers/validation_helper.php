@@ -27,15 +27,3 @@ function validate_existence($check, $type)
 {
     return User::isValidUsernameEmail($check, $type);
 }
-
-function redirect($url)
-{
-    header("Location: " . $url);
-}
-
-function redirect_to_login()
-{
-    if(!isset($_SESSION['username'])) {
-        redirect(url('user/login'));
-    }
-}
