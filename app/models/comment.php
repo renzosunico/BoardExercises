@@ -28,7 +28,7 @@ class Comment extends AppModel
     {
         $db = DB::conn();
         $id = Param::get('thread_id');
-        return $db->value("SELECT COUNT(*) FROM comment WHERE thread_id = {$id}");
+        return $db->value("SELECT COUNT(*) FROM comment WHERE thread_id = ?", array($id));
     }
 
     public function write()
