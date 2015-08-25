@@ -25,7 +25,7 @@ function validate_email($check)
 
 function validate_existence($check, $type)
 {
-    return User::is_valid_username_email($check, $type);
+    return User::isValidUsernameEmail($check, $type);
 }
 
 function redirect($url)

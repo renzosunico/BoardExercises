@@ -45,7 +45,7 @@ class UserController extends AppController
         
         $isAuthorized = true;
 
-        $message = $user->get_welcome_message();
+        $message = $user->getWelcomeMessage();
 
         switch($page) {
             case "login":
@@ -53,7 +53,7 @@ class UserController extends AppController
             case "login_end":
                 $user->username = $clean_username;
                 $user->password = $clean_hashed_password;
-                $isAuthorized = $user->is_registered($user);
+                $isAuthorized = $user->isRegistered($user);
                 
                 if(!$isAuthorized) {
                     $page = "login";

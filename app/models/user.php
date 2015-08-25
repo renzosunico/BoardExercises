@@ -47,7 +47,7 @@ class User extends AppModel
         $db->insert('user',$params);
     }
 
-    public static function is_valid_username_email($value, $type)
+    public static function isValidUsernameEmail($value, $type)
     {
         switch($type) {
             case "username" :
@@ -65,7 +65,7 @@ class User extends AppModel
         }
     }
 
-    public function is_registered(User $user)
+    public function isRegistered(User $user)
     {
         $db = DB::conn();
         $row = $db->row("SELECT * FROM user WHERE username LIKE BINARY ? AND password LIKE BINARY ?", array($user->username, hash('sha1', $user->password)));
@@ -73,7 +73,7 @@ class User extends AppModel
         return $row !== false;
     }
 
-    public function get_welcome_message()
+    public function getWelcomeMessage()
     {
        $welcome_messages = array(
                     'Welcome ',
