@@ -2,7 +2,7 @@
 <h1><font color="white"> Create an account </font></h1>
 <br/>
 <?php if($user->hasError()): ?>
-    <div class="alert alert-block">
+    <div class="alert alert-block compress">
         <h4><b>Warning</b></h4>
             <?php if(!empty($user->validation_errors['fname']['length'])): ?>   
                 <div><em>Your first name</em> must be between
@@ -82,9 +82,9 @@
     <input type="password" class="span3" name="password" value="<?php echo readable_text(Param::get('password')); ?>">
     <input type="hidden" name="page_next" value="registration_end">
     </br>
-    <button type="submit" class="btn btn-primary btn-large span3 offset-1">Sign up </button>
+    <button type="submit" class="btn btn-primary btn-large span3 offset-left">Sign up </button>
     <br><br>
-    <p align="center" class="span3 offset-1">
+    <p align="center" class="span3 offset-left">
     <br/>
     Already have an account?
     <br/>
