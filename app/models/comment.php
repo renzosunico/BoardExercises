@@ -41,7 +41,7 @@ class Comment extends AppModel
             'thread_id' => $this->id,
             'username' => $this->username,
             'body' => $this->body
-            );
+        );
 
         $db = DB::conn();
         $db->insert('comment',$params);
