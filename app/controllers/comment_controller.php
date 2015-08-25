@@ -11,7 +11,7 @@ class CommentController extends AppController
         $page = Param::get('page', 1);
         $pagination = new SimplePagination($page, self::MAX_ITEM_PER_PAGE);
 
-        $comments = $comment->getAll($pagination->start_index-1, $pagination->count+1);
+        $comments = $comment->getAll($pagination->start_index-1, $pagination->count+1, $thread->id);
         $pagination->checkLastPage($comments);
 
         $total = Comment::countAll();

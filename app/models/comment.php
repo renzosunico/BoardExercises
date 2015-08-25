@@ -9,14 +9,13 @@ class Comment extends AppModel
             ),
         );
 
-    public function getAll($offset, $limit)
+    public function getAll($offset, $limit, $thread_id)
     {
         $comments = array();
-        $thread = Param::get('thread_id');
         $db = DB::conn();
 
         $rows = $db->rows(
-        "SELECT * FROM comment WHERE thread_id = ? ORDER BY created LIMIT {$offset},{$limit}", array($thread));
+        "SELECT * FROM comment WHERE thread_id = ? ORDER BY created LIMIT {$offset},{$limit}", array($thread_id));
 
         foreach ($rows as $row) {
             $comments[] = new self($row);
