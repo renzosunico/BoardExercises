@@ -5,7 +5,11 @@ class CommentController extends AppController
 
     public function view()
     {
-        $thread = Thread::getById(Param::get('thread_id'));
+        try {
+            $thread = Thread::getById(Param::get('thread_id'));
+        } catch (RecordNotFoundException $e) {
+            redirect(url('notfound/pagenotfound'));
+        }
         $comment = new Comment();
 
         $page = Param::get('page', 1);

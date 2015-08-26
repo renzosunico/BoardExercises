@@ -1,4 +1,4 @@
-<h1 class="white"><?php eh($thread->title) ?></h1>
+<h1 class="white"><?php encode_quotes($thread->title) ?></h1>
 
 <div class="well">
 
@@ -7,7 +7,7 @@
 <div class="comment">
 
 <div class="meta">
-    <?php eh(++$starting_index) ?>: <?php eh($v->username) ?> <?php eh($v->created) ?>
+    <?php encode_quotes(++$starting_index) ?>: <?php encode_quotes($v->username) ?> <?php encode_quotes($v->created) ?>
 </div>
 
 <div><?php echo readable_text($v->body) ?></div>
@@ -46,16 +46,16 @@
 <?php endif ?>
 
 <br/><br/>
-<a href="<?php eh(url('thread/index')) ?>" class="btn btn-default">Back to Thread</a>
+<a href="<?php encode_quotes(url('thread/index')) ?>" class="btn btn-default">Back to Thread</a>
 
 </div>
 
 <hr>
 
-<form class="well" method="post" action="<?php eh(url('comment/write')) ?>">
+<form class="well" method="post" action="<?php encode_quotes(url('comment/write')) ?>">
     <label>Comment</label>
-    <textarea class="span4" name="body"><?php eh(Param::get('body')) ?></textarea>
-    <input type="hidden" name="thread_id" value="<?php eh($thread->id) ?>">
+    <textarea class="span4" name="body"><?php encode_quotes(Param::get('body')) ?></textarea>
+    <input type="hidden" name="thread_id" value="<?php encode_quotes($thread->id) ?>">
     <input type="hidden" name="page_next" value="write_end">
     <button type="submit" class="btn btn-primary">Comment</button>
 </form>

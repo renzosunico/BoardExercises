@@ -1,6 +1,6 @@
 <?php
 
-function eh($string)
+function encode_quotes($string)
 {
     if (!isset($string)) return;
     echo htmlspecialchars($string, ENT_QUOTES);
@@ -15,12 +15,12 @@ function readable_text($no_br_string)
 
 function redirect($url)
 {
-    header("Location: " . $url);
+    header("Location: " . url($url));
 }
 
 function redirect_to_login()
 {
     if(!isset($_SESSION['username'])) {
-        redirect(url('user/login'));
+        redirect('user/login');
     }
 }

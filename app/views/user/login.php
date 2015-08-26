@@ -9,7 +9,7 @@
         Your username or password might be incorrect.
     </div>
     <div class="control-group error">
-        <form class="well container custom-well-fit" method="post" action="<?php eh(url('')) ?>">
+        <form class="well container custom-well-fit" method="post" action="<?php encode_quotes(url('')) ?>">
             <label class="custom-red-font">Username:</label>
             <input type="text" id="inputError" name="username" value="<?php echo readable_text(Param::get('username')) ?>">
             <label class="custom-red-font">Password:</label>
@@ -21,7 +21,7 @@
         </form>
     </div>
 <?php else: ?>
-    <form class="well container custom-well-fit " method="post" action="<?php eh(url('')) ?>">
+    <form class="well container custom-well-fit " method="post" action="<?php encode_quotes(url('')) ?>">
             <label>Username:</label>
             <input type="text" name="username" value="<?php echo readable_text(Param::get('username')) ?>">
             <label>Password:</label>

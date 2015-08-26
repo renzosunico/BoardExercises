@@ -6,8 +6,8 @@
         <h4><b>Warning</b></h4>
             <?php if(!empty($user->validation_errors['fname']['length'])): ?>   
                 <div><em>Your first name</em> must be between
-                <?php eh($user->validation['fname']['length'][1]) ?> and
-                <?php eh($user->validation['fname']['length'][2]) ?> characters in length.
+                <?php encode_quotes($user->validation['fname']['length'][1]) ?> and
+                <?php encode_quotes($user->validation['fname']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
 
@@ -18,8 +18,8 @@
 
             <?php if(!empty($user->validation_errors['lname']['length'])): ?>   
                 <div><em>Your last name</em> must be between
-                <?php eh($user->validation['lname']['length'][1]) ?> and
-                <?php eh($user->validation['lname']['length'][2]) ?> characters in length.
+                <?php encode_quotes($user->validation['lname']['length'][1]) ?> and
+                <?php encode_quotes($user->validation['lname']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
 
@@ -30,8 +30,8 @@
 
             <?php if(!empty($user->validation_errors['username']['length'])): ?>    
                 <div><em>Your username</em> must be between
-                <?php eh($user->validation['username']['length'][1]) ?> and
-                <?php eh($user->validation['username']['length'][2]) ?> characters in length.
+                <?php encode_quotes($user->validation['username']['length'][1]) ?> and
+                <?php encode_quotes($user->validation['username']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
 
@@ -47,8 +47,8 @@
 
             <?php if(!empty($user->validation_errors['password']['length'])): ?>    
                 <div><em>Your password</em> must be between
-                <?php eh($user->validation['password']['length'][1]) ?> and
-                <?php eh($user->validation['password']['length'][2]) ?> characters in length.
+                <?php encode_quotes($user->validation['password']['length'][1]) ?> and
+                <?php encode_quotes($user->validation['password']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
 
@@ -69,7 +69,7 @@
     </div>
 <?php endif ?>
 
-<form class="well well-large pull-left" autocomplete="off" method="post" action="<?php eh(url('')) ?>">
+<form class="well well-large pull-left" autocomplete="off" method="post" action="<?php encode_quotes(url('')) ?>">
     <label>First Name:</label>
     <input type="text" class="span3" name="fname" value="<?php echo readable_text(Param::get('fname')); ?>">
     <label>Last Name:</label>
@@ -88,7 +88,7 @@
     <br/>
     Already have an account?
     <br/>
-    <a href="<?php eh(url('user/login')) ?>"> Login here </a>
+    <a href="<?php encode_quotes(url('user/login')) ?>"> Login here </a>
     </p>
     <br/><br/><br/>
 </form>
