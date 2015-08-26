@@ -36,14 +36,13 @@ class CommentController extends AppController
                 $comment->username = $_SESSION['username'];
                 $comment->body = Param::get('body');
                 try {
-                $comment->write();
+                    $comment->write();
                 } catch (ValidationException $e) {
                     $page = 'write';
                 }
                 break;
             default:
                 throw new NotFoundException("{$page} is not found");
-                break;
         }
 
         $this->set(get_defined_vars());
