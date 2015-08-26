@@ -20,7 +20,7 @@ class UserController extends AppController
                 $user->email = Param::get('email');
                 $user->password = Param::get('password');
                 try {
-                    $user->register($user);
+                    $user->register();
                 } catch (ValidationException $e) {
                     $page = "registration";
                 }
@@ -44,8 +44,6 @@ class UserController extends AppController
         $page = Param::get('page_next','login');
         
         $isAuthorized = true;
-
-        $message = $user->getWelcomeMessage();
 
         switch($page) {
             case "login":
