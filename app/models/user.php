@@ -61,10 +61,10 @@ class User extends AppModel
         }
     }
 
-    public function isRegistered(User $user)
+    public function isRegistered()
     {
         $db = DB::conn();
-        $row = $db->row("SELECT * FROM user WHERE username LIKE BINARY ? AND password LIKE BINARY ?", array($user->username, hash('sha1', $user->password)));
+        $row = $db->row("SELECT * FROM user WHERE username LIKE BINARY ? AND password LIKE BINARY ?", array($this->username, hash('sha1', $this->password)));
         
         return $row !== false;
     }

@@ -51,7 +51,7 @@ class UserController extends AppController
             case "login_end":
                 $user->username = $clean_username;
                 $user->password = $clean_hashed_password;
-                $isAuthorized = $user->isRegistered($user);
+                $isAuthorized = $user->isRegistered();
                 
                 if(!$isAuthorized) {
                     $page = "login";
