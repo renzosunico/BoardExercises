@@ -1,5 +1,5 @@
 <?php
-/*function error_handler($error, $errorString)
+function error_handler($error, $errorString)
 {
     if(strpos($errorString, 'No such file or directory') >= 0) {
         redirect('notfound/pagenotfound');
@@ -13,4 +13,4 @@ function exception_handler($exception)
         redirect('notfound/pagenotfound');
     }
 }
-set_exception_handler('exception_handler'); */
+set_exception_handler('exception_handler');

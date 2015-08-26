@@ -45,16 +45,15 @@ class User extends AppModel
 
     public static function isValidUsernameEmail($value, $type)
     {
+        $db = DB::conn();
         switch($type) {
             case "username" :
                 if($value) {
-                    $db = DB::conn();
                     return count($db->search('user','username=?',array($value))) == 0;
                 }
                 return false;
             case "email" :
                 if($value) {
-                    $db = DB::conn();
                     return count($db->search('user','email=?',array($value))) == 0;
                 }
                 return false;
