@@ -25,18 +25,18 @@ class User extends AppModel
         ),
     );
 
-    public function register(User $user)
+    public function register()
     {
-        if(!$user->validate()) {
+        if(!$this->validate()) {
             throw new ValidationException('Invalid data.');
         }
 
         $params = array(
-            'fname'    => $user->fname,
-            'lname'    => $user->lname,
-            'username' => $user->username,
-            'email'    => $user->email,
-            'password' => hash('sha1', $user->password)
+            'fname'    => $this->fname,
+            'lname'    => $this->lname,
+            'username' => $this->username,
+            'email'    => $this->email,
+            'password' => hash('sha1', $this->password)
             );
 
         $db = DB::conn();
