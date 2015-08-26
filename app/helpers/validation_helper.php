@@ -2,9 +2,8 @@
 
 function validate_between($check, $min, $max)
 {
-    $n = mb_strlen($check);
-
-    return $min <= $n && $n <= $max;
+    $length = mb_strlen($check);
+    return $min <= $length && $length <= $max;
 }
 
 function validate_chars($check)
@@ -20,7 +19,7 @@ function validate_alpha($check)
 
 function validate_email($check)
 {
-    return empty($check) ? true : preg_match('/^\w+([-+.\']\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*$/', $check);
+    return empty($check) ? true : filter_var($check, FILTER_VALIDATE_EMAIL);
 }
 
 function validate_existence($check, $type)
