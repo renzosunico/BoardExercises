@@ -17,7 +17,7 @@ class CommentController extends AppController
         $total = Comment::countAll();
         $pages = ceil($total / self::MAX_ITEM_PER_PAGE);
 
-        $starting_index = (($page-1)*self::MAX_ITEM_PER_PAGE);
+        $starting_index = (($page-1) * self::MAX_ITEM_PER_PAGE);
 
         $this->set(get_defined_vars());
     }
