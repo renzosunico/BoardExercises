@@ -1,18 +1,17 @@
 <?php
-
 class User extends AppModel
 {
     public $validation = array(
         'fname'          => array(
-            'length'     => array('validate_between',1,30),
+            'length'     => array('validate_between', 1, 30),
             'alphachars' => array('validate_alpha')
         ),
         'lname'          => array(
-            'length'     => array('validate_between',1,30),
+            'length'     => array('validate_between', 1, 30),
             'alphachars' => array('validate_alpha'),
         ),
         'username'       => array(
-            'length'     => array('validate_between',6,30),
+            'length'     => array('validate_between', 6, 30),
             'chars'      => array('validate_chars'),
             'exist'      => array('validate_existence','username'),
         ),
@@ -21,7 +20,7 @@ class User extends AppModel
             'exist'      => array('validate_existence','email'),
         ),
         'password'       => array(
-            'length'     => array('validate_between',6,30),
+            'length'     => array('validate_between', 6, 30),
             'chars' => array('validate_chars'),
         ),
     );
@@ -84,7 +83,7 @@ class User extends AppModel
                     'Hey ',
                     'Hey Good Looking ',
                     'What\'s Up '
-                    );
+        );
 
        return $welcome_messages[rand(self::START_RAND_NO, self::END_RAND_NO)];
     }
