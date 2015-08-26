@@ -1,5 +1,5 @@
 <?php
-Class NotFoundController extends AppController
+class NotFoundController extends AppController
 {
     public function pagenotfound()
     {
