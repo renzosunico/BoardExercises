@@ -19,6 +19,7 @@ class UserController extends AppController
                 $user->username = Param::get('username');
                 $user->email = Param::get('email');
                 $user->password = Param::get('password');
+                $user->confirmpassword = Param::get('repassword');
                 try {
                     $user->register();
                 } catch (ValidationException $e) {

@@ -1,28 +1,32 @@
 <?php
 class User extends AppModel
 {
+    public $name="dasd";
     public $validation = array(
-        'fname'          => array(
-            'length'     => array('validate_between', 1, 30),
-            'alphachars' => array('validate_alpha')
+        'fname'           => array(
+            'length'      => array('validate_between', 1, 30),
+            'alphachars'  => array('validate_alpha'),
         ),
-        'lname'          => array(
-            'length'     => array('validate_between', 1, 30),
-            'alphachars' => array('validate_alpha'),
+        'lname'           => array(
+            'length'      => array('validate_between', 1, 30),
+            'alphachars'  => array('validate_alpha'),
         ),
-        'username'       => array(
-            'length'     => array('validate_between', 6, 30),
-            'chars'      => array('validate_chars'),
-            'exist'      => array('validate_existence','username'),
+        'username'        => array(
+            'length'      => array('validate_between', 6, 30),
+            'chars'       => array('validate_chars'),
+            'exist'       => array('validate_existence', 'username'),
         ),
-        'email'          => array(
-            'email'      => array('validate_email'),
-            'exist'      => array('validate_existence','email'),
+        'email'           => array(
+            'email'       => array('validate_email'),
+            'exist'       => array('validate_existence', 'email'),
         ),
-        'password'       => array(
-            'length'     => array('validate_between', 6, 30),
-            'chars' => array('validate_chars'),
+        'password'        => array(
+            'length'      => array('validate_between', 6, 30),
+            'chars'       => array('validate_chars'),
         ),
+        'confirmpassword' => array(
+            'confirm'     => array('confirm_password'),
+        )
     );
 
     public function register()
@@ -37,7 +41,7 @@ class User extends AppModel
             'username' => $this->username,
             'email'    => $this->email,
             'password' => hash('sha1', $this->password)
-            );
+        );
 
         $db = DB::conn();
         $db->insert('user',$params);

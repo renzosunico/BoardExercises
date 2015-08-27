@@ -57,6 +57,11 @@
                 </div>
             <?php endif ?>
 
+            <?php if(!empty($user->validation_errors['confirmpassword']['confirm'])): ?> 
+                <div><em>Your password</em> did not matched. 
+                </div>
+            <?php endif ?>
+
             <?php if(!empty($user->validation_errors['email']['email'])): ?>    
                 <div><em>Your email</em> must be in valid email format. 
                 </div>
@@ -80,10 +85,12 @@
     <input type="text" class="span3" name="email" value="<?php echo readable_text(Param::get('email')); ?>">
     <label>Password:</label>
     <input type="password" class="span3" name="password" value="<?php echo readable_text(Param::get('password')); ?>">
+    <label>Reenter password:</label>
+    <input type="password" class="span3" name="repassword" value="<?php echo readable_text(Param::get('repassword')); ?>">
     <input type="hidden" name="page_next" value="registration_end">
-    </br>
+    <br/><br/>
     <button type="submit" class="btn btn-primary btn-large span3 offset-left">Sign up </button>
-    <br><br>
+    <br/>
     <p align="center" class="span3 offset-left">
     <br/>
     Already have an account?
