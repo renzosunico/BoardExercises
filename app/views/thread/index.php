@@ -13,27 +13,31 @@
     <?php endforeach ?>
 
 <div class="well">
-    <?php if($pages > 1): ?>
-        <?php if($pagination->current > 1): ?>
-            <a href='?page=<?php echo $pagination->prev ?>'>Previous</a>
-        <?php else: ?>
-            Previous
-        <?php endif ?>
+    <div class="pagination pagination-centered">
+        <?php if($pages > 1): ?>
+        <ul>
+                <?php if($pagination->current > 1): ?>
+                    <li><a href='?page=<?php echo $pagination->prev ?>'>Previous</a></li>
+                <?php else: ?>
+                    <li class="disabled"><a href="#" >Previous</a></li>
+                <?php endif ?>
 
-        <?php for($i = 1; $i <= $pages; $i++): ?>
-            <?php if($i == $page): ?>
-                <?php echo $i ?>
-            <?php else: ?>
-                <a href='?page=<?php echo $i ?>'><?php echo $i ?></a>
-            <?php endif; ?>
-        <?php endfor; ?>
+                <?php for($i = 1; $i <= $pages; $i++): ?>
+                    <?php if($i == $page): ?>
+                        <li class="disabled"><a href="#" ><?php echo $i ?></a></li>
+                    <?php else: ?>
+                        <li><a href='?page=<?php echo $i ?>'><?php echo $i ?></a></li>
+                    <?php endif; ?>
+                <?php endfor; ?>
 
-        <?php if(!$pagination->is_last_page): ?>
-            <a href='?page=<?php echo $pagination->next ?>'>Next</a>
-        <?php else: ?>
-            Next
-        <?php endif ?>
-    <?php endif ?>
+                <?php if(!$pagination->is_last_page): ?>
+                    <li><a href='?page=<?php echo $pagination->next ?>'>Next</a></li>
+                <?php else: ?>
+                    <li class="disabled"><a href="#" >Next</a></li>
+                <?php endif ?>
+            <?php endif ?>
+        </ul>
+    </div>
 
     <br/><br/>
     <a class="btn btn-large btn-primary span3 middle" href="<?php encode_quotes(url('thread/create')) ?>">Create</a>

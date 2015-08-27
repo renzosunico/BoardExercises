@@ -5,15 +5,6 @@
     <title><?php echo "UpThread ", isset($thread->title) ? " | {$thread->title}" : "" ?></title>
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/bootstrap/css/customized.css" rel="stylesheet">
-    <style>
-      body {
-        background:url("/bootstrap/img/bg1.jpg");
-        background-repeat: no-repeat;
-        background-attachment: fixed;
-        background-position: center;
-        padding-top: 60px;
-      }
-    </style>
   </head>
 
   <body>

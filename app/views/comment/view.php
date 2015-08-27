@@ -16,41 +16,41 @@
 
 <?php endforeach ?>
 
-<!--Pagination Here -->
-<?if ($pages > 1): ?>
+<hr>
 
-    <?php if($pagination->current > 1): ?>
-        <a href="?thread_id=<?php echo $thread->id ?>
-        &page=<?php echo $pagination->prev ?>">Previous</a>
-    <?php else: ?>
-        Previous
-    <?php endif ?>
+<div class="pagination pagination-centered">
+    <?if ($pages > 1): ?>
+    <ul>
+            <?php if($pagination->current > 1): ?>
+                <li><a href="?thread_id=<?php echo $thread->id ?>
+                &page=<?php echo $pagination->prev ?>">Previous</a></li>
+            <?php else: ?>
+                <li class="disabled"><a href="#">Previous</a></li>
+            <?php endif ?>
 
-    <?php for($i=1; $i<=$pages; $i++): ?>
-        <?php if($i == $page): ?>
-            <?php echo $i ?>
-        <?php else: ?>
-            <a href="?thread_id=<?php echo $thread->id ?>
-                &page=<?php echo $i ?>"?><?php echo $i ?>
-            </a>
+            <?php for($i=1; $i<=$pages; $i++): ?>
+                <?php if($i == $page): ?>
+                    <li class="disabled"><a href="#"><?php echo $i ?></a></li>
+                <?php else: ?>
+                    <li><a href="?thread_id=<?php echo $thread->id ?>
+                        &page=<?php echo $i ?>"?><?php echo $i ?>
+                    </a></li>
+                <?php endif ?>
+            <?php endfor ?>
+
+            <?php if(!$pagination->is_last_page): ?>
+                <li><a href="?thread_id=<?php echo $thread->id ?>
+                    &page=<?php echo $pagination->next ?>">Next</a></li>
+            <?php else: ?>
+                <li class="disabled"><a href="#">Next</a></li>
+            <?php endif ?>
         <?php endif ?>
-    <?php endfor ?>
-
-    <?php if(!$pagination->is_last_page): ?>
-        <a href="?thread_id=<?php echo $thread->id ?>
-            &page=<?php echo $pagination->next ?>">Next</a>
-    <?php else: ?>
-        Next
-    <?php endif ?>
-
-<?php endif ?>
-
-<br/><br/>
+    </ul>
+</div>
+<hr>
 <a href="<?php encode_quotes(url('thread/index')) ?>" class="btn btn-default">Back to Thread</a>
 
 </div>
-
-<hr>
 
 <form class="well" method="post" action="<?php encode_quotes(url('comment/write')) ?>">
     <label>Comment</label>
