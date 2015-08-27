@@ -48,10 +48,13 @@ class Thread extends AppModel
 
         $db = DB::conn();
         $db->begin();
-        $db->insert('thread', array('title' => $this->title));
-        $comment->id = $db->lastInsertId();
-        $comment->write();
-
-        $db->commit();
+        try {
+            $db->insert('thread', array('title' => $this->title));
+            $comment->id = $db->lastInsertId();
+            $comment->write();
+            $db->commit();
+        } catch (PDOException $e) {
+            $db->rollback();
+        }
     }
 }

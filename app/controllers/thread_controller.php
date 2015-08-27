@@ -36,7 +36,7 @@ class ThreadController extends AppController
                 }
                 break;
             default:
-                throw new NotFoundException("{$page} is not found");
+                throw new RecordNotFoundException("{$page} is not found");
         }
         $this->set(get_defined_vars());
         $this->render($page);
