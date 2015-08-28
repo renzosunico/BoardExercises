@@ -14,6 +14,10 @@ class CommentController extends AppController
         $comments = $comment->getAll($pagination->start_index-1, $pagination->count+1, $thread->id);
         $pagination->checkLastPage($comments);
 
+        foreach ($comments as $comment) {
+            $comment->user_id = User::getUsernameById($comment->user_id);
+        }
+
         $total = Comment::countAll();
         $pages = ceil($total / self::MAX_ITEM_PER_PAGE);
 
@@ -24,9 +28,6 @@ class CommentController extends AppController
 
     public function write()
     {
-        foreach ($variable as $key => $value) {
-            # code...
-        }
         $thread = Thread::getById(Param::get('thread_id'));
         $comment = new Comment();
         $page = Param::get('page_next','write');
@@ -36,7 +37,7 @@ class CommentController extends AppController
                 break;
             case 'write_end':
                 $comment->id = $thread->id;
-                $comment->username = $_SESSION['username'];
+                $comment->user_id = User::getIdByUsername($_SESSION['username']);
                 $comment->body = Param::get('body');
                 try {
                     $comment->write();

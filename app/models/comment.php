@@ -44,9 +44,4 @@ class Comment extends AppModel
         $db = DB::conn();
         $db->insert('comment',$params);
     }
-
-    public function getUsernameById($user)
-    {
-
-    }
 } 

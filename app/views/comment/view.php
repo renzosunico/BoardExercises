@@ -18,12 +18,6 @@
 
 <hr>
 
-    <?php foreach ($comments as $comment): ?>
-         <a href="<?php readable_text(url('comment/view', array('user_id' => $comment->user_id))) ?>">
-         <?php readable_text($comment->username) ?></a> 
-         <?php readable_text($comment->body) ?>
-     <?php endforeach ?>
-
 <div class="pagination pagination-centered">
     <?if ($pages > 1): ?>
     <ul>
