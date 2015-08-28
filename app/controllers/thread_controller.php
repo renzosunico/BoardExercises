@@ -27,7 +27,8 @@ class ThreadController extends AppController
                 break;
             case 'create_end':
                 $thread->title = Param::get('title');
-                $comment->username = $_SESSION['username'];
+                $thread->user_id = User::getIdByUsername($_SESSION['username']);
+                $comment->user_id = User::getIdByUsername($_SESSION['username']);
                 $comment->body = Param::get('body');
                 try {
                     $thread->create($comment);

@@ -24,6 +24,9 @@ class CommentController extends AppController
 
     public function write()
     {
+        foreach ($variable as $key => $value) {
+            # code...
+        }
         $thread = Thread::getById(Param::get('thread_id'));
         $comment = new Comment();
         $page = Param::get('page_next','write');

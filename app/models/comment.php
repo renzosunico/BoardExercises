@@ -37,11 +37,16 @@ class Comment extends AppModel
 
         $params = array(
             'thread_id' => $this->id,
-            'username' => $this->username,
+            'user_id' => $this->user_id,
             'body' => $this->body
         );
 
         $db = DB::conn();
         $db->insert('comment',$params);
+    }
+
+    public function getUsernameById($user)
+    {
+
     }
 } 

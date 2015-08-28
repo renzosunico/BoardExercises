@@ -7,7 +7,7 @@
 <div class="comment">
 
 <div class="meta">
-    <?php encode_quotes(++$starting_index) ?>: <?php encode_quotes($v->username) ?> <?php encode_quotes($v->created) ?>
+    <?php encode_quotes(++$starting_index) ?>: <?php encode_quotes($v->user_id) ?> <?php encode_quotes($v->created) ?>
 </div>
 
 <div><?php echo readable_text($v->body) ?></div>
@@ -17,6 +17,12 @@
 <?php endforeach ?>
 
 <hr>
+
+    <?php foreach ($comments as $comment): ?>
+         <a href="<?php readable_text(url('comment/view', array('user_id' => $comment->user_id))) ?>">
+         <?php readable_text($comment->username) ?></a> 
+         <?php readable_text($comment->body) ?>
+     <?php endforeach ?>
 
 <div class="pagination pagination-centered">
     <?if ($pages > 1): ?>

@@ -71,4 +71,10 @@ class User extends AppModel
         
         return $row !== false;
     }
+
+    public static function getIdByUsername($username)
+    {
+        $db = DB::conn();
+        return $db->value("SELECT id FROM user where username = ?", array($username));
+    }
 }
