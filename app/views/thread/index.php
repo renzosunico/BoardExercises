@@ -6,7 +6,9 @@
     <?php endif ?>
     <?php foreach($threads as $v): ?>
         <div class="well offset-left lineheight" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $v->id))) ?>'" style="cursor:pointer;">
-            <p class="smallsize">Posted: <?php echo readable_text(date("l, F d, Y h:i a", strtotime($v->created))); ?> </p>
+            <p class="smallsize"><?php echo "{$v->user_id}"?> </p>
+            <br/>
+            <p class="smallersize"><?php echo readable_text(date("l, F d, Y h:i a", strtotime($v->created))); ?></p>
             <hr>
             <p class="listmargin"> <?php encode_quotes($v->title) ?> </p>
         </div>

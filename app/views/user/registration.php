@@ -82,7 +82,7 @@
     <label>Username:</label>
     <input type="text" class="span3" name="username" value="<?php echo readable_text(Param::get('username')); ?>">
     <label>Email:</label>
-    <input type="text" class="span3" name="email" value="<?php echo readable_text(Param::get('email')); ?>">
+    <input type="email" class="span3" name="email" value="<?php echo readable_text(Param::get('email')); ?>">
     <label>Password:</label>
     <input type="password" class="span3" name="password" value="<?php echo readable_text(Param::get('password')); ?>">
     <label>Reenter password:</label>

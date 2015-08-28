@@ -10,6 +10,12 @@ class ThreadController extends AppController
 
         $threads = Thread::getAll($pagination->start_index -1, $pagination->count + 1);
         $pagination->checkLastPage($threads);
+
+        foreach ($threads as $thread) {
+            $thread->user_id = User::getUsernameById($thread->user_id);
+        }
+
+
         $total = Thread::countAll();
         $pages = ceil($total/self::MAX_THREADS_PER_PAGE);
 
