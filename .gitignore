@@ -1,3 +1,4 @@
+app/config/core.php
 app/tmp/logs/*
 app/webroot/*
 app/webroot/bootstrap/img/*
