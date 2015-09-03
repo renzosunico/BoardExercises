@@ -1,34 +1,71 @@
-<br/><br/><br/><br/><br/><br/>
-<div class="container">
-<h1 class="white custom-text-center">Login</h1>
+<div class="row">
+    <div class="col-xs-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+        <h1><font color="white" style="font-family: 'Fjalla One', sans-serif;">Login</font></h1>
+    </div>
 </div>
 <br/>
 
-<?php if($isAuthorized === false): ?>
-    <div class="alert alert-error well container custom-well-fit">
-        Your username or password might be incorrect.
+<?php if(isset($isAuthorized) && $isAuthorized === false): ?>
+    <div class="row">
+        <div class="col-xs-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+          <div class="alert alert-danger">
+            Your username or password might be incorrect.
+          </div>  
+        </div>
     </div>
-    <div class="control-group error">
-        <form class="well container custom-well-fit" method="post" action="<?php encode_quotes(url('')) ?>">
-            <label class="custom-red-font">Username:</label>
-            <input type="text" id="inputError" name="username" value="<?php echo readable_text(Param::get('username')) ?>">
-            <label class="custom-red-font">Password:</label>
-            <input type="password" id="inputError" name="password" value="<?php echo readable_text(Param::get('password')) ?>">
-            <br/>
-            <input type="hidden" name="page_next" value="login_end">
-            <button type="submit" class="btn btn-primary btn-large span3 offsetop">Login</button>
-            <br/><br/><br/>
-        </form>
+    <div class="row">
+        <div class="col-xs-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+            <div class="form-group has-error">
+                <form class="well well-large form-horizontal" method="post" action="<?php encode_quotes(url('')) ?>">
+                  <br/>
+                  <div class="form-group">
+                    <label for="username" class="col-sm-2 control-label">Username</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">Password</label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-primary">Sign in</button>
+                    </div>
+                  </div>
+                  <input type="hidden" name="page_next" value="login_end">
+                </form>
+            </div>
+        </div>
     </div>
 <?php else: ?>
-    <form class="well container custom-well-fit " method="post" action="<?php encode_quotes(url('')) ?>">
-            <label>Username:</label>
-            <input type="text" name="username" value="<?php echo readable_text(Param::get('username')) ?>">
-            <label>Password:</label>
-            <input type="password" name="password" value="<?php echo readable_text(Param::get('password')) ?>">
-            <br/>
-            <input type="hidden" name="page_next" value="login_end">
-            <button type="submit" class="btn btn-primary btn-large span3 offsetop">Login</button>
-            <br/><br/><br/>
-    </form>
+    <div class="row">
+        <div class="col-xs-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
+            <div class="control-group">
+                <form class="well well-large form-horizontal" method="post" action="<?php encode_quotes(url('')) ?>">
+                  <br/>
+                  <div class="form-group">
+                    <label for="username" class="col-sm-2 control-label">Username</label>
+                    <div class="col-sm-10">
+                      <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="password" class="col-sm-2 control-label">Password</label>
+                    <div class="col-sm-10">
+                      <input type="password" class="form-control" id="password" name="password" placeholder="Password">
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10">
+                      <button type="submit" class="btn btn-primary">Sign in</button>
+                    </div>
+                  </div>
+                  <input type="hidden" name="page_next" value="login_end">
+                </form>
+            </div>
+        </div>
+    </div>
 <?php endif ?>

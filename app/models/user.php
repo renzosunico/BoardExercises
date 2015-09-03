@@ -35,12 +35,15 @@ class User extends AppModel
             throw new ValidationException('Invalid data.');
         }
 
+        $password = hash_password($this->password);
+
         $params = array(
             'fname'    => $this->fname,
             'lname'    => $this->lname,
             'username' => $this->username,
             'email'    => $this->email,
-            'password' => hash('sha1', $this->password)
+            'password' => $password['hash'],
+            'salt'     => $password['salt'],
         );
 
         $db = DB::conn();
@@ -67,9 +70,12 @@ class User extends AppModel
     public function isRegistered()
     {
         $db = DB::conn();
-        $row = $db->row("SELECT * FROM user WHERE username LIKE BINARY ? AND password LIKE BINARY ?", array($this->username, hash('sha1', $this->password)));
-        
-        return $row !== false;
+        $result = $db->row("SELECT password, salt FROM user WHERE username LIKE BINARY ?", array($this->username));
+
+        if(crypt($this->password, '$2a$11$' . $result['salt']) === $result['password']) {
+            return true;
+        }
+        return false;
     }
 
     public static function getIdByUsername($username)
