@@ -58,7 +58,7 @@ class ThreadController extends AppController
     public function edit()
     {
         $thread_id = Param::get('thread_id');
-        authorize_user_request($thread_id, 'edit');
+        authorize_user_request($thread_id);
 
         $thread = new Thread();
         $comment = new Comment();
@@ -81,7 +81,7 @@ class ThreadController extends AppController
     public function delete()
     {
         $thread_id = Param::get('thread_id');
-        authorize_user_request($thread_id, 'edit');
+        authorize_user_request($thread_id);
 
         try {
             Thread::delete($thread_id);
@@ -91,6 +91,24 @@ class ThreadController extends AppController
         }
 
         redirect('thread/index');
-        
+    }
+
+    public function follow()
+    {
+        $thread_id = Param::get('thread_id');
+        $process = Param::get('process');
+
+        switch ($process) {
+            case 'follow':
+                Follow::setFollow($thread_id, $_SESSION['userid']);
+                break;
+            case 'unfollow':
+                Follow::unsetFollow($thread_id, $_SESSION['userid']);
+                break;
+            default:
+                redirect('notfound/pagenotfound');
+        }
+
+        redirect('thread/index');
     }
 }

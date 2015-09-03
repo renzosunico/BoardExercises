@@ -58,6 +58,7 @@ class UserController extends AppController
                     $page = "login";
                 } else {
                     $_SESSION['username'] = $clean_username;
+                    $_SESSION['userid'] = User::getIdByUsername($clean_username);
                 }
                 break;
             default :

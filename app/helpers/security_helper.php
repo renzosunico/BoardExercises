@@ -11,17 +11,10 @@ function hash_password($password)
     return $result;
 }
 
-function authorize_user_request($thread_id, $request)
+function authorize_user_request($thread_id)
 {
     $user_id = User::getIdByUsername($_SESSION['username']);
-    switch($request) {
-        case 'edit':
-            $thread_author_id = Thread::getAuthorById($thread_id);
-            break;
-        case 'delete':
-    }
-    
-
+    $thread_author_id = Thread::getAuthorById($thread_id);
     if($user_id !== $thread_author_id) {
         redirect('notfound/pagenotfound');
     }

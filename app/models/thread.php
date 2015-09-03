@@ -104,4 +104,19 @@ class Thread extends AppModel
         $db = DB::conn();
         $db->query("DELETE FROM thread where id = ?", array($thread_id));
     }
+
+    public function isFollowed()
+    {
+        $db = DB::conn();
+        $params = array(
+            $this->id,
+            $_SESSION['userid']
+        );
+        return $db->row("SELECT * FROM follow where thread_id=? AND user_id=?",$params);
+    }
+
+    public function isAuthor()
+    {
+        return $this->user_id === $_SESSION['username'];
+    }
 }

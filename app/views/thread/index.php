@@ -31,7 +31,7 @@
 </div>
 
 <?php foreach($threads as $thread): ?>
-    <div class="row">
+    <div class="row showfooter">
         <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
             <div class="panel panel-primary">
                 <div class="panel-heading">
@@ -41,9 +41,9 @@
                 <div class="panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
                     <p><?php encode_quotes($thread->title) ?> </p>
                 </div>
-                <div id="footer" class="panel-footer">
-                    <?php if($thread->user_id === $_SESSION['username']): ?>
-                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font"></span></button>
+                <div class="panel-footer">
+                    <?php if($thread->isAuthor()): ?>
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font" > </span> Edit</button>
                         <div class="modal fade" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
@@ -90,6 +90,7 @@
                     <!-- Delete -->
                     <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete<?php encode_quotes($thread->id) ?>">
                       <span class="glyphicon glyphicon-trash"></span>
+                      Delete
                     </button>
 
                     <div class="modal fade" id="delete<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -111,6 +112,13 @@
                         </div>
                       </div>
                     </div>
+                    <?php endif ?>
+                    <?php if(!$thread->isAuthor()): ?>
+                        <?php if(!$thread->isFollowed()): ?>
+                            <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "follow"))) ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-bookmark"></span> Follow</a>
+                        <?php else: ?>
+                            <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "unfollow"))) ?>" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-minus-sign"></span> Unfollow</a>
+                        <?php endif ?>
                     <?php endif ?>
                 </div>
             </div>
