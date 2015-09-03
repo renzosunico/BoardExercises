@@ -54,4 +54,40 @@ class ThreadController extends AppController
         $this->set(get_defined_vars());
         $this->render($page);
     }
+
+    public function edit()
+    {
+        $thread = new Thread();
+        $comment = new Comment();
+
+        $page = Param::get('page_next', 'edit');
+
+        switch($page) {
+            case 'edit':
+                break;
+            case 'edit_end':
+                $thread->id = Param::get('thread_id');
+                $thread->title = Param::get('title');
+                $thread->category = Param::get('category');
+                $comment->id = Comment::getIdByThreadId($thread->id);
+                $comment->body = Param::get('body');
+                
+                //Validate author
+                $user_id = User::getIdByUsername($_SESSION['username']);
+                $thread_author_id = Thread::getAuthorById($thread->id);
+
+                if($user_id !== $thread_author_id) {
+                    redirect('notfound/pagenotfound');
+                }
+
+                try {
+                    $thread->edit($comment);
+                } catch (ValidationException $e) {
+                    $page = "edit";
+                    $this->set(get_defined_vars());
+                    $this->render($page);
+                }
+        }
+        redirect('thread/index');
+    }
 }

@@ -23,6 +23,12 @@
                     <?php encode_quotes($comment->validation['body']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
+
+            <?php if(!empty($comment->validation_errors['category']['content'])): ?>
+                <div>
+                    <em>Category</em> is required.
+                </div>
+            <?php endif ?>
         </div>
 
       </div>

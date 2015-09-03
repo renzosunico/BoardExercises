@@ -19,6 +19,7 @@ function readable_text($no_br_string)
 function redirect($url,$params = array())
 {
     header("Location: " . url($url, $params));
+    die();
 }
 
 
@@ -44,4 +45,9 @@ function get_welcome_message()
     );
 
    return $welcome_messages[rand(START_RAND_NO, END_RAND_NO)];
+}
+
+function get_thread_comment($thread_id)
+{
+    echo Comment::getByThreadId($thread_id);
 }
