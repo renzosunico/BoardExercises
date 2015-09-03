@@ -66,6 +66,14 @@ class Comment extends AppModel
     public function edit()
     {
         $db = DB::conn();
-        $db->update('comment', array('body' => $this->body), array('id' => $this->id));
+        $db->query("UPDATE comment SET body=?, last_modified=NOW() WHERE id=?",
+            array($this->body, $this->id)
+        );
+    }
+
+    public static function delete($thread_id)
+    {
+        $db = DB::conn();
+        $db->query("DELETE FROM comment where thread_id = ?", array($thread_id));
     }
 } 

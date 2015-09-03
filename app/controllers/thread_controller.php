@@ -57,37 +57,40 @@ class ThreadController extends AppController
 
     public function edit()
     {
+        $thread_id = Param::get('thread_id');
+        authorize_user_request($thread_id, 'edit');
+
         $thread = new Thread();
         $comment = new Comment();
 
-        $page = Param::get('page_next', 'edit');
+        $thread->id = $thread_id;
+        $thread->title = Param::get('title');
+        $thread->category = Param::get('category');
+        $comment->id = Comment::getIdByThreadId($thread->id);
+        $comment->body = Param::get('body');
 
-        switch($page) {
-            case 'edit':
-                break;
-            case 'edit_end':
-                $thread->id = Param::get('thread_id');
-                $thread->title = Param::get('title');
-                $thread->category = Param::get('category');
-                $comment->id = Comment::getIdByThreadId($thread->id);
-                $comment->body = Param::get('body');
-                
-                //Validate author
-                $user_id = User::getIdByUsername($_SESSION['username']);
-                $thread_author_id = Thread::getAuthorById($thread->id);
-
-                if($user_id !== $thread_author_id) {
-                    redirect('notfound/pagenotfound');
-                }
-
-                try {
-                    $thread->edit($comment);
-                } catch (ValidationException $e) {
-                    $page = "edit";
-                    $this->set(get_defined_vars());
-                    $this->render($page);
-                }
+        try {
+            $thread->edit($comment);
+        } catch (ValidationException $e) {
+            $_SESSION['editHasError'] = true;
         }
+
         redirect('thread/index');
+    }
+
+    public function delete()
+    {
+        $thread_id = Param::get('thread_id');
+        authorize_user_request($thread_id, 'edit');
+
+        try {
+            Thread::delete($thread_id);
+        } catch (PDOException $e) {
+            $_SESSION['deleteHasError'] = true;
+            echo $e; die();
+        }
+
+        redirect('thread/index');
+        
     }
 }

@@ -7,6 +7,17 @@
     </div>
 </div>
 
+<?php if(array_key_exists('editHasError', $_SESSION)): ?>
+<div class="row">
+    <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
+        <div class="alert alert-danger">
+            <strong>Edit</strong> was uncessful.
+        </div>
+    </div>
+</div>
+<?php endif;
+      unset($_SESSION['editHasError'])?>
+
 <div class="row">
     <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
         <?php if(empty($threads)): ?>
@@ -32,8 +43,8 @@
                 </div>
                 <div id="footer" class="panel-footer">
                     <?php if($thread->user_id === $_SESSION['username']): ?>
-                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font"></span> Edit</button>
-                        <div class="modal fade" id="<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font"></span></button>
+                        <div class="modal fade" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -68,15 +79,38 @@
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                         <button type="submit" class="btn btn-primary">Save changes</button>
-                                        <input type="hidden" name="page_next" value="edit_end">
                                         <input type="hidden" name="thread_id" value="<?php encode_quotes($thread->id) ?>">
                                     </div>
                                 </form>
                               </div>
-
                             </div>
                           </div>
                         </div>
+                    <!--End of Editing Thread-->
+                    <!-- Delete -->
+                    <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete<?php encode_quotes($thread->id) ?>">
+                      <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+
+                    <div class="modal fade" id="delete<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="myModalLabel">Warning</h4>
+                          </div>
+                          <div class="modal-body">
+                            Do you really want to delete this thread?
+                            <br/><br/>
+                          <div class="modal-footer">
+                            <input type="hidden" name="page_next" value="delete_end">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-danger" href="<?php encode_quotes(url('thread/delete', array('thread_id' => $thread->id))) ?>">Delete</a>
+                          </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
                     <?php endif ?>
                 </div>
             </div>

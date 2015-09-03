@@ -78,15 +78,15 @@ class Thread extends AppModel
         $db = DB::conn();
         $db->begin();
         try {
-            $params = array(
-                'title'         =>  $this->title,
-                'category_name' =>  $this->category
+
+            $db->query("UPDATE thread SET title=?, category_name=?, last_modified=NOW() WHERE id=?",
+                array($this->title, $this->category, $this->id)
             );
-            $db->update('thread', $params, array('id' => $this->id));
+
             $comment->edit();
             $db->commit();
         } catch (PDOException $e) {
-            echo "gogo" . $e; die();
+            echo $e; die();
             $db->rollback();
         }
     }
@@ -95,5 +95,13 @@ class Thread extends AppModel
     {
         $db = DB::conn();
         return $db->value("SELECT user_id FROM thread WHERE id=?", array($id));
+    }
+
+    public static function delete($thread_id)
+    {
+        Comment::delete($thread_id);
+        Follow::delete($thread_id);
+        $db = DB::conn();
+        $db->query("DELETE FROM thread where id = ?", array($thread_id));
     }
 }
