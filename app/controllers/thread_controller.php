@@ -26,14 +26,15 @@ class ThreadController extends AppController
     {
         $thread = new Thread();
         $comment = new Comment();
-        $page = Param::get('page_next', 'create');
 
+        $page = Param::get('page_next', 'create');
         switch($page) {
             case 'create':
                 break;
             case 'create_end':
                 $thread->title = Param::get('title');
                 $thread->user_id = User::getIdByUsername($_SESSION['username']);
+                $thread->category = Param::get('category');
                 $comment->user_id = User::getIdByUsername($_SESSION['username']);
                 $comment->body = Param::get('body');
                 try {
@@ -45,6 +46,11 @@ class ThreadController extends AppController
             default:
                 throw new RecordNotFoundException("{$page} is not found");
         }
+
+        if($page === 'create_end') {
+            redirect('comment/view', array('thread_id' => $comment->id));
+        }
+
         $this->set(get_defined_vars());
         $this->render($page);
     }

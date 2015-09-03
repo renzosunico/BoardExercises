@@ -1,9 +1,12 @@
 <?php
 class Thread extends AppModel
 {
-    public $validation = array(
-        'title'      => array(
-            'length' => array('validate_between', 1, 30,),
+    public $validation  =  array(
+        'title'         => array(
+            'length'    => array('validate_between', 1, 30,),
+        ),
+        'category'      => array(
+            'content'   => array('validate_content'),
         ),
     );
     
@@ -50,8 +53,9 @@ class Thread extends AppModel
         $db->begin();
         try {
             $params = array(
-                'title'     =>      $this->title,
-                'user_id'   =>      $this->user_id
+                'title'         =>      $this->title,
+                'user_id'       =>      $this->user_id,
+                'category_name' =>      $this->category
             );
             $db->insert('thread', $params);
             $comment->id = $db->lastInsertId();

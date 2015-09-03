@@ -27,6 +27,11 @@ function validate_existence($check, $type)
     return empty($check) ? true : User::isValidUsernameEmail($check, $type);
 }
 
+function validate_content($check)
+{
+    return empty($check) ? false : true;
+}
+
 function confirm_password($check)
 {
     $password = Param::get('password');

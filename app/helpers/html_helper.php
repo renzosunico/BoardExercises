@@ -16,10 +16,12 @@ function readable_text($no_br_string)
     return $no_br_string;
 }
 
-function redirect($url)
+function redirect($url,$params = array())
 {
-    header("Location: " . url($url));
+    header("Location: " . url($url, $params));
 }
+
+
 
 function redirect_to_login()
 {
