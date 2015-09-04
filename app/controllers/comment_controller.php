@@ -15,7 +15,7 @@ class CommentController extends AppController
         $pagination->checkLastPage($comments);
 
         foreach ($comments as $comment) {
-            $comment->user_id = User::getUsernameById($comment->user_id);
+            $comment->username = User::getUsernameById($comment->user_id);
         }
 
         $total = Comment::countAll();

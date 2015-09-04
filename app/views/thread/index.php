@@ -35,7 +35,7 @@
         <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <p class="smallsize"> <?php echo "{$thread->user_id}"?></p>
+                    <p class="smallsize"> <?php echo "{$thread->username}"?></p>
                     <p class="smallersize"><?php echo readable_text(date("l, F d, Y h:i a", strtotime($thread->created))); ?></p>
                 </div>
                 <div class="panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
@@ -115,7 +115,7 @@
                     </div>
                     <?php endif ?>
                     <?php if(!$thread->isAuthor()): ?>
-                        <?php if(!$thread->isFollowed()): ?>
+                        <?php if(!Follow::isFollowed($thread->id)): ?>
                             <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "follow"))) ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-bookmark"></span> Follow</a>
                         <?php else: ?>
                             <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "unfollow"))) ?>" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-minus-sign"></span> Unfollow</a>

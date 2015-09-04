@@ -7,7 +7,7 @@
 <div class="comment">
 
 <div class="meta">
-    <?php encode_quotes(++$starting_index) ?>: <?php encode_quotes($v->user_id) ?> <?php encode_quotes($v->created) ?>
+    <?php encode_quotes(++$starting_index) ?>: <?php encode_quotes($v->username) ?> <?php encode_quotes($v->created) ?>
 </div>
 
 <div><?php echo readable_text($v->body) ?></div>

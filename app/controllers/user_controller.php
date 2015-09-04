@@ -92,6 +92,16 @@ class UserController extends AppController
             $threads_followed[] = Thread::getById($thread['thread_id']);
         }
 
+        foreach ($threads_followed as $thread) {
+            $thread->username = User::getUsernameById($thread->user_id);
+        }
+
+        $threads_created = Thread::getByUserId($user->id);
+
+        foreach ($threads_created as $thread) {
+            $thread->username = User::getUsernameById($thread->user_id);
+        }
+
         $this->set(get_defined_vars());
     }
 }

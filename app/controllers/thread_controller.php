@@ -12,7 +12,7 @@ class ThreadController extends AppController
         $pagination->checkLastPage($threads);
 
         foreach ($threads as $thread) {
-            $thread->user_id = User::getUsernameById($thread->user_id);
+            $thread->username = User::getUsernameById($thread->user_id);
         }
 
 

@@ -109,7 +109,11 @@ class User extends AppModel
 
     public function hasThreadFollowed()
     {
-        $db = DB::conn();
-        return $db->row("SELECT * FROM follow where user_id = ?", array($this->id));
+        return Follow::getFollowedThreadByUserId($this->id);
+    }
+
+    public function hasThread()
+    {
+        
     }
 }
