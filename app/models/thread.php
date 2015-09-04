@@ -21,11 +21,13 @@ class Thread extends AppModel
         return new self($row);
     }
 
-    public static function getAll($offset, $limit)
+    public static function getAll($offset, $limit, $order)
     {
         $threads = array();
         $db = DB::conn();
-        $rows = $db->rows("SELECT * FROM thread LIMIT {$offset}, {$limit}");
+        $rows = $db->rows(sprintf("SELECT * FROM thread ORDER BY %s LIMIT %d,%d ",
+                                                        $order, $offset, $limit)
+        );
 
         foreach($rows as $row) {
             $threads[] = new self($row);

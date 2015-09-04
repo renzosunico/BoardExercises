@@ -1,8 +1,23 @@
 <div class="row">
     <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
         <div class="well well-small">
-            <a class="btn btn-primary" href="<?php echo url('thread/create') ?>"><span class="glyphicon glyphicon-pencil"></span>
-        Create Thread</a>
+            <div class="row">
+                <div class="col-xs-6">
+                    <a class="btn btn-primary" href="<?php echo url('thread/create') ?>"><span class="glyphicon glyphicon-pencil"></span>
+                    Create Thread</a>
+                </div>
+                <div class="col-xs-offset-3 col-xs-3 col-sm-offset-3 col-sm-3 col-md-offset-3 col-md-3 col-lg-offset-3 col-lg-3">
+                    <div class="dropdown pull-right">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="glyphicon glyphicon-th-list"></span> Sort By 
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="<?php encode_quotes(url('thread/index', array('sort' => "category_name"))) ?>">Category</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </div>
