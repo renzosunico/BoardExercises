@@ -16,6 +16,12 @@ class ThreadController extends AppController
             $thread->username = User::getUsernameById($thread->user_id);
         }
 
+        $trending_threads = Thread::getTrending();
+
+        foreach ($trending_threads as &$thread) {
+            $thread['title'] = Thread::getTitleById($thread['thread_id']);
+        }
+
 
         $total = Thread::countAll();
         $pages = ceil($total/self::MAX_THREADS_PER_PAGE);

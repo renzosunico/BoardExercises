@@ -130,4 +130,19 @@ class Thread extends AppModel
 
         return $threads;
     }
+
+    public static function getTrending()
+    {
+        $db = DB::conn();
+        return $db->rows("select thread_id, count(*) AS count
+                          FROM comment GROUP BY thread_id
+                          ORDER BY count DESC, created; "
+        );
+    }
+
+    public static function getTitleById($thread_id)
+    {
+        $db = DB::conn();
+        return $db->value("SELECT title from thread WHERE id = ?", array($thread_id));
+    }
 }
