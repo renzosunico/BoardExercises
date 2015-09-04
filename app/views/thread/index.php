@@ -42,6 +42,7 @@
                     <p><?php encode_quotes($thread->title) ?> </p>
                 </div>
                 <div class="panel-footer">
+                    <label class="tag"><span class="glyphicon glyphicon-tag"></span> <?php encode_quotes($thread->category_name) ?></label>
                     <?php if($thread->isAuthor()): ?>
                         <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font" > </span> Edit</button>
                         <div class="modal fade" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">

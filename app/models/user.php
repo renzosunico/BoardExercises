@@ -89,4 +89,16 @@ class User extends AppModel
         $db = DB::conn();
         return $db->value("SELECT username FROM user WHERE id = ?", array($user_id));
     }
+
+    public function getProfile()
+    {
+        $db = DB::conn();
+        $user_info = $db->row("SELECT fname, lname, username, company, division, specialization
+                               FROM user
+                               WHERE id = ?", array($this->id));
+
+        if($db->rowCount() != 0) {
+            $this->set($user_info);
+        }
+    }
 }

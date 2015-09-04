@@ -74,4 +74,17 @@ class UserController extends AppController
         session_destroy();
         redirect('user/login');
     }
+
+    public function profile()
+    {
+        $user = new User();
+        $user->id = Param::get('user_id');
+        $user->getProfile();
+
+        if(!isset($user->username)) {
+            redirect('notfound/pagenotfound');
+        }
+
+        $this->set(get_defined_vars());
+    }
 }
