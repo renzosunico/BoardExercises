@@ -101,4 +101,15 @@ class User extends AppModel
             $this->set($user_info);
         }
     }
+
+    public function isUser()
+    {
+        return $this->id === $_SESSION['userid'];
+    }
+
+    public function hasThreadFollowed()
+    {
+        $db = DB::conn();
+        return $db->row("SELECT * FROM follow where user_id = ?", array($this->id));
+    }
 }

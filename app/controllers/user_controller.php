@@ -85,6 +85,13 @@ class UserController extends AppController
             redirect('notfound/pagenotfound');
         }
 
+        $threads_followed = array();
+        $thread_followed_id = Follow::getFollowedThreadIds($user->id);
+
+        foreach($thread_followed_id as $thread) {
+            $threads_followed[] = Thread::getById($thread['thread_id']);
+        }
+
         $this->set(get_defined_vars());
     }
 }

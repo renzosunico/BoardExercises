@@ -23,4 +23,10 @@ class Follow extends AppModel
         $db->insert('follow', $params);
     }
 
+    public static function getFollowedThreadIds($user_id)
+    {
+        $db = DB::conn();
+        return $db->rows("SELECT thread_id FROM follow WHERE user_id = ?", array($user_id));
+    }
+
 }

@@ -51,3 +51,49 @@
         </div>
     </div>
 </div>
+
+<div class="row">
+    <div class="col-xs-12 col-md-offset-0 col-md-8 col-lg-offset-0 col-lg-8">
+      <div class="well well-large">
+        <div class="page-header">
+          <?php if($user->isUser()): ?>
+              <h1>Threads<small> you are following:</small></h1>
+          <?php else: ?>
+              <h1>Threads<small> <?php encode_quotes($user->fname) ?> is following:</small></h1>
+          <?php endif ?>
+        </div>
+        <?php if($user->isUser() && $user->hasThreadFollowed()): ?>
+          <h4>You are not following any threads. </h1>
+        <?php else: ?>
+          <h4><?php encode_quotes($user->fname) ?> is not following any threads.</h4>
+        <?php endif ?>
+        
+        <?php foreach($threads_followed as $thread): ?>
+          <div class="row showfooter">
+            <div class="col-xs-12 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-12">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <p class="smallsize"> <?php echo "{$thread->user_id}"?></p>
+                        <p class="smallersize"><?php echo readable_text(date("l, F d, Y h:i a", strtotime($thread->created))); ?></p>
+                    </div>
+                    <div class="panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
+                        <p><?php encode_quotes($thread->title) ?> </p>
+                    </div>
+                    <div class="panel-footer">
+                        <label class="tag"><span class="glyphicon glyphicon-tag"></span> <?php encode_quotes($thread->category_name) ?></label>
+                          <?php if(!$thread->isAuthor()): ?>
+                            <?php if(!$thread->isFollowed()): ?>
+                                <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "follow", 'page' => "user/profile", 'user_id' => "$user->id"))) ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-bookmark"></span> Follow</a>
+                            <?php else: ?>
+                                <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "unfollow", 'page' => "user/profile", 'user_id' => "$user->id"))) ?>" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-minus-sign"></span> Unfollow</a>
+                            <?php endif ?>
+                        <?php endif ?>
+                    </div>
+                </div>
+            </div>
+          </div>
+        <?php endforeach ?>
+
+      </div>
+    </div>
+</div>

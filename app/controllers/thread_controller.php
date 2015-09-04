@@ -109,6 +109,13 @@ class ThreadController extends AppController
                 redirect('notfound/pagenotfound');
         }
 
+        $page = Param::get('page');
+        $user_id = Param::get('user_id');
+
+        if($page) {
+            redirect($page, array('user_id' => $user_id));
+        }
+
         redirect('thread/index');
     }
 }
