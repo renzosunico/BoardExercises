@@ -10,3 +10,12 @@ function hash_password($password)
 
     return $result;
 }
+
+function authorize_user_request($thread_id)
+{
+    $user_id = User::getIdByUsername($_SESSION['username']);
+    $thread_author_id = Thread::getAuthorById($thread_id);
+    if($user_id !== $thread_author_id) {
+        redirect('notfound/pagenotfound');
+    }
+}

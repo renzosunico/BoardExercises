@@ -29,6 +29,7 @@
               <ul class="nav navbar-nav">
                 <?php if(isset($page) && (!preg_match('/(registration)|^(login)$/',$page))): ?>
                   <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('thread/index')) : "" ?>">Home</a>
+                  <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('user/profile',array('user_id' => $_SESSION['userid']))) : "" ?>">Profile</a>
                   <?php redirect_to_login() ?>
                 <?php endif ?>
 

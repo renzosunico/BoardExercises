@@ -7,6 +7,8 @@ class Comment extends AppModel
         ),
     );
 
+    CONST FIRST_COMMENT = 1;
+
     public function getAll($offset, $limit, $thread_id)
     {
         $comments = array();
@@ -43,5 +45,35 @@ class Comment extends AppModel
 
         $db = DB::conn();
         $db->insert('comment',$params);
+    }
+
+    public static function getByThreadId($thread_id)
+    {
+        $db = DB::conn();
+        return $db->value(
+            sprintf("SELECT body FROM comment WHERE thread_id=%d LIMIT %d", $thread_id, self::FIRST_COMMENT)
+        );
+    }
+
+    public static function getIdByThreadId($thread_id)
+    {
+        $db = DB::conn();
+        return $db->value(
+            sprintf("SELECT id FROM comment WHERE thread_id=%d LIMIT %d", $thread_id, self::FIRST_COMMENT)
+        );
+    }
+
+    public function edit()
+    {
+        $db = DB::conn();
+        $db->query("UPDATE comment SET body=?, last_modified=NOW() WHERE id=?",
+            array($this->body, $this->id)
+        );
+    }
+
+    public static function delete($thread_id)
+    {
+        $db = DB::conn();
+        $db->query("DELETE FROM comment where thread_id = ?", array($thread_id));
     }
 } 
