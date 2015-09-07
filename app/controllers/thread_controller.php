@@ -65,7 +65,7 @@ class ThreadController extends AppController
     public function edit()
     {
         $thread_id = Param::get('thread_id');
-        authorize_user_request($thread_id);
+        authorize_user_request($thread_id, 'thread');
 
         $thread = new Thread();
         $comment = new Comment();
@@ -88,7 +88,7 @@ class ThreadController extends AppController
     public function delete()
     {
         $thread_id = Param::get('thread_id');
-        authorize_user_request($thread_id);
+        authorize_user_request($thread_id, 'thread');
 
         try {
             Thread::delete($thread_id);

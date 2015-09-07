@@ -1,20 +1,129 @@
-<h1 class="white"><?php encode_quotes($thread->title) ?></h1>
-
-<div class="well">
-
-<?php foreach($comments as $k => $v): ?>
-
-<div class="comment">
-
-<div class="meta">
-    <?php encode_quotes(++$starting_index) ?>: <?php encode_quotes($v->username) ?> <?php encode_quotes($v->created) ?>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <h1 class="title"><?php encode_quotes($thread->title) ?></h1>
+    </div>
 </div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <?php if(array_key_exists('hasError', $_SESSION) && $_SESSION['hasError']): ?>
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Validation error!</h4>
+                <div><em>Comment</em> must be between
+                <?php encode_quotes($comment->validation['body']['length'][1]) ?>
+                and
+                <?php encode_quotes($comment->validation['body']['length'][2]) ?>
+                characters in length.
+                </div>
+            <?php unset($_SESSION['hasError']) ?>
 
-<div><?php echo readable_text($v->body) ?></div>
-
+        </div>
+        <?php endif ?>
+    </div>
 </div>
+<?php foreach($comments as $comment): ?>
+<div class="row">
+    <div class="colxs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="row">
+                    <!--comment
+                    <div class="col-xs-1">
+                        
+                    </div>
+                    -->
+                    <div class="col-xs-11">
+                        <p class="smallsize"> <?php encode_quotes($comment->username)?></p>
+                        <p class="smallersize"><?php encode_quotes(date("l, F d, Y h:i a", strtotime($comment->created))); ?></p>
+                    </div>
+                </div>
+            </div>
+            <div class="showfooter panel-body">
+                <?php echo readable_text($comment->body) ?>
+            </div>
+            <div class="panel-footer">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <?php if(($like_count = Likes::countLike($comment->id)) <= 1): ?>
+                            <label class="btn btn-primary btn-xs likes">
+                                <span class="glyphicon glyphicon-hand-right"> <?php encode_quotes("$like_count") ?> person</span> 
+                            </label>
+                        <?php else: ?>
+                            <label class="btn btn-primary btn-xs likes">
+                                <span class="glyphicon glyphicon-hand-right"> <?php encode_quotes("$like_count") ?> people</span>
+                            </label>
+                        <?php endif ?>
 
+                        <?php if(!Likes::isLiked($comment->id)): ?>
+                            <a class="btn btn-default btn-xs btn-info" href="<?php encode_quotes(url('comment/like', array('thread_id' => $thread->id, 'comment_id' => $comment->id, 'process' => 'like'))) ?>">
+                                <span class="glyphicon glyphicon-hand-right"></span> Like
+                            </a>
+                        <?php else: ?>
+                            <a class="btn btn-default btn-xs btn-danger" href="<?php encode_quotes(url('comment/like', array('thread_id' => $thread->id, 'comment_id' => $comment->id, 'process' => 'unlike'))) ?>">
+                                <span class="glyphicon glyphicon-thumbs-down"></span> Unlike
+                            </a>
+                        <?php endif ?>
+                    </div>
+                    <div class="col-xs-6 text-right">
+                        <?php if($comment->isAuthor()): ?>
+                            <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($comment->id) ?>">
+                              <span class="glyphicon glyphicon-font"></span> Edit
+                            </button>
+                            <button type="button" class="btn btn-danger btn-xs" data-toggle="modal" data-target="#delete<?php encode_quotes($comment->id) ?>">
+                              <span class="glyphicon glyphicon-trash"></span> Delete
+                            </button>
+                        <?php endif ?>
+                    </div>
+                    <!--Modals Edit-->
+                    <div class="modal" id="edit<?php encode_quotes($comment->id) ?>" tabindex="-1" role="dialog" aria-labelledby="title<?php encode_quotes($comment->id) ?>">
+                      <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" id="title<?php encode_quotes($comment->id) ?>">Edit Comment</h4>
+                          </div>
+                          <div class="modal-body">
+                            <form action="<?php encode_quotes(url('comment/edit')) ?>">
+                                <div class="form-group">
+                                    <label for="comment">Comment:</label>
+                                    <textarea type="text" class="form-control" id="comment" name="body"><?php encode_quotes($comment->body); ?></textarea>
+                                    <input type="hidden" name="thread_id" value="<?php encode_quotes($thread->id) ?>">
+                                    <input type="hidden" name="comment_id" value="<?php encode_quotes($comment->id) ?>">
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <button type="submit" class="btn btn-primary">Save changes</button>
+                                </div>
+                            </form>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!-- Delete -->
+                    <div class="modal" id="delete<?php encode_quotes($comment->id) ?>" tabindex="-1" role="dialog" aria-labelledby="title<?php encode_quotes($comment->id) ?>">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <h4 class="modal-title" id="title<?php encode_quotes($comment->id) ?>">Delete</h4>
+                              </div>
+                              <div class="modal-body">
+                                Are you sure you want to delete this comment ?
+                              </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                <a class="btn btn-danger" href="<?php encode_quotes(url('comment/delete', array('comment_id' => $comment->id, 'thread_id' => $thread->id))) ?>">Delete</a>
+                            </div>
+                            </div>
+                          </div>
+                    </div>
+                    </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 <?php endforeach ?>
+<div class="well">
 
 <hr>
 

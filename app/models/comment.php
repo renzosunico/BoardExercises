@@ -65,15 +65,47 @@ class Comment extends AppModel
 
     public function edit()
     {
+        if(!$this->validate()) {
+            throw new ValidationException;
+        }
+
         $db = DB::conn();
-        $db->query("UPDATE comment SET body=?, last_modified=NOW() WHERE id=?",
-            array($this->body, $this->id)
+        $db->query(
+            "UPDATE comment SET body=?, last_modified=NOW() WHERE id=? AND user_id = ?",
+            array($this->body, $this->id, $_SESSION['userid'])
         );
     }
 
-    public static function delete($thread_id)
+    public static function deleteAll($thread_id)
     {
         $db = DB::conn();
         $db->query("DELETE FROM comment where thread_id = ?", array($thread_id));
+    }
+
+    public function isAuthor()
+    {
+        $db = DB::conn();
+        $params = array(
+            $this->id,
+            $_SESSION['userid']
+        );
+        return $db->search('comment', 'id = ? AND user_id = ?', $params);
+    }
+
+    public static function delete($comment_id, $thread_id)
+    {
+        $db = DB::conn();
+        $params = array(
+            $comment_id,
+            $_SESSION['userid'],
+            $thread_id
+        );
+        $db->query("DELETE FROM comment WHERE id = ? AND user_id = ? AND $thread_id = ?", $params);
+    }
+
+    public static function getAuthorById($id)
+    {
+        $db = DB::conn();
+        return $db->value("SELECT user_id FROM comment WHERE id=?", array($id));
     }
 } 

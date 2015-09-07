@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-xs-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
-        <h1><font color="white" style="font-family: 'Fjalla One', sans-serif;">Login</font></h1>
+        <h1 class="title">Login</h1>
     </div>
 </div>
 <br/>
