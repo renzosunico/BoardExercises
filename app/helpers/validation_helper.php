@@ -37,3 +37,26 @@ function confirm_password($check)
     $password = Param::get('password');
     return $check === $password;
 }
+
+function validate_changes($check, $column)
+{
+    $original_value = User::getUsernameEmailById($_SESSION['userid']);
+
+    switch($column) {
+        case 'username':
+            if($check !== $original_value['username']) {
+                if(!User::isValidUsernameEmail($check, $column)) {
+                    return false;
+                }
+            }
+            break;
+        case 'email':
+            if($check !== $original_value['email']) {
+                if(!User::isValidUsernameEmail($check, $column)) {
+                    return false;
+                }
+            }
+            break;
+    }
+    return true;
+}

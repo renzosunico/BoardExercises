@@ -1,7 +1,6 @@
 <?php
 class User extends AppModel
 {
-    public $name="dasd";
     public $validation = array(
         'fname'           => array(
             'length'      => array('validate_between', 1, 30),
@@ -26,7 +25,25 @@ class User extends AppModel
         ),
         'confirmpassword' => array(
             'confirm'     => array('confirm_password'),
-        )
+        ),
+        'new_username'    => array(
+            'exist'       => array('validate_changes', 'username'),
+        ),
+        'new_email'       => array(
+            'exist'       => array('validate_changes', 'email'),
+        ),
+        'company'         => array(
+            'alphachars'  => array('validate_alpha'),
+            'length'      => array('validate_between', 1, 60),
+        ),
+        'division'        => array(
+            'alphachars'  => array('validate_alpha'),
+            'length'      => array('validate_between', 1, 30),
+        ),
+        'specialization'  => array(
+            'alphachars'  => array('validate_alpha'),
+            'length'      => array('validate_between', 1, 30),
+        ),
     );
 
     public function register()
@@ -58,13 +75,13 @@ class User extends AppModel
                 if($value) {
                     return count($db->search('user','username=?',array($value))) == 0;
                 }
-                return false;
             case "email" :
                 if($value) {
                     return count($db->search('user','email=?',array($value))) == 0;
                 }
-                return false;
         }
+
+        return false;
     }
 
     public function isRegistered()
@@ -93,11 +110,10 @@ class User extends AppModel
     public function getProfile()
     {
         $db = DB::conn();
-        $user_info = $db->row("SELECT fname, lname, username, company, division, specialization
+        $user_info = $db->row("SELECT fname, lname, username, company, division, specialization, email
                                FROM user
                                WHERE id = ?", array($this->id));
-
-        if($db->rowCount() != 0) {
+        if($user_info) {
             $this->set($user_info);
         }
     }
@@ -112,8 +128,83 @@ class User extends AppModel
         return Follow::getFollowedThreadByUserId($this->id);
     }
 
-    public function hasThread()
+    public function updateAccount()
     {
+        if(!$this->validate()) {
+            throw new ValidationException;
+        }
+
+        $db = DB::conn();
+        $params = array(
+            'fname' => $this->fname,
+            'lname' => $this->lname,
+            'username' => $this->new_username,
+            'email' => $this->new_email,
+        );
+        $where = array(
+            'id' => $this->id
+        );
+        try {
+            $db->update('user', $params, $where);    
+        } catch (PDOException $e) {
+
+        }
         
     }
+
+    public function updateProfile()
+    {
+        if(!$this->validate()) {
+            throw new ValidationException;
+        }
+
+        $db = DB::conn();
+        $params = array(
+            'company' => $this->company,
+            'division' => $this->division,
+            'specialization' => $this->specialization
+        );
+        $where = array(
+            'id' => $this->id
+        );
+        try {
+            $db->update('user', $params, $where);    
+        } catch (PDOException $e) {
+
+        }
+
+    }
+
+    public function updatePassword()
+    {
+        if(!$this->validate()) {
+            throw new ValidationException;
+        }
+
+        $password = hash_password($this->password);
+
+        $db = DB::conn();
+
+        $params = array(
+            'password' => $password['hash'],
+            'salt' => $password['salt'],
+        );
+
+        $where = array(
+            'id' => $this->id
+        );
+
+        try {
+            $db->update('user', $params, $where);    
+        } catch (PDOException $e) {
+
+        }
+    }
+
+    public static function getUsernameEmailById($user_id)
+    {
+        $db = DB::conn();
+        return $db->row("SELECT username, email from user WHERE id = ?", array($user_id));
+    }
+
 }

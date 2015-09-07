@@ -28,8 +28,6 @@
             <div class="collapse navbar-collapse navbar-right" id="buttontoggle">
               <ul class="nav navbar-nav">
                 <?php if(isset($page) && (!preg_match('/(registration)|^(login)$/',$page))): ?>
-                  <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('thread/index')) : "" ?>">Home</a>
-                  <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('user/profile',array('user_id' => $_SESSION['userid']))) : "" ?>">Profile</a>
                   <?php redirect_to_login() ?>
                 <?php endif ?>
 
@@ -38,15 +36,17 @@
                 <?php endif ?>
 
                 <?php if(isset($_SESSION['username'])): ?>
+                                    <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('thread/index')) : "" ?>">Home</a>
+                  <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('user/profile',array('user_id' => $_SESSION['userid']))) : "" ?>">Profile</a>
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['username'] ?><span class="caret"></span></a>
                     <ul class="dropdown-menu">
-                      <li><a href="#">Edit profile</a></li>
+                      <li><a href="<?php encode_quotes(url('user/edit')) ?>">Edit profile</a></li>
                       <li><a href="<?php encode_quotes(url('user/logout')) ?>">Logout</a></li> 
                     </ul>
                   </li>
                 <?php endif ?>
-            </ul>
+              </ul>
             </div>
 
           </div>

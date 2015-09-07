@@ -69,14 +69,14 @@
         <?php endif ?>
         
         <?php foreach($threads_followed as $thread): ?>
-          <div class="row showfooter">
+          <div class="row">
             <div class="col-xs-12 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <p class="smallsize"> <?php echo "{$thread->username}"?></p>
                         <p class="smallersize"><?php echo readable_text(date("l, F d, Y h:i a", strtotime($thread->created))); ?></p>
                     </div>
-                    <div class="panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
+                    <div class="panel-body showfooter" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
                         <p><?php encode_quotes($thread->title) ?> </p>
                     </div>
                     <div class="panel-footer">
@@ -115,21 +115,21 @@
       <?php endif ?>
 
       <?php foreach($threads_created as $thread): ?>
-        <div class="row showfooter">
+        <div class="row">
             <div class="col-xs-12 col-md-offset-0 col-md-12 col-lg-offset-0 col-lg-12">
                 <div class="panel panel-primary">
                     <div class="panel-heading">
                         <p class="smallsize"> <?php echo "{$thread->username}"?></p>
                         <p class="smallersize"><?php echo readable_text(date("l, F d, Y h:i a", strtotime($thread->created))); ?></p>
                     </div>
-                    <div class="panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
+                    <div class="panel-body showfooter" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
                         <p><?php encode_quotes($thread->title) ?> </p>
                     </div>
                     <div class="panel-footer">
                         <label class="tag"><span class="glyphicon glyphicon-tag"></span> <?php encode_quotes($thread->category_name) ?></label>
                         <?php if($thread->isAuthor()): ?>
                             <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font" > </span> Edit</button>
-                            <div class="modal fade" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                            <div class="modal" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                               <div class="modal-dialog" role="document">
                                 <div class="modal-content">
                                   <div class="modal-header">
@@ -178,7 +178,7 @@
                           Delete
                         </button>
 
-                        <div class="modal fade" id="delete<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal" id="delete<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -198,7 +198,8 @@
                           </div>
                         </div>
                         <?php endif ?>
-      <?php endforeach ?>
-    </div>
-  </div>
-</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    <?php endforeach ?>
