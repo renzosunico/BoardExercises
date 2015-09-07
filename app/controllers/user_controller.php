@@ -145,12 +145,14 @@ class UserController extends AppController
                 $user = new User();
                 $user->id = $_SESSION['userid'];
 
-                //set old password to password property to authenticate user
+                //set username and old password to password
+                //property to authenticate user
                 $user->username = $_SESSION['username'];
                 $user->password = htmlentities(Param::get('oldPassword'));
 
                 if(!$user->isRegistered()) {
                     $user->notAuthorized = true;
+                    break;
                 }
                 //Unset username so it won't be included in validation
                 unset($user->username);
@@ -169,6 +171,7 @@ class UserController extends AppController
                 $user->id = $_SESSION['userid'];
                 break;
         }
+        
         $user->getProfile();
         $this->set(get_defined_vars());
     }
