@@ -104,4 +104,44 @@ class UserController extends AppController
 
         $this->set(get_defined_vars());
     }
+
+    public function edit()
+    {
+        $process = Param::get('process');
+
+        switch($process) {
+            case 'account':
+                unset($user);
+                $user = new User();
+                $user->id = $_SESSION['userid'];
+                $user->fname = Param::get('firstname');
+                $user->lname = Param::get('lastname');
+                $user->new_username = Param::get('username');
+                $user->new_email = Param::get('email');
+                try {
+                    $user->updateAccount();
+                    $user->editSuccess = true;
+                    $user->getProfile();  
+                } catch(ValidationException $e) {
+                    $user->getProfile();
+                }
+                break;
+            case 'profile':
+                break;
+            case 'password':
+                break;
+            default:
+                $user = new User();
+                $user->id = $_SESSION['userid'];
+                $user->getProfile();
+                break;
+        }
+
+        $this->set(get_defined_vars());
+    }
+
+    public function accountSetting()
+    {
+
+    }
 }

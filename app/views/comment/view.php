@@ -82,7 +82,7 @@
                             <h4 class="modal-title" id="title<?php encode_quotes($comment->id) ?>">Edit Comment</h4>
                           </div>
                           <div class="modal-body">
-                            <form action="<?php encode_quotes(url('comment/edit')) ?>">
+                            <form metod="post" action="<?php encode_quotes(url('comment/edit')) ?>">
                                 <div class="form-group">
                                     <label for="comment">Comment:</label>
                                     <textarea type="text" class="form-control" id="comment" name="body"><?php encode_quotes($comment->body); ?></textarea>
