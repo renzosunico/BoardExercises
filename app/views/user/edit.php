@@ -4,7 +4,12 @@
             <div class="alert alert-danger" role="alert">
                 <h4><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <b>Warning</b>
-                </h4>         
+                </h4>
+
+                <?php if(isset($user->notAuthorized)): ?>
+                        Incorrect Password
+                <?php endif; unset($user->notAuthorized) ?>
+
                 <?php if(!empty($user->validation_errors['fname']['length'])): ?>   
                     <div><em>First name</em> must be at least 
                     <?php encode_quotes($user->validation['fname']['length'][1]) ?> to
@@ -82,10 +87,47 @@
                     <div><em>Email address</em> is already associated with other user. 
                     </div>
                 <?php endif ?>
+
+                <?php if(!empty($user->validation_errors['company']['alphachars'])): ?>    
+                    <div><em>Company</em> must contain letters or space only.
+                    </div>
+                <?php endif ?>
+
+                <?php if(!empty($user->validation_errors['company']['length'])): ?>    
+                    <div><em>Company</em> must be at least
+                    <?php encode_quotes($user->validation['company']['length'][1]) ?> to
+                    <?php encode_quotes($user->validation['company']['length'][2]) ?> characters in length.
+                    </div>
+                <?php endif ?>
+
+                <?php if(!empty($user->validation_errors['division']['alphachars'])): ?>    
+                    <div><em>Division</em> must contain letters or space only.
+                    </div>
+                <?php endif ?>
+
+                <?php if(!empty($user->validation_errors['division']['length'])): ?>    
+                    <div><em>Division</em> must be at least
+                    <?php encode_quotes($user->validation['division']['length'][1]) ?> to
+                    <?php encode_quotes($user->validation['division']['length'][2]) ?> characters in length.
+                    </div>
+                <?php endif ?>
+
+                <?php if(!empty($user->validation_errors['specialization']['alphachars'])): ?>    
+                    <div><em>Specialization</em> must contain letters or space only.
+                    </div>
+                <?php endif ?>
+
+                <?php if(!empty($user->validation_errors['specialization']['length'])): ?>    
+                    <div><em>Specialization</em> must be at least
+                    <?php encode_quotes($user->validation['specialization']['length'][1]) ?> to
+                    <?php encode_quotes($user->validation['specialization']['length'][2]) ?> characters in length.
+                    </div>
+                <?php endif ?>
             </div>
         </div>
     </div>
 <?php endif; unset($user->validation_errors) ?>
+
 <?php if(isset($user->editSuccess)): ?>
     <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>
     Account has been updated!</div>
@@ -124,7 +166,7 @@
             <div class="page-header">
               <h1>Personal Information</h1>
             </div>
-            <form method="post" action="user/edit">
+            <form method="post" action="<?php encode_quotes(url('user/edit')) ?>">
                 <div class="form-group">
                     <label for="company">Company: </label>
                     <input name="company" type="text" class="form-control" id="company" placeholder="Company" value="<?php encode_quotes($user->company) ?>">
@@ -137,7 +179,7 @@
                     <label for="specialization">Specialization: </label>
                     <input name="specialization" type="text" class="form-control" id="specialization" placeholder="Specialization" value="<?php encode_quotes($user->specialization) ?>">
                 </div>
-                <input type="hidden" name="process" value="profile"
+                <input type="hidden" name="process" value="profile">
                 <button type="submit" class="btn btn-default">Save</button>
             </form>
         </div>
@@ -147,19 +189,20 @@
             <div class="page-header">
               <h1>Password</h1>
             </div>
-            <form>
+            <form method="post" action="<?php encode_quotes(url('user/edit')) ?>">
                 <div class="form-group">
                     <label for="old">Old Password: </label>
-                    <input type="password" class="form-control" id="old" placeholder="Old Password">
+                    <input name="oldPassword" type="password" class="form-control" id="old" placeholder="Old Password">
                 </div>
                 <div class="form-group">
                     <label for="new">New Password: </label>
-                    <input type="password" class="form-control" id="new" placeholder="New Password">
+                    <input name="password" type="password" class="form-control" id="new" placeholder="New Password">
                 </div>
                 <div class="form-group">
                     <label for="confirm">Confirm Password: </label>
-                    <input type="password" class="form-control" id="confirm" placeholder="Confirm Password">
+                    <input name="confirmPassword" type="password" class="form-control" id="confirm" placeholder="Confirm Password">
                 </div>
+                <input type="hidden" name="process" value="password">
                 <button type="submit" class="btn btn-default">Save</button>
             </form>
         </div>

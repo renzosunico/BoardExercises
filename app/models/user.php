@@ -29,9 +29,21 @@ class User extends AppModel
         'new_username'    => array(
             'exist'       => array('validate_changes', 'username'),
         ),
-        'new_email'    => array(
+        'new_email'       => array(
             'exist'       => array('validate_changes', 'email'),
-        )
+        ),
+        'company'         => array(
+            'alphachars'  => array('validate_alpha'),
+            'length'      => array('validate_between', 1, 60),
+        ),
+        'division'        => array(
+            'alphachars'  => array('validate_alpha'),
+            'length'      => array('validate_between', 1, 30),
+        ),
+        'specialization'  => array(
+            'alphachars'  => array('validate_alpha'),
+            'length'      => array('validate_between', 1, 30),
+        ),
     );
 
     public function register()
@@ -135,9 +147,58 @@ class User extends AppModel
         try {
             $db->update('user', $params, $where);    
         } catch (PDOException $e) {
-            echo $e;
+
         }
         
+    }
+
+    public function updateProfile()
+    {
+        if(!$this->validate()) {
+            throw new ValidationException;
+        }
+
+        $db = DB::conn();
+        $params = array(
+            'company' => $this->company,
+            'division' => $this->division,
+            'specialization' => $this->specialization
+        );
+        $where = array(
+            'id' => $this->id
+        );
+        try {
+            $db->update('user', $params, $where);    
+        } catch (PDOException $e) {
+
+        }
+
+    }
+
+    public function updatePassword()
+    {
+        if(!$this->validate()) {
+            throw new ValidationException;
+        }
+
+        $password = hash_password($this->password);
+
+        $db = DB::conn();
+
+        $params = array(
+            'password' => $password['hash'],
+            'salt' => $password['salt'],
+        );
+
+        $where = array(
+            'id' => $this->id
+        );
+
+        try {
+            $db->update('user', $params, $where);    
+        } catch (PDOException $e) {
+
+        }
     }
 
     public static function getUsernameEmailById($user_id)

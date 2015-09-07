@@ -107,7 +107,7 @@ class UserController extends AppController
 
     public function edit()
     {
-        $process = Param::get('process');
+        $process = Param::get('process', 'edit');
 
         switch($process) {
             case 'account':
@@ -120,28 +120,56 @@ class UserController extends AppController
                 $user->new_email = Param::get('email');
                 try {
                     $user->updateAccount();
-                    $user->editSuccess = true;
-                    $user->getProfile();  
+                    $_SESSION['username'] = $user->new_username;
+                    $user->editSuccess = true; 
                 } catch(ValidationException $e) {
-                    $user->getProfile();
+
                 }
                 break;
             case 'profile':
-                break;
-            case 'password':
-                break;
-            default:
+                unset($user);
                 $user = new User();
                 $user->id = $_SESSION['userid'];
-                $user->getProfile();
+                $user->company = Param::get('company');
+                $user->division = Param::get('division');
+                $user->specialization = Param::get('specialization');
+                try {
+                    $user->updateProfile();
+                    $user->editSuccess = true;
+                } catch(ValidationException $e) {
+
+                }
+                break;
+            case 'password':
+                unset($user);
+                $user = new User();
+                $user->id = $_SESSION['userid'];
+
+                //set old password to password property to authenticate user
+                $user->username = $_SESSION['username'];
+                $user->password = htmlentities(Param::get('oldPassword'));
+
+                if(!$user->isRegistered()) {
+                    $user->notAuthorized = true;
+                }
+                //Unset username so it won't be included in validation
+                unset($user->username);
+                $user->password = htmlentities(Param::get('password'));
+                $user->confirmpassword = htmlentities(Param::get('confirmPassword'));
+
+                try {
+                    $user->updatePassword();
+                    $user->editSuccess = true;
+                } catch (ValidationException $e) {
+
+                }
+                break;
+            case 'edit':
+                $user = new User();
+                $user->id = $_SESSION['userid'];
                 break;
         }
-
+        $user->getProfile();
         $this->set(get_defined_vars());
-    }
-
-    public function accountSetting()
-    {
-
     }
 }
