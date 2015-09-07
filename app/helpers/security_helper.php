@@ -11,11 +11,23 @@ function hash_password($password)
     return $result;
 }
 
-function authorize_user_request($thread_id)
+function authorize_user_request($request_id, $request)
 {
-    $user_id = User::getIdByUsername($_SESSION['username']);
-    $thread_author_id = Thread::getAuthorById($thread_id);
-    if($user_id !== $thread_author_id) {
-        redirect('notfound/pagenotfound');
+    switch ($request) {
+        case 'thread':
+            $thread_author_id = Thread::getAuthorById($request_id);
+            if($_SESSION['userid'] !== $thread_author_id) {
+                redirect('notfound/pagenotfound');
+            }
+            break;
+        case 'comment':
+            $comment_author_id = Comment::getAuthorById($request_id);
+            if($_SESSION['userid'] !== $comment_author_id) {
+                redirect('notfound/pagenotfound');
+            }
+            break;
+        default:
+            redirect('notfound/pagenotfound');
+            break;
     }
 }
