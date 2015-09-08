@@ -33,7 +33,7 @@
                     -->
                     <div class="col-xs-11">
                         <p class="smallsize"> <?php encode_quotes($comment->username)?></p>
-                        <p class="smallersize"><?php encode_quotes(date("l, F d, Y h:i a", strtotime($comment->created))); ?></p>
+                        <?php print_date($comment); ?>
                     </div>
                 </div>
             </div>
