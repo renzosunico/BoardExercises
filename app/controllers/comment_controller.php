@@ -15,7 +15,7 @@ class CommentController extends AppController
         $pagination->checkLastPage($comments);
 
         foreach ($comments as $comment) {
-            $comment->user_id = User::getUsernameById($comment->user_id);
+            $comment->username = User::getUsernameById($comment->user_id);
         }
 
         $total = Comment::countAll();
@@ -51,5 +51,53 @@ class CommentController extends AppController
 
         $this->set(get_defined_vars());
         $this->render($page);
+    }
+
+    public function like()
+    {
+        $thread_id = Param::get('thread_id');
+        $comment_id = Param::get('comment_id');
+        $process = Param::get('process');
+        
+        switch($process) {
+            case 'like':
+                Likes::setLike($comment_id);
+                break;
+            case 'unlike':
+                Likes::unsetLike($comment_id);
+                break;
+            default:
+                redirect('notfound/pagenotfound');
+        }
+
+        redirect('comment/view', array('thread_id' => $thread_id));
+    }
+
+    public function edit()
+    {
+        $thread_id = Param::get('thread_id');
+        $comment = new Comment();
+        $comment->id = Param::get('comment_id');
+        $comment->body = Param::get('body');
+
+        authorize_user_request($comment->id, 'comment');
+
+        try {
+            $comment->edit();
+        } catch(ValidationException $e) {
+            $_SESSION['hasError'] = true;
+        }
+
+        redirect('comment/view', array('thread_id' => $thread_id));
+    }
+
+    public function delete()
+    {
+        $comment_id = Param::get('comment_id');
+        authorize_user_request($comment_id, 'comment');
+        $thread_id = Param::get('thread_id');
+        Comment::delete($comment_id, $thread_id);
+
+        redirect('comment/view', array('thread_id' => $thread_id));
     }
 }

@@ -6,13 +6,20 @@ class ThreadController extends AppController
     public function index()
     {
         $page = Param::get('page', 1);
+        $sort_method = Param::get('sort','created');
         $pagination = new SimplePagination($page, self::MAX_THREADS_PER_PAGE);
 
-        $threads = Thread::getAll($pagination->start_index -1, $pagination->count + 1);
+        $threads = Thread::getAll($pagination->start_index -1, $pagination->count + 1, $sort_method);
         $pagination->checkLastPage($threads);
 
         foreach ($threads as $thread) {
-            $thread->user_id = User::getUsernameById($thread->user_id);
+            $thread->username = User::getUsernameById($thread->user_id);
+        }
+
+        $trending_threads = Thread::getTrending();
+
+        foreach ($trending_threads as &$thread) {
+            $thread['title'] = Thread::getTitleById($thread['thread_id']);
         }
 
 
@@ -58,7 +65,7 @@ class ThreadController extends AppController
     public function edit()
     {
         $thread_id = Param::get('thread_id');
-        authorize_user_request($thread_id);
+        authorize_user_request($thread_id, 'thread');
 
         $thread = new Thread();
         $comment = new Comment();
@@ -81,7 +88,7 @@ class ThreadController extends AppController
     public function delete()
     {
         $thread_id = Param::get('thread_id');
-        authorize_user_request($thread_id);
+        authorize_user_request($thread_id, 'thread');
 
         try {
             Thread::delete($thread_id);
@@ -107,6 +114,13 @@ class ThreadController extends AppController
                 break;
             default:
                 redirect('notfound/pagenotfound');
+        }
+
+        $page = Param::get('page');
+        $user_id = Param::get('user_id');
+
+        if($page) {
+            redirect($page, array('user_id' => $user_id));
         }
 
         redirect('thread/index');

@@ -21,11 +21,13 @@ class Thread extends AppModel
         return new self($row);
     }
 
-    public static function getAll($offset, $limit)
+    public static function getAll($offset, $limit, $order)
     {
         $threads = array();
         $db = DB::conn();
-        $rows = $db->rows("SELECT * FROM thread LIMIT {$offset}, {$limit}");
+        $rows = $db->rows(sprintf("SELECT * FROM thread ORDER BY %s LIMIT %d,%d ",
+                                                        $order, $offset, $limit)
+        );
 
         foreach($rows as $row) {
             $threads[] = new self($row);
@@ -99,24 +101,48 @@ class Thread extends AppModel
 
     public static function delete($thread_id)
     {
-        Comment::delete($thread_id);
+        Comment::deleteAll($thread_id);
         Follow::delete($thread_id);
         $db = DB::conn();
         $db->query("DELETE FROM thread where id = ?", array($thread_id));
     }
 
-    public function isFollowed()
-    {
-        $db = DB::conn();
-        $params = array(
-            $this->id,
-            $_SESSION['userid']
-        );
-        return $db->row("SELECT * FROM follow where thread_id=? AND user_id=?",$params);
-    }
-
     public function isAuthor()
     {
-        return $this->user_id === $_SESSION['username'];
+        return $this->user_id === $_SESSION['userid'];
+    }
+
+    public static function hasThread($user_id)
+    {
+        $db = DB::conn();
+        return $db->rows("SELECT id FROM thread WHERE user_id = ?", array($user_id));
+    }
+
+    public static function getByUserId($user_id)
+    {
+        $db = DB::conn();
+        $threads = array();
+        $rows = $db->rows("SELECT * FROM thread WHERE user_id = ?", array($user_id));
+
+        foreach ($rows as $row) {
+            $threads[] = new self($row);
+        }
+
+        return $threads;
+    }
+
+    public static function getTrending()
+    {
+        $db = DB::conn();
+        return $db->rows("select thread_id, count(*) AS count
+                          FROM comment GROUP BY thread_id
+                          ORDER BY count DESC, created; "
+        );
+    }
+
+    public static function getTitleById($thread_id)
+    {
+        $db = DB::conn();
+        return $db->value("SELECT title from thread WHERE id = ?", array($thread_id));
     }
 }

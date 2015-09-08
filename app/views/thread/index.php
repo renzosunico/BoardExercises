@@ -1,12 +1,3 @@
-<div class="row">
-    <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
-        <div class="well well-small">
-            <a class="btn btn-primary" href="<?php echo url('thread/create') ?>"><span class="glyphicon glyphicon-pencil"></span>
-        Create Thread</a>
-        </div>
-    </div>
-</div>
-
 <?php if(array_key_exists('editHasError', $_SESSION)): ?>
 <div class="row">
     <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
@@ -19,7 +10,26 @@
       unset($_SESSION['editHasError'])?>
 
 <div class="row">
-    <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
+    <div class="col-xs-12  col-md-6 col-lg-7">
+        <div class="well well-small">
+            <div class="row">
+                <div class="col-xs-6">
+                    <a class="btn btn-primary" href="<?php echo url('thread/create') ?>"><span class="glyphicon glyphicon-pencil"></span>
+                    Create Thread</a>
+                </div>
+                <div class="col-xs-offset-3 col-xs-3 col-sm-offset-3 col-sm-3 col-md-offset-3 col-md-3 col-lg-offset-3 col-lg-3">
+                    <div class="dropdown pull-right">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="glyphicon glyphicon-th-list"></span> Sort By 
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="<?php encode_quotes(url('thread/index', array('sort' => "category_name"))) ?>">Category</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
         <?php if(empty($threads)): ?>
             <div class="panel panel-primary">
                 <div class="panel-body">
@@ -27,24 +37,20 @@
                 </div>
             </div>
         <?php endif ?>
-    </div>
-</div>
-
-<?php foreach($threads as $thread): ?>
-    <div class="row showfooter">
-        <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
+        <?php foreach($threads as $thread): ?>
             <div class="panel panel-primary">
                 <div class="panel-heading">
-                    <p class="smallsize"> <?php echo "{$thread->user_id}"?></p>
+                    <p class="smallsize"> <?php echo "{$thread->username}"?></p>
                     <p class="smallersize"><?php echo readable_text(date("l, F d, Y h:i a", strtotime($thread->created))); ?></p>
                 </div>
-                <div class="panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
+                <div class="showfooter panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
                     <p><?php encode_quotes($thread->title) ?> </p>
                 </div>
                 <div class="panel-footer">
+                    <span class="tag label label-default"><span class="glyphicon glyphicon-tag"></span> <?php encode_quotes($thread->category_name) ?></span>
                     <?php if($thread->isAuthor()): ?>
                         <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font" > </span> Edit</button>
-                        <div class="modal fade" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                        <div class="modal" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                           <div class="modal-dialog" role="document">
                             <div class="modal-content">
                               <div class="modal-header">
@@ -93,7 +99,7 @@
                       Delete
                     </button>
 
-                    <div class="modal fade" id="delete<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div class="modal" id="delete<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">
                         <div class="modal-content">
                           <div class="modal-header">
@@ -113,18 +119,35 @@
                       </div>
                     </div>
                     <?php endif ?>
+
                     <?php if(!$thread->isAuthor()): ?>
-                        <?php if(!$thread->isFollowed()): ?>
+                        <?php if(!Follow::isFollowed($thread->id)): ?>
                             <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "follow"))) ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-bookmark"></span> Follow</a>
                         <?php else: ?>
                             <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "unfollow"))) ?>" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-minus-sign"></span> Unfollow</a>
                         <?php endif ?>
                     <?php endif ?>
+                    
                 </div>
             </div>
+        <?php endforeach ?>
+    </div>
+    <div class="col-xs-12  col-md-6 col-lg-5">
+        <div class="well well-large">
+            <div class="page-header">
+              <h1><small>Trending Threads</small></h1>
+            </div>
+            <?php foreach ($trending_threads as $thread): ?>
+                <ul class="list-group">
+                  <li class="list-group-item">
+                    <span class="badge"><?php encode_quotes($thread['count']) ?></span>
+                    <?php echo $thread['title'] ?>
+                  </li>
+                </ul>
+            <?php endforeach ?>
         </div>
     </div>
-<?php endforeach ?>
+</div>
 
 <?php if($pages > 1): ?>
     <div class="row">

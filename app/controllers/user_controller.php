@@ -74,4 +74,102 @@ class UserController extends AppController
         session_destroy();
         redirect('user/login');
     }
+
+    public function profile()
+    {
+        $user = new User();
+        $user->id = Param::get('user_id');
+        $user->getProfile();
+
+        if(!isset($user->username)) {
+            redirect('notfound/pagenotfound');
+        }
+
+        $threads_followed = array();
+        $thread_followed_id = Follow::getFollowedThreadIds($user->id);
+
+        foreach($thread_followed_id as $thread) {
+            $threads_followed[] = Thread::getById($thread['thread_id']);
+        }
+
+        foreach ($threads_followed as $thread) {
+            $thread->username = User::getUsernameById($thread->user_id);
+        }
+
+        $threads_created = Thread::getByUserId($user->id);
+
+        foreach ($threads_created as $thread) {
+            $thread->username = User::getUsernameById($thread->user_id);
+        }
+
+        $this->set(get_defined_vars());
+    }
+
+    public function edit()
+    {
+        $process = Param::get('process', 'edit');
+
+        switch($process) {
+            case 'account':
+                unset($user);
+                $user = new User();
+                $user->id = $_SESSION['userid'];
+                $user->fname = Param::get('firstname');
+                $user->lname = Param::get('lastname');
+                $user->new_username = Param::get('username');
+                $user->new_email = Param::get('email');
+                try {
+                    $user->updateAccount();
+                    $_SESSION['username'] = $user->new_username;
+                    $user->editSuccess = true; 
+                } catch(ValidationException $e) {
+
+                }
+                break;
+            case 'profile':
+                unset($user);
+                $user = new User();
+                $user->id = $_SESSION['userid'];
+                $user->company = Param::get('company');
+                $user->division = Param::get('division');
+                $user->specialization = Param::get('specialization');
+                try {
+                    $user->updateProfile();
+                    $user->editSuccess = true;
+                } catch(ValidationException $e) {
+
+                }
+                break;
+            case 'password':
+                unset($user);
+                $user = new User();
+                $user->id = $_SESSION['userid'];
+
+                //set old password to password property to authenticate user
+                $user->username = $_SESSION['username'];
+                $user->password = htmlentities(Param::get('oldPassword'));
+
+                if(!$user->isRegistered()) {
+                    $user->notAuthorized = true;
+                }
+                //Unset username so it won't be included in validation
+                unset($user->username);
+                $user->password = htmlentities(Param::get('password'));
+                $user->confirmpassword = htmlentities(Param::get('confirmPassword'));
+
+                try {
+                    $user->updatePassword();
+                    $user->editSuccess = true;
+                } catch (ValidationException $e) {
+
+                }
+                break;
+            case 'edit':
+                $user = new User();
+                $user->id = $_SESSION['userid'];
+                break;
+        }
+        $user->getProfile();
+        $this->set(get_defined_vars());
+    }
 }
