@@ -1,6 +1,6 @@
-<?php if($user->hasError()): ?>
-    <div class="row">
-        <div class="col-xs-12">
+<div class="row">
+    <div class="col-xs-12">
+        <?php if($user->hasError() || isset($user->notAuthorized)): ?>
             <div class="alert alert-danger" role="alert">
                 <h4><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <b>Warning</b>
@@ -124,9 +124,9 @@
                     </div>
                 <?php endif ?>
             </div>
-        </div>
+        <?php endif; unset($user->validation_errors) ?>
     </div>
-<?php endif; unset($user->validation_errors) ?>
+</div>
 
 <?php if(isset($user->editSuccess)): ?>
     <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>

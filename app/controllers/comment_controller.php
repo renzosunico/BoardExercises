@@ -6,6 +6,7 @@ class CommentController extends AppController
     public function view()
     {
         $thread = Thread::getById(Param::get('thread_id'));
+        $sort = Param::get('sort', 'created');
         $comment = new Comment();
 
         $page = Param::get('page', 1);
@@ -14,8 +15,15 @@ class CommentController extends AppController
         $comments = $comment->getAll($pagination->start_index-1, $pagination->count+1, $thread->id);
         $pagination->checkLastPage($comments);
 
-        foreach ($comments as $comment) {
+        foreach ($comments as &$comment) {
             $comment->username = User::getUsernameById($comment->user_id);
+            $comment->likecount = Likes::countLike($comment->id);
+        }
+
+        if($sort === 'comment') {
+            usort($comments, function($a , $b) {
+                return $b->likecount - $a->likecount;
+            });
         }
 
         $total = Comment::countAll();
@@ -61,7 +69,7 @@ class CommentController extends AppController
         
         switch($process) {
             case 'like':
-                Likes::setLike($comment_id);
+                Likes::setLike($comment_id, $thread_id);
                 break;
             case 'unlike':
                 Likes::unsetLike($comment_id);
