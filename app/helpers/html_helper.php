@@ -49,7 +49,8 @@ function get_welcome_message()
 
 function get_thread_comment($thread_id)
 {
-    echo Comment::getByThreadId($thread_id);
+    $comment = Comment::getByThreadId($thread_id);
+    echo $comment['body'];
 }
 
 function print_date($object)

@@ -13,8 +13,9 @@ class Comment extends AppModel
     {
         $comments = array();
         $db = DB::conn();
-
-        $fetch_query = "SELECT * FROM comment WHERE thread_id = ? ORDER BY created LIMIT {$offset},{$limit}";
+        $fetch_query = sprintf(
+            "SELECT * FROM comment WHERE thread_id = ?
+            ORDER BY created LIMIT %d, %d", $offset, $limit);
         $rows = $db->rows($fetch_query, array($thread_id));
 
         foreach ($rows as $row) {
@@ -50,8 +51,8 @@ class Comment extends AppModel
     public static function getByThreadId($thread_id)
     {
         $db = DB::conn();
-        return $db->value(
-            sprintf("SELECT body FROM comment WHERE thread_id=%d LIMIT %d", $thread_id, self::FIRST_COMMENT)
+        return $db->row(
+            sprintf("SELECT * FROM comment WHERE thread_id=%d LIMIT %d", $thread_id, self::FIRST_COMMENT)
         );
     }
 
