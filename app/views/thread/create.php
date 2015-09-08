@@ -24,7 +24,7 @@
                 </div>
             <?php endif ?>
 
-            <?php if(!empty($comment->validation_errors['category']['content'])): ?>
+            <?php if(!empty($thread->validation_errors['category']['content'])): ?>
                 <div>
                     <em>Category</em> is required.
                 </div>

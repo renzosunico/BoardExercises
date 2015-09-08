@@ -1,4 +1,41 @@
-<?php if(array_key_exists('editHasError', $_SESSION)): ?>
+<?php 
+    if(isset($_SESSION['old_thread'])) {
+        $old_thread = new Thread($_SESSION['old_thread']); 
+    }
+    if(isset($_SESSION['old_comment'])) {
+        $old_comment = new Comment($_SESSION['old_comment']);
+    }
+?>
+
+<?php if((isset($old_thread) && $old_thread->hasError()) || (isset($old_comment) && $old_comment->hasError())): ?>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Validation Error!</h4>
+            <?php if (!empty($old_thread->validation_errors['title']['length'])): ?>
+                <div><em>Title</em> must be between
+                    <?php encode_quotes($old_thread->validation['title']['length'][1]) ?> and
+                    <?php encode_quotes($old_thread->validation['title']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+            <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
+                <div><em>Comment</em> must be between
+                    <?php encode_quotes($old_comment->validation['body']['length'][1]) ?> and
+                    <?php encode_quotes($old_comment->validation['body']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+
+            <?php if(!empty($old_thread->validation_errors['category']['content'])): ?>
+                <div>
+                    <em>Category</em> is required.
+                </div>
+            <?php endif ?>
+        </div>
+      </div>
+    </div>
+<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread'])?>
+
+<?php if(array_key_exists('deleteHasError', $_SESSION)): ?>
 <div class="row">
     <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
         <div class="alert alert-danger">
@@ -7,7 +44,7 @@
     </div>
 </div>
 <?php endif;
-      unset($_SESSION['editHasError'])?>
+      unset($_SESSION['deleteHasError'])?>
 
 <div class="row">
     <div class="col-xs-12  col-md-6 col-lg-7">
@@ -39,10 +76,12 @@
         <?php endif ?>
         <?php foreach($threads as $thread): ?>
             <div class="panel panel-primary">
-                    <div class="panel-heading" onclick="location.href='<?php encode_quotes(url('user/profile', array('user_id' => $thread->user_id))) ?>'" style="cursor:pointer;">
-                        <p class="smallsize"> <?php echo "{$thread->username}"?></p>
-                        <p class="smallersize"><?php echo readable_text(date("l, F d, Y h:i a", strtotime($thread->created))); ?></p>
-                    </div>
+
+                <div class="panel-heading">
+                    <p class="smallsize"> <?php echo "{$thread->username}"?></p>
+                    <?php print_date($thread) ?>
+                </div>
+
                 <div class="showfooter panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
                     <p><?php encode_quotes($thread->title) ?> </p>
                 </div>
