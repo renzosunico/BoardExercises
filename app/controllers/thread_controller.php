@@ -9,7 +9,7 @@ class ThreadController extends AppController
         $sort_method = Param::get('sort','created');
         $pagination = new SimplePagination($page, self::MAX_THREADS_PER_PAGE);
 
-        $threads = Thread::getAll($pagination->start_index -1, $pagination->count + 1, $sort_method);
+        $threads = Thread::getAll($pagination->start_index - 1, $pagination->count + 1, $sort_method);
         $pagination->checkLastPage($threads);
 
         foreach ($threads as $thread) {
@@ -79,7 +79,14 @@ class ThreadController extends AppController
         try {
             $thread->edit($comment);
         } catch (ValidationException $e) {
-            $_SESSION['editHasError'] = true;
+            $_SESSION['old_thread'] = (array)$thread;
+            $_SESSION['old_comment'] = (array)$comment;
+        }
+
+        $page_to_go = Param::get('page');
+
+        if($page_to_go == "profile") {
+            redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
         redirect('thread/index');
@@ -94,7 +101,12 @@ class ThreadController extends AppController
             Thread::delete($thread_id);
         } catch (PDOException $e) {
             $_SESSION['deleteHasError'] = true;
-            echo $e; die();
+        }
+
+        $page_to_go = Param::get('page');
+
+        if($page_to_go == "profile") {
+            redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
         redirect('thread/index');

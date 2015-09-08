@@ -1,16 +1,18 @@
 <?php
 class Thread extends AppModel
 {
+    CONST TREND_LIMIT = 10;
+    CONST MIN_TITLE_LENGTH = 1;
+    CONST MAX_TITLE_LENGTH = 30;
+
     public $validation  =  array(
         'title'         => array(
-            'length'    => array('validate_between', 1, 30,),
+            'length'    => array('validate_between', self::MIN_TITLE_LENGTH, self::MAX_TITLE_LENGTH),
         ),
         'category'      => array(
             'content'   => array('validate_content'),
         ),
     );
-
-    CONST TREND_LIMIT = 10;
     
     public static function getById($id)
     {
