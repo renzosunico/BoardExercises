@@ -20,6 +20,25 @@
         <?php endif ?>
     </div>
 </div>
+<div class="row">
+    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+        <div class="well well-large">
+            <div class="row">
+                <div class="col-xs-12">
+                    <div class="dropdown pull-right">
+                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                        <span class="glyphicon glyphicon-th-list"></span> Sort By 
+                        <span class="caret"></span>
+                      </button>
+                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                        <li><a href="<?php encode_quotes(url('comment/view', array('sort' => "comment", 'thread_id' => $thread->id))) ?>"> <span class="glyphicon glyphicon-sort-by-order-alt"></span> Comment</a></li>
+                      </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <?php foreach($comments as $comment): ?>
 <div class="row">
     <div class="colxs-12 col-sm-12 col-md-12 col-lg-12">
