@@ -1,5 +1,42 @@
+<?php 
+    if(isset($_SESSION['old_thread'])) {
+        $old_thread = new Thread($_SESSION['old_thread']); 
+    }
+    if(isset($_SESSION['old_comment'])) {
+        $old_comment = new Comment($_SESSION['old_comment']);
+    }
+?>
+
+<?php if((isset($old_thread) && $old_thread->hasError()) || (isset($old_comment) && $old_comment->hasError())): ?>
+    <div class="row">
+      <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8s">
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Validation Error!</h4>
+            <?php if (!empty($old_thread->validation_errors['title']['length'])): ?>
+                <div><em>Title</em> must be between
+                    <?php encode_quotes($old_thread->validation['title']['length'][1]) ?> and
+                    <?php encode_quotes($old_thread->validation['title']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+            <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
+                <div><em>Comment</em> must be between
+                    <?php encode_quotes($old_comment->validation['body']['length'][1]) ?> and
+                    <?php encode_quotes($old_comment->validation['body']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+
+            <?php if(!empty($old_thread->validation_errors['category']['content'])): ?>
+                <div>
+                    <em>Category</em> is required.
+                </div>
+            <?php endif ?>
+        </div>
+      </div>
+    </div>
+<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread']); ?>
+
 <div class="row">
-    <div class="col-xs-12 col-md-offset-0 col-md-8 col-lg-offset-0 col-lg-8">
+    <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
         <div class="well well-large">
             <div class="row">
                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
@@ -53,7 +90,7 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-12 col-md-offset-0 col-md-8 col-lg-offset-0 col-lg-8">
+    <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
       <div class="well well-large">
         <div class="page-header">
           <?php if($user->isUser()): ?>
@@ -94,7 +131,7 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-md-offset-0 col-md-8 col-lg-offset-0 col-lg-8">
+  <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
     <div class="well well-large">
       <div class="page-header">
         <?php if($user->isUser()): ?>
