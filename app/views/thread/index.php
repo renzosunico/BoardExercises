@@ -35,7 +35,7 @@
     </div>
 <?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread'])?>
 
-<?php if(array_key_exists('editHasError', $_SESSION)): ?>
+<?php if(array_key_exists('deleteHasError', $_SESSION)): ?>
 <div class="row">
     <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
         <div class="alert alert-danger">
@@ -44,7 +44,7 @@
     </div>
 </div>
 <?php endif;
-      unset($_SESSION['editHasError'])?>
+      unset($_SESSION['deleteHasError'])?>
 
 <div class="row">
     <div class="col-xs-12  col-md-6 col-lg-7">

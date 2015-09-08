@@ -83,6 +83,12 @@ class ThreadController extends AppController
             $_SESSION['old_comment'] = (array)$comment;
         }
 
+        $page_to_go = Param::get('page');
+
+        if($page_to_go == "profile") {
+            redirect('user/profile', array("user_id" => $_SESSION['userid']));
+        }
+
         redirect('thread/index');
     }
 
@@ -95,6 +101,12 @@ class ThreadController extends AppController
             Thread::delete($thread_id);
         } catch (PDOException $e) {
             $_SESSION['deleteHasError'] = true;
+        }
+
+        $page_to_go = Param::get('page');
+
+        if($page_to_go == "profile") {
+            redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
         redirect('thread/index');
