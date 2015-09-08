@@ -41,7 +41,7 @@
             <div class="panel panel-primary">
                 <div class="panel-heading">
                     <p class="smallsize"> <?php echo "{$thread->username}"?></p>
-                    <p class="smallersize"><?php echo readable_text(date("l, F d, Y h:i a", strtotime($thread->created))); ?></p>
+                    <?php print_date($thread) ?>
                 </div>
                 <div class="showfooter panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
                     <p><?php encode_quotes($thread->title) ?> </p>

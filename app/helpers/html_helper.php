@@ -51,3 +51,20 @@ function get_thread_comment($thread_id)
 {
     echo Comment::getByThreadId($thread_id);
 }
+
+function print_date($object)
+{
+    if($object instanceof Thread || $object instanceof Comment) {
+        $date_string = "<p class=\"smallersize\">";
+        //add date created
+        $date_string .= " Created: " . date("l, F d, Y", strtotime($object->created));
+
+        if($object->last_modified != "0000-00-00 00:00:00") {
+            $date_string .= " Last Modified: " . date("l, F d, Y", strtotime($object->last_modified));
+        }
+
+        $date_string .= "</p>";
+
+        echo $date_string;
+    }
+}
