@@ -160,6 +160,7 @@
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-primary">Save changes</button>
                                     <input type="hidden" name="thread_id" value="<?php encode_quotes($thread->id) ?>">
+                                    <input type="hidden" name="page" value="profile">
                                 </div>
                             </form>
                           </div>
@@ -186,7 +187,7 @@
                       <div class="modal-footer">
                         <input type="hidden" name="page_next" value="delete_end">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-danger" href="<?php encode_quotes(url('thread/delete', array('thread_id' => $thread->id))) ?>">Delete</a>
+                        <a class="btn btn-danger" href="<?php encode_quotes(url('thread/delete', array('thread_id' => $thread->id, 'page' => 'profile'))) ?>">Delete</a>
                       </div>
                       </div>
                     </div>
