@@ -6,8 +6,8 @@
     <title>My Classroom</title>
     <link href="/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/bootstrap/css/customized.css" rel="stylesheet">
-    <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
-    <link href='https://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Candal' rel='stylesheet' type='text/css'>
+    <link href='https://fonts.googleapis.com/css?family=Droid+Sans' rel='stylesheet' type='text/css'>
   </head>
 
   <body>
@@ -16,7 +16,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
           <div class="container-fluid">
             <div class="navbar-header">
-              <a class="navbar-brand" href="#"><font style="font-family: 'Roboto Condensed', sans-serif;">My Classroom</font></a>
+              <a class="navbar-brand" href="#">My Classroom</a>
                   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#buttontoggle" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
@@ -36,11 +36,11 @@
                 <?php endif ?>
 
                 <?php if(isset($_SESSION['username'])): ?>
-                                    <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('thread/index')) : "" ?>">Home</a>
+                  <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('thread/index')) : "" ?>">Home</a>
                   <li> <a href="<?php echo isset($_SESSION['username']) ? encode_quotes(url('user/profile',array('user_id' => $_SESSION['userid']))) : "" ?>">Profile</a>
                   <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><?php echo $_SESSION['username'] ?><span class="caret"></span></a>
-                    <ul class="dropdown-menu">
+                    <ul id="nav-dropdown" class="dropdown-menu">
                       <li><a href="<?php encode_quotes(url('user/edit')) ?>">Edit profile</a></li>
                       <li><a href="<?php encode_quotes(url('user/logout')) ?>">Logout</a></li> 
                     </ul>

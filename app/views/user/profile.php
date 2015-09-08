@@ -1,5 +1,42 @@
+<?php 
+    if(isset($_SESSION['old_thread'])) {
+        $old_thread = new Thread($_SESSION['old_thread']); 
+    }
+    if(isset($_SESSION['old_comment'])) {
+        $old_comment = new Comment($_SESSION['old_comment']);
+    }
+?>
+
+<?php if((isset($old_thread) && $old_thread->hasError()) || (isset($old_comment) && $old_comment->hasError())): ?>
+    <div class="row">
+      <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8s">
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Validation Error!</h4>
+            <?php if (!empty($old_thread->validation_errors['title']['length'])): ?>
+                <div><em>Title</em> must be between
+                    <?php encode_quotes($old_thread->validation['title']['length'][1]) ?> and
+                    <?php encode_quotes($old_thread->validation['title']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+            <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
+                <div><em>Comment</em> must be between
+                    <?php encode_quotes($old_comment->validation['body']['length'][1]) ?> and
+                    <?php encode_quotes($old_comment->validation['body']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+
+            <?php if(!empty($old_thread->validation_errors['category']['content'])): ?>
+                <div>
+                    <em>Category</em> is required.
+                </div>
+            <?php endif ?>
+        </div>
+      </div>
+    </div>
+<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_comment']); ?>
+
 <div class="row">
-    <div class="col-xs-12 col-md-offset-0 col-md-8 col-lg-offset-0 col-lg-8">
+    <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
         <div class="well well-large">
             <div class="row">
                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
@@ -53,7 +90,7 @@
 </div>
 
 <div class="row">
-    <div class="col-xs-12 col-md-offset-0 col-md-8 col-lg-offset-0 col-lg-8">
+    <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
       <div class="well well-large">
         <div class="page-header">
           <?php if($user->isUser()): ?>
@@ -62,13 +99,12 @@
               <h1>Threads<small> <?php encode_quotes($user->fname) ?> is following:</small></h1>
           <?php endif ?>
         </div>
+        <?php if($user->isUser() && !$user->hasThreadFollowed()): ?>
+          <h4>You are not following any threads. </h1>
+        <?php elseif(!$user->isUser() && !$user->hasThreadFollowed()): ?>
+          <h4><?php encode_quotes($user->fname) ?> is not following any threads.</h4>
+        <?php endif ?>
       </div>
-      <?php if($user->isUser() && !$user->hasThreadFollowed()): ?>
-        <h4>You are not following any threads. </h1>
-      <?php elseif(!$user->isUser() && !$user->hasThreadFollowed()): ?>
-        <h4><?php encode_quotes($user->fname) ?> is not following any threads.</h4>
-      <?php endif ?>
-
       <?php foreach($threads_followed as $thread): ?>
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -94,7 +130,7 @@
 </div>
 
 <div class="row">
-  <div class="col-xs-12 col-md-offset-0 col-md-8 col-lg-offset-0 col-lg-8">
+  <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
     <div class="well well-large">
       <div class="page-header">
         <?php if($user->isUser()): ?>
@@ -103,14 +139,13 @@
           <h1>Threads<small> <?php encode_quotes($user->fname) ?> has created:</small></h1>
         <?php endif ?>
       </div>
-    </div>
-
       <?php if($user->isUser() && !Thread::hasThread($user->id)): ?>
         <h4>You do not have any threads. </h4>
       <?php elseif(!$user->isUser() && !Thread::hasThread($user->id)): ?>
         <h4><?php encode_quotes($user->fname) ?> has no threads yet. </h4>
       <?php endif ?>
-
+    </div>
+    
       <?php foreach($threads_created as $thread): ?>
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -160,6 +195,7 @@
                                     <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
                                     <button type="submit" class="btn btn-primary">Save changes</button>
                                     <input type="hidden" name="thread_id" value="<?php encode_quotes($thread->id) ?>">
+                                    <input type="hidden" name="page" value="profile">
                                 </div>
                             </form>
                           </div>
@@ -186,7 +222,7 @@
                       <div class="modal-footer">
                         <input type="hidden" name="page_next" value="delete_end">
                         <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-danger" href="<?php encode_quotes(url('thread/delete', array('thread_id' => $thread->id))) ?>">Delete</a>
+                        <a class="btn btn-danger" href="<?php encode_quotes(url('thread/delete', array('thread_id' => $thread->id, 'page' => 'profile'))) ?>">Delete</a>
                       </div>
                       </div>
                     </div>

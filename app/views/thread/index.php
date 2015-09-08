@@ -39,7 +39,7 @@
 <div class="row">
     <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
         <div class="alert alert-danger">
-            <strong>Edit</strong> was uncessful.
+            <strong>Delete</strong> was unsuccessful.
         </div>
     </div>
 </div>

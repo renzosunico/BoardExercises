@@ -77,12 +77,6 @@ class Comment extends AppModel
         );
     }
 
-    public static function deleteAll($thread_id)
-    {
-        $db = DB::conn();
-        $db->query("DELETE FROM comment where thread_id = ?", array($thread_id));
-    }
-
     public function isAuthor()
     {
         $db = DB::conn();
