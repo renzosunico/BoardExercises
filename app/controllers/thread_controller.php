@@ -79,7 +79,8 @@ class ThreadController extends AppController
         try {
             $thread->edit($comment);
         } catch (ValidationException $e) {
-            $_SESSION['editHasError'] = true;
+            $_SESSION['old_thread'] = (array)$thread;
+            $_SESSION['old_comment'] = (array)$comment;
         }
 
         redirect('thread/index');
@@ -94,7 +95,6 @@ class ThreadController extends AppController
             Thread::delete($thread_id);
         } catch (PDOException $e) {
             $_SESSION['deleteHasError'] = true;
-            echo $e; die();
         }
 
         redirect('thread/index');
