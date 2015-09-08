@@ -9,6 +9,8 @@ class Thread extends AppModel
             'content'   => array('validate_content'),
         ),
     );
+
+    CONST TREND_LIMIT = 10;
     
     public static function getById($id)
     {
@@ -134,9 +136,10 @@ class Thread extends AppModel
     public static function getTrending()
     {
         $db = DB::conn();
-        return $db->rows("select thread_id, count(*) AS count
-                          FROM comment GROUP BY thread_id
-                          ORDER BY count DESC, created; "
+        return $db->rows(
+            sprintf("select thread_id, count(*) AS count
+            FROM comment GROUP BY thread_id
+            ORDER BY count DESC, created LIMIT %d", self::TREND_LIMIT)
         );
     }
 
