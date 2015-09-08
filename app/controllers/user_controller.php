@@ -137,7 +137,6 @@ class UserController extends AppController
                     $user->updateProfile();
                     $user->editSuccess = true;
                 } catch(ValidationException $e) {
-
                 }
                 break;
             case 'password':
@@ -151,7 +150,7 @@ class UserController extends AppController
                 $user->password = htmlentities(Param::get('oldPassword'));
 
                 if(!$user->isRegistered()) {
-                    $user->notAuthorized = true;
+                    $user->validation_errors['notAuthorized']['authenticate'] = true;
                     break;
                 }
                 //Unset username so it won't be included in validation

@@ -1,14 +1,14 @@
 <div class="row">
     <div class="col-xs-12">
-        <?php if($user->hasError() || isset($user->notAuthorized)): ?>
+        <?php if($user->hasError()): ?>
             <div class="alert alert-danger" role="alert">
                 <h4><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <b>Warning</b>
                 </h4>
 
-                <?php if(isset($user->notAuthorized)): ?>
+                <?php if(!empty($user->validation_errors['notAuthorized']['authenticate'])): ?>   
                         Incorrect Password
-                <?php endif; unset($user->notAuthorized) ?>
+                <?php endif ?>
 
                 <?php if(!empty($user->validation_errors['fname']['length'])): ?>   
                     <div><em>First name</em> must be at least 
