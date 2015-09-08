@@ -69,7 +69,7 @@ class CommentController extends AppController
         
         switch($process) {
             case 'like':
-                Likes::setLike($comment_id, $thread_id);
+                Likes::setLike($comment_id);
                 break;
             case 'unlike':
                 Likes::unsetLike($comment_id);
