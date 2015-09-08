@@ -1,12 +1,6 @@
 <?php
 class Follow extends AppModel
 {
-    public static function delete($thread_id)
-    {
-        $db = DB::conn();
-        $db->query("DELETE FROM follow where id = ?", array($thread_id));
-    }
-
     public static function unsetFollow($thread_id, $user_id)
     {
         $db = DB::conn();

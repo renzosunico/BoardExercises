@@ -105,8 +105,6 @@ class Thread extends AppModel
 
     public static function delete($thread_id)
     {
-        Comment::deleteAll($thread_id);
-        Follow::delete($thread_id);
         $db = DB::conn();
         $db->query("DELETE FROM thread where id = ?", array($thread_id));
     }

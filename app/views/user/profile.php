@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread']); ?>
+<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_comment']); ?>
 
 <div class="row">
     <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
@@ -99,13 +99,12 @@
               <h1>Threads<small> <?php encode_quotes($user->fname) ?> is following:</small></h1>
           <?php endif ?>
         </div>
+        <?php if($user->isUser() && !$user->hasThreadFollowed()): ?>
+          <h4>You are not following any threads. </h1>
+        <?php elseif(!$user->isUser() && !$user->hasThreadFollowed()): ?>
+          <h4><?php encode_quotes($user->fname) ?> is not following any threads.</h4>
+        <?php endif ?>
       </div>
-      <?php if($user->isUser() && !$user->hasThreadFollowed()): ?>
-        <h4>You are not following any threads. </h1>
-      <?php elseif(!$user->isUser() && !$user->hasThreadFollowed()): ?>
-        <h4><?php encode_quotes($user->fname) ?> is not following any threads.</h4>
-      <?php endif ?>
-
       <?php foreach($threads_followed as $thread): ?>
         <div class="panel panel-primary">
             <div class="panel-heading">
@@ -140,14 +139,13 @@
           <h1>Threads<small> <?php encode_quotes($user->fname) ?> has created:</small></h1>
         <?php endif ?>
       </div>
-    </div>
-
       <?php if($user->isUser() && !Thread::hasThread($user->id)): ?>
         <h4>You do not have any threads. </h4>
       <?php elseif(!$user->isUser() && !Thread::hasThread($user->id)): ?>
         <h4><?php encode_quotes($user->fname) ?> has no threads yet. </h4>
       <?php endif ?>
-
+    </div>
+    
       <?php foreach($threads_created as $thread): ?>
         <div class="panel panel-primary">
             <div class="panel-heading">
