@@ -39,10 +39,12 @@
         <?php endif ?>
         <?php foreach($threads as $thread): ?>
             <div class="panel panel-primary">
+
                 <div class="panel-heading">
                     <p class="smallsize"> <?php echo "{$thread->username}"?></p>
                     <?php print_date($thread) ?>
                 </div>
+
                 <div class="showfooter panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
                     <p><?php encode_quotes($thread->title) ?> </p>
                 </div>
