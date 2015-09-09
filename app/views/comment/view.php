@@ -3,42 +3,103 @@
         <h1 class="title"><?php encode_quotes($thread->title) ?></h1>
     </div>
 </div>
-<div class="row">
-    <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <?php if(array_key_exists('hasError', $_SESSION) && $_SESSION['hasError']): ?>
-        <div class="alert alert-danger">
-            <h4 class="alert-heading">Validation error!</h4>
-                <div><em>Comment</em> must be between
-                <?php encode_quotes($comment->validation['body']['length'][1]) ?>
-                and
-                <?php encode_quotes($comment->validation['body']['length'][2]) ?>
-                characters in length.
-                </div>
-            <?php unset($_SESSION['hasError']) ?>
 
+<?php 
+    if(isset($_SESSION['old_comment'])) {
+        $old_comment = new Comment($_SESSION['old_comment']);
+    }
+?>
+
+<?php if(isset($old_comment) && $old_comment->hasError()): ?>
+    <div class="row">
+      <div class="col-xs-12">
+        <div class="alert alert-danger">
+            <h4 class="alert-heading">Warning!</h4>
+            <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
+                <div><em>Comment</em> must be between
+                    <?php encode_quotes($old_comment->validation['body']['length'][1]) ?> and
+                    <?php encode_quotes($old_comment->validation['body']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
         </div>
-        <?php endif ?>
+      </div>
     </div>
-</div>
+<?php endif; unset($_SESSION['old_comment']); ?>
+
+<?php
+    if(isset($_SESSION['delete_error'])): 
+        unset($_SESSION['delete_error']); ?>
+        <div class="row">
+          <div class="col-xs-12">
+            <div class="alert alert-danger">
+                <h4 class="alert-heading">Warning!</h4>
+                <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
+                    <div>
+                        Failed to delete comment. Please try again later.
+                    </div>
+                <?php endif ?>
+            </div>
+          </div>
+        </div>
+<?php endif ?>
+
+
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <div class="well well-large">
             <div class="row">
-                <div class="col-xs-12">
-                    <div class="dropdown pull-right">
-                      <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                        <span class="glyphicon glyphicon-th-list"></span> Sort By 
-                        <span class="caret"></span>
-                      </button>
-                      <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                        <li><a href="<?php encode_quotes(url('comment/view', array('sort' => "comment", 'thread_id' => $thread->id))) ?>"> <span class="glyphicon glyphicon-sort-by-order-alt"></span> Comment</a></li>
-                      </ul>
-                    </div>
+                <div class="col-xs-2 text-left">
+                    <a href="<?php encode_quotes(url('thread/index')) ?>" class="btn btn-default">Back to Threads</a>
+                </div>
+                <div class="col-xs-offset-4 col-xs-6 text-right">
+                    <form action="<?php encode_quotes(url('comment/view')) ?>" class="form-inline">
+                        <div class="form-group">
+                            <div class="input-group">
+                                <span class="input-group-addon glyphicon glyphicon-user" id="basic-addon1"></span>
+                                <input type="text" name="username" value="<?php encode_quotes($filter_username) ?>" class="form-control" placeholder="Username" aria-describedby="basic-addon1">
+                            </div>
+                        </div>
+                        <input type="hidden" name="thread_id" value="<?php encode_quotes($thread->id) ?>">
+                        <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-filter"></span>  Filter</button>
+                        <?php if(!empty($filter_username)): ?>
+                            <div class="form-group">
+                                <a class="btn btn-default" href="<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>">
+                                    <span class="glyphicon glyphicon-scissors"></span> Unfilter
+                                </a>
+                            </div>
+                        <?php endif ?>
+                        <div class="form-group">
+                            <div class="dropdown">
+                              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                <span class="glyphicon glyphicon-th-list"></span> Sort By 
+                                <span class="caret"></span>
+                              </button>
+                              <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="<?php encode_quotes(url('comment/view', array('sort' => "comment", 'thread_id' => $thread->id))) ?>"> <span class="glyphicon glyphicon-sort-by-order-alt"></span> Comment</a></li>
+                              </ul>
+                            </div>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<?php if(empty($comments)): ?>
+    <div class="row">
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+            <div class="well well-large">
+                <?php if(!empty($filter_username)): ?>
+                    <h4> No comments by <?php encode_quotes($filter_username) ?>. </h4>
+                <?php else: ?>
+                    <h4> No comments yet in this thread... <small>Start conversation!</small></h4>
+                <?php endif ?>
+            </div>
+        </div>
+    </div>
+<?php endif ?>
+
 <?php foreach($comments as $comment): ?>
 <div class="row">
     <div class="colxs-12 col-sm-12 col-md-12 col-lg-12">
@@ -142,42 +203,40 @@
     </div>
 </div>
 <?php endforeach ?>
-<div class="well">
+<div class="row">
+    <div class="colxs-12 col-sm-12 col-md-12 col-lg-12">
+        <?if ($pages > 1): ?>
+            <div class="well well-large">
+                <div class="pagination pagination-centered">
+                    <ul>
+                        <?php if($pagination->current > 1): ?>
+                            <li><a href="?thread_id=<?php echo $thread->id ?>
+                            &page=<?php echo $pagination->prev ?>">Previous</a></li>
+                        <?php else: ?>
+                            <li class="disabled"><a href="#">Previous</a></li>
+                        <?php endif ?>
 
-<hr>
+                        <?php for($i=1; $i<=$pages; $i++): ?>
+                            <?php if($i == $page): ?>
+                                <li class="disabled"><a href="#"><?php echo $i ?></a></li>
+                            <?php else: ?>
+                                <li><a href="?thread_id=<?php echo $thread->id ?>
+                                    &page=<?php echo $i ?>"?><?php echo $i ?>
+                                </a></li>
+                            <?php endif ?>
+                        <?php endfor ?>
 
-<div class="pagination pagination-centered">
-    <?if ($pages > 1): ?>
-    <ul>
-            <?php if($pagination->current > 1): ?>
-                <li><a href="?thread_id=<?php echo $thread->id ?>
-                &page=<?php echo $pagination->prev ?>">Previous</a></li>
-            <?php else: ?>
-                <li class="disabled"><a href="#">Previous</a></li>
-            <?php endif ?>
-
-            <?php for($i=1; $i<=$pages; $i++): ?>
-                <?php if($i == $page): ?>
-                    <li class="disabled"><a href="#"><?php echo $i ?></a></li>
-                <?php else: ?>
-                    <li><a href="?thread_id=<?php echo $thread->id ?>
-                        &page=<?php echo $i ?>"?><?php echo $i ?>
-                    </a></li>
-                <?php endif ?>
-            <?php endfor ?>
-
-            <?php if(!$pagination->is_last_page): ?>
-                <li><a href="?thread_id=<?php echo $thread->id ?>
-                    &page=<?php echo $pagination->next ?>">Next</a></li>
-            <?php else: ?>
-                <li class="disabled"><a href="#">Next</a></li>
-            <?php endif ?>
+                        <?php if(!$pagination->is_last_page): ?>
+                            <li><a href="?thread_id=<?php echo $thread->id ?>
+                                &page=<?php echo $pagination->next ?>">Next</a></li>
+                        <?php else: ?>
+                            <li class="disabled"><a href="#">Next</a></li>
+                        <?php endif ?>
+                    </ul>
+                </div>
+            </div>
         <?php endif ?>
-    </ul>
-</div>
-<hr>
-<a href="<?php encode_quotes(url('thread/index')) ?>" class="btn btn-default">Back to Thread</a>
-
+    </div>
 </div>
 
 <form class="well" method="post" action="<?php encode_quotes(url('comment/write')) ?>">
