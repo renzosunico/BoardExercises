@@ -9,14 +9,29 @@ class Comment extends AppModel
 
     CONST FIRST_COMMENT = 1;
 
-    public function getAll($offset, $limit, $thread_id)
+    public function getAll($offset, $limit, $thread_id, $filter_username)
     {
         $comments = array();
         $db = DB::conn();
-        $fetch_query = sprintf(
-            "SELECT * FROM comment WHERE thread_id = ?
-            ORDER BY created LIMIT %d, %d", $offset, $limit);
-        $rows = $db->rows($fetch_query, array($thread_id));
+
+        if(empty($filter_username)) {
+            $fetch_query = sprintf(
+                "SELECT * FROM comment WHERE thread_id = ?
+                ORDER BY created LIMIT %d, %d", $offset, $limit
+            );
+            $rows = $db->rows($fetch_query, array($thread_id));
+        } else {
+            $user_id = $db->value(
+                "SELECT id FROM user WHERE username LIKE ?",
+                array("%$filter_username%")
+            );
+
+            $fetch_query = sprintf(
+                "SELECT * FROM comment WHERE thread_id = ? AND user_id = ?
+                ORDER BY created LIMIT %d, %d", $offset, $limit
+            );
+            $rows = $db->rows($fetch_query, array($thread_id, $user_id));
+        }
 
         foreach ($rows as $row) {
             $comments[] = new self($row);

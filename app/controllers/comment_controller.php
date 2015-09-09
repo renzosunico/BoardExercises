@@ -6,13 +6,14 @@ class CommentController extends AppController
     public function view()
     {
         $thread = Thread::getById(Param::get('thread_id'));
-        $sort = Param::get('sort', 'created');
         $comment = new Comment();
 
         $page = Param::get('page', 1);
         $pagination = new SimplePagination($page, self::MAX_ITEM_PER_PAGE);
 
-        $comments = $comment->getAll($pagination->start_index-1, $pagination->count+1, $thread->id);
+        $filter_username = htmlentities(Param::get('username'));
+
+        $comments = $comment->getAll($pagination->start_index-1, $pagination->count+1, $thread->id, $filter_username);
         $pagination->checkLastPage($comments);
 
         foreach ($comments as &$comment) {
@@ -20,6 +21,7 @@ class CommentController extends AppController
             $comment->likecount = Likes::countLike($comment->id);
         }
 
+        $sort = Param::get('sort', 'created');
         if($sort === 'comment') {
             usort($comments, function($a , $b) {
                 return $b->likecount - $a->likecount;
@@ -104,7 +106,11 @@ class CommentController extends AppController
         $comment_id = Param::get('comment_id');
         authorize_user_request($comment_id, 'comment');
         $thread_id = Param::get('thread_id');
-        Comment::delete($comment_id, $thread_id);
+        try {
+            Comment::delete($comment_id, $thread_id);
+        } catch(PDOException $e) {
+            $_SESSION['delete_error'] = true;
+        }
 
         redirect('comment/view', array('thread_id' => $thread_id));
     }
