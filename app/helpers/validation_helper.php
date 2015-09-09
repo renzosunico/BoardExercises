@@ -19,7 +19,7 @@ function validate_alpha($check)
 
 function validate_email($check)
 {
-    return empty($check) ? true : filter_var($check, FILTER_VALIDATE_EMAIL);
+    return empty($check) ? false : filter_var($check, FILTER_VALIDATE_EMAIL);
 }
 
 function validate_existence($check, $type)

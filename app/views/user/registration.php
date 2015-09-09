@@ -82,19 +82,19 @@
         <form class="well well-large col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5 col-lg-offset-0 col-lg-4" autocomplete="off" method="post" action="<?php encode_quotes(url('')) ?>">
             <div class="form-group">
                 <label for="firstname">First Name:</label>
-                <input type="text" name="fname" class="form-control" id="firstname" placeholder="First Name">
+                <input type="text" name="fname" class="form-control" id="firstname" value="<?php encode_quotes(isset($user->username) ? "$user->fname" : "") ?>" placeholder="First Name">
             </div>
             <div class="form-group">
                 <label for="lastname">Last Name:</label>
-                <input type="text" name="lname" class="form-control" id="firstname" placeholder="Last Name">
+                <input type="text" name="lname" class="form-control" id="firstname" value="<?php encode_quotes(isset($user->username) ? "$user->lname" : "") ?>" placeholder="Last Name">
             </div>
             <div class="form-group">
                 <label for="username">Username:</label>
-                <input type="text" name="username" class="form-control" id="username" placeholder="Username">
+                <input type="text" name="username" class="form-control" id="username" value="<?php encode_quotes(isset($user->username) ? "$user->username" : "") ?>" placeholder="Username">
             </div>
             <div class="form-group">
                 <label for="email">Email:</label>
-                <input type="email" name="email" class="form-control" id="email" placeholder="Email">
+                <input type="email" name="email" class="form-control" id="email" value="<?php encode_quotes(isset($user->email) ? "$user->email" : "") ?>" placeholder="Email">
             </div>
             <div class="form-group">
                 <label for="password">Password:</label>

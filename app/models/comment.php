@@ -1,13 +1,16 @@
 <?php
 class Comment extends AppModel
 {
+    CONST FIRST_COMMENT   = 1;
+    CONST MIN_BODY_LENGTH = 1;
+    CONST MAX_BODY_LENGTH = 200;
+    CONST TABLE           = 'comment';
+
     public $validation = array(
         'body'       => array(
-            'length' => array('validate_between', 1, 200,),
+            'length' => array('validate_between', self::MIN_BODY_LENGTH, self::MAX_BODY_LENGTH),
         ),
     );
-
-    CONST FIRST_COMMENT = 1;
 
     public function getAll($offset, $limit, $thread_id, $filter_username)
     {
@@ -60,14 +63,15 @@ class Comment extends AppModel
         );
 
         $db = DB::conn();
-        $db->insert('comment',$params);
+        $db->insert(self::TABLE,$params);
     }
 
     public static function getByThreadId($thread_id)
     {
         $db = DB::conn();
         return $db->row(
-            sprintf("SELECT * FROM comment WHERE thread_id=%d LIMIT %d", $thread_id, self::FIRST_COMMENT)
+            sprintf("SELECT * FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
+            array($thread_id)
         );
     }
 
@@ -75,7 +79,8 @@ class Comment extends AppModel
     {
         $db = DB::conn();
         return $db->value(
-            sprintf("SELECT id FROM comment WHERE thread_id=%d LIMIT %d", $thread_id, self::FIRST_COMMENT)
+            sprintf("SELECT id FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
+            $thread_id
         );
     }
 
@@ -117,5 +122,13 @@ class Comment extends AppModel
     {
         $db = DB::conn();
         return $db->value("SELECT user_id FROM comment WHERE id=?", array($id));
+    }
+
+    public function getUserAttributes($comments)
+    {
+        foreach ($comments as $comment) {
+            $comment->username = User::getUsernameById($comment->user_id);
+            $comment->likecount = Likes::countLike($comment->id);
+        }
     }
 } 

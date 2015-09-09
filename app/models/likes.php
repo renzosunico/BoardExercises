@@ -1,6 +1,8 @@
 <?php
 class Likes extends AppModel
 {
+    CONST TABLE = 'likes';
+
     public static function isLiked($thread_id)
     {
         $db = DB::conn();
@@ -18,7 +20,7 @@ class Likes extends AppModel
             'comment_id' => $comment_id,
             'user_id' => $_SESSION['userid']
         );
-        $db->insert('likes', $params);
+        $db->insert(self::TABLE, $params);
     }
 
     public static function unsetLike($comment_id)

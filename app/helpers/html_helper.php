@@ -22,8 +22,6 @@ function redirect($url,$params = array())
     die();
 }
 
-
-
 function redirect_to_login()
 {
     if(!isset($_SESSION['username'])) {
@@ -52,12 +50,6 @@ function get_welcome_message()
     );
 
    return $welcome_messages[rand(START_RAND_NO, END_RAND_NO)];
-}
-
-function get_thread_comment($thread_id)
-{
-    $comment = Comment::getByThreadId($thread_id);
-    echo $comment['body'];
 }
 
 function print_date($object)

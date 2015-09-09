@@ -148,4 +148,19 @@ class Thread extends AppModel
         $db = DB::conn();
         return $db->value("SELECT title from thread WHERE id = ?", array($thread_id));
     }
+
+    public static function getUsernameComment($threads)
+    {
+        foreach ($threads as $thread) {
+            $thread->username = User::getUsernameById($thread->user_id);
+            $thread->comment = Comment::getByThreadId($thread->id);
+        }
+    }
+
+    public static function getTrendTitle(&$trending_ids)
+    {
+        foreach ($trending_ids as &$thread) {
+            $thread['title'] = Thread::getTitleById($thread['thread_id']);
+        }
+    }
 }

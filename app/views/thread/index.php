@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread'])?>
+<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread']); ?>
 
 <?php if(array_key_exists('deleteHasError', $_SESSION)): ?>
 <div class="row">
@@ -77,7 +77,7 @@
         <?php foreach($threads as $thread): ?>
             <div class="panel panel-primary">
 
-                <div class="panel-heading">
+                <div class="panel-heading" onclick="location.href='<?php encode_quotes(url('user/profile', array('user_id' => $thread->user_id))) ?>'" style="cursor:pointer;">
                     <p class="smallsize"> <?php echo "{$thread->username}"?></p>
                     <?php print_date($thread) ?>
                 </div>
@@ -118,7 +118,7 @@
                                     <div class="form-group">
                                         <label for="body" class="col-sm-1">Comment: </label>
                                         <div class="col-sm-offset-1 col-sm-10">
-                                            <textarea name="body" id="body" class="form-control"><?php get_thread_comment($thread->id) ?></textarea>
+                                            <textarea name="body" id="body" class="form-control"><?php encode_quotes($thread->comment['body']) ?></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">
@@ -178,7 +178,7 @@
             </div>
             <?php foreach ($trending_threads as $thread): ?>
                 <ul class="list-group">
-                  <li class="list-group-item">
+                  <li class="list-group-item" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread['thread_id']))) ?>'" style="cursor:pointer;">
                     <span class="badge"><?php encode_quotes($thread['count']) ?></span>
                     <?php echo $thread['title'] ?>
                   </li>
