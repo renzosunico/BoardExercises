@@ -228,8 +228,8 @@
     <div class="colxs-12 col-sm-12 col-md-12 col-lg-12">
         <?if ($pages > 1): ?>
             <div class="well well-large">
-                <div class="pagination pagination-centered">
-                    <ul>
+                <nav>
+                    <ul class="pagination">
                         <?php if($pagination->current > 1): ?>
                             <li><a href="?thread_id=<?php echo $thread->id ?>
                             &page=<?php echo $pagination->prev ?>">Previous</a></li>
@@ -239,7 +239,7 @@
 
                         <?php for($i=1; $i<=$pages; $i++): ?>
                             <?php if($i == $page): ?>
-                                <li class="disabled"><a href="#"><?php echo $i ?></a></li>
+                                <li class="active"><a href="#"><?php echo $i ?></a></li>
                             <?php else: ?>
                                 <li><a href="?thread_id=<?php echo $thread->id ?>
                                     &page=<?php echo $i ?>"?><?php echo $i ?>
@@ -254,7 +254,7 @@
                             <li class="disabled"><a href="#">Next</a></li>
                         <?php endif ?>
                     </ul>
-                </div>
+                </nav>
             </div>
         <?php endif ?>
     </div>
