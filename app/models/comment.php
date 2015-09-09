@@ -70,7 +70,8 @@ class Comment extends AppModel
     {
         $db = DB::conn();
         return $db->row(
-            sprintf("SELECT * FROM comment WHERE thread_id=%d LIMIT %d", $thread_id, self::FIRST_COMMENT)
+            sprintf("SELECT * FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
+            array($thread_id)
         );
     }
 
@@ -78,7 +79,8 @@ class Comment extends AppModel
     {
         $db = DB::conn();
         return $db->value(
-            sprintf("SELECT id FROM comment WHERE thread_id=%d LIMIT %d", $thread_id, self::FIRST_COMMENT)
+            sprintf("SELECT id FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
+            $thread_id
         );
     }
 
