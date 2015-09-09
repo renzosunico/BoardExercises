@@ -1,13 +1,14 @@
 <?php
 class UserController extends AppController
 {
-    CONST REGISTRATION_PAGE = 'registration';
+    CONST REGISTRATION_PAGE         = 'registration';
     CONST SUCCESS_REGISTRATION_PAGE = 'registration_end';
-    CONST LOGIN_PAGE = 'login';
-    CONST LOGIN_SUCCESS_PAGE = 'login_end';
-    CONST EDIT_ACCOUNT = 'account';
-    CONST EDIT_PROFILE = 'profile';
-    CONST EDIT_PASSWORD = 'password';
+    CONST LOGIN_PAGE                = 'login';
+    CONST LOGIN_SUCCESS_PAGE        = 'login_end';
+    CONST EDIT_ACCOUNT              = 'account';
+    CONST EDIT_PROFILE              = 'profile';
+    CONST EDIT_PASSWORD             = 'password';
+    CONST EDIT_PAGE                 = 'edit';
 
     public function registration()
     {
@@ -116,11 +117,10 @@ class UserController extends AppController
     public function edit()
     {
         $process = Param::get('process', 'edit');
+        $user = new User();
 
         switch($process) {
             case self::EDIT_ACCOUNT:
-                unset($user);
-                $user = new User();
                 $user->id = $_SESSION['userid'];
                 $user->fname = Param::get('firstname');
                 $user->lname = Param::get('lastname');
@@ -135,8 +135,6 @@ class UserController extends AppController
                 }
                 break;
             case self::EDIT_PROFILE:
-                unset($user);
-                $user = new User();
                 $user->id = $_SESSION['userid'];
                 $user->company = Param::get('company');
                 $user->division = Param::get('division');
@@ -148,8 +146,6 @@ class UserController extends AppController
                 }
                 break;
             case self::EDIT_PASSWORD:
-                unset($user);
-                $user = new User();
                 $user->id = $_SESSION['userid'];
 
                 //set username and old password to password
@@ -173,8 +169,7 @@ class UserController extends AppController
 
                 }
                 break;
-            case 'edit':
-                $user = new User();
+            case self::EDIT_PAGE:
                 $user->id = $_SESSION['userid'];
                 break;
         }
