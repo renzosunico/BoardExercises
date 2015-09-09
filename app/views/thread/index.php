@@ -77,7 +77,7 @@
         <?php foreach($threads as $thread): ?>
             <div class="panel panel-primary">
 
-                <div class="panel-heading">
+                <div class="panel-heading" onclick="location.href='<?php encode_quotes(url('user/profile', array('user_id' => $thread->user_id))) ?>'" style="cursor:pointer;">
                     <p class="smallsize"> <?php echo "{$thread->username}"?></p>
                     <?php print_date($thread) ?>
                 </div>
