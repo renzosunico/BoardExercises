@@ -1,9 +1,10 @@
 <?php
 class Comment extends AppModel
 {
-    CONST FIRST_COMMENT = 1;
+    CONST FIRST_COMMENT   = 1;
     CONST MIN_BODY_LENGTH = 1;
     CONST MAX_BODY_LENGTH = 200;
+    CONST TABLE           = 'comment';
 
     public $validation = array(
         'body'       => array(
@@ -62,7 +63,7 @@ class Comment extends AppModel
         );
 
         $db = DB::conn();
-        $db->insert('comment',$params);
+        $db->insert(self::TABLE,$params);
     }
 
     public static function getByThreadId($thread_id)

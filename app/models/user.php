@@ -1,17 +1,36 @@
 <?php
 class User extends AppModel
 {
+    CONST MIN_FIRST_NAME_LEGTH      = 1;
+    CONST MAX_FIRST_NAME_LENGTH     = 30;
+    CONST MIN_LAST_NAME_LEGTH       = 1;
+    CONST MAX_LAST_NAME_LENGTH      = 30;
+    CONST MIN_USERNAME_LEGTH        = 6;
+    CONST MAX_USERNAME_LENGTH       = 30;
+    CONST MIN_PASSWORD_LEGTH        = 6;
+    CONST MAX_PASSWORD_LENGTH       = 30;
+    CONST MIN_COMPANY_LEGTH         = 1;
+    CONST MAX_COMPANY_LENGTH        = 60;
+    CONST MIN_DIVISION_LEGTH        = 1;
+    CONST MAX_DIVISION_LENGTH       = 30;
+    CONST MIN_SPECIALIZATION_LEGTH  = 1;
+    CONST MAX_SPECIALIZATION_LENGTH = 30;
+    CONST TYPE_EMAIL                = 'email';
+    CONST TYPE_USERNAME             = 'username';
+    CONST HASH_TYPE                 = '$2a$11$';
+    CONST TABLE                     = 'user';
+
     public $validation = array(
         'fname'           => array(
-            'length'      => array('validate_between', 1, 30),
+            'length'      => array('validate_between', self::MIN_FIRST_NAME_LEGTH, self::MAX_FIRST_NAME_LENGTH),
             'alphachars'  => array('validate_alpha'),
         ),
         'lname'           => array(
-            'length'      => array('validate_between', 1, 30),
+            'length'      => array('validate_between', self::MIN_LAST_NAME_LEGTH, self::MAX_LAST_NAME_LENGTH),
             'alphachars'  => array('validate_alpha'),
         ),
         'username'        => array(
-            'length'      => array('validate_between', 6, 30),
+            'length'      => array('validate_between', self::MIN_USERNAME_LEGTH, self::MAX_USERNAME_LENGTH),
             'chars'       => array('validate_chars'),
             'exist'       => array('validate_existence', 'username'),
         ),
@@ -20,7 +39,7 @@ class User extends AppModel
             'exist'       => array('validate_existence', 'email'),
         ),
         'password'        => array(
-            'length'      => array('validate_between', 6, 30),
+            'length'      => array('validate_between', self::MIN_PASSWORD_LEGTH, self::MAX_PASSWORD_LENGTH),
             'chars'       => array('validate_chars'),
         ),
         'confirmpassword' => array(
@@ -34,15 +53,15 @@ class User extends AppModel
         ),
         'company'         => array(
             'alphachars'  => array('validate_alpha'),
-            'length'      => array('validate_between', 1, 60),
+            'length'      => array('validate_between', self::MIN_COMPANY_LEGTH, self::MAX_COMPANY_LENGTH),
         ),
         'division'        => array(
             'alphachars'  => array('validate_alpha'),
-            'length'      => array('validate_between', 1, 30),
+            'length'      => array('validate_between', self::MIN_DIVISION_LEGTH, self::MAX_DIVISION_LENGTH),
         ),
         'specialization'  => array(
             'alphachars'  => array('validate_alpha'),
-            'length'      => array('validate_between', 1, 30),
+            'length'      => array('validate_between', self::MIN_SPECIALIZATION_LEGTH, self::MAX_SPECIALIZATION_LENGTH),
         ),
     );
 
@@ -71,13 +90,13 @@ class User extends AppModel
     {
         $db = DB::conn();
         switch($type) {
-            case "username" :
+            case self::TYPE_USERNAME:
                 if($value) {
-                    return count($db->search('user','username=?',array($value))) == 0;
+                    return count($db->search(self::TABLE,'username=?',array($value))) == 0;
                 }
-            case "email" :
+            case self::TYPE_EMAIL:
                 if($value) {
-                    return count($db->search('user','email=?',array($value))) == 0;
+                    return count($db->search(self::TABLE,'email=?',array($value))) == 0;
                 }
         }
 
@@ -89,7 +108,7 @@ class User extends AppModel
         $db = DB::conn();
         $result = $db->row("SELECT password, salt FROM user WHERE username LIKE BINARY ?", array($this->username));
 
-        if(crypt($this->password, '$2a$11$' . $result['salt']) === $result['password']) {
+        if(crypt($this->password, self::HASH_TYPE . $result['salt']) === $result['password']) {
             return true;
         }
         return false;
@@ -145,7 +164,7 @@ class User extends AppModel
             'id' => $this->id
         );
         try {
-            $db->update('user', $params, $where);    
+            $db->update(self::TABLE, $params, $where);    
         } catch (PDOException $e) {
 
         }
@@ -168,7 +187,7 @@ class User extends AppModel
             'id' => $this->id
         );
         try {
-            $db->update('user', $params, $where);    
+            $db->update(self::TABLE, $params, $where);    
         } catch (PDOException $e) {
 
         }
@@ -195,7 +214,7 @@ class User extends AppModel
         );
 
         try {
-            $db->update('user', $params, $where);    
+            $db->update(self::TABLE, $params, $where);    
         } catch (PDOException $e) {
 
         }
