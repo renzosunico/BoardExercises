@@ -11,13 +11,12 @@ class Likes extends AppModel
         return $db->row("SELECT * FROM likes WHERE comment_id = ? AND user_id = ?", $params);
     }
 
-    public static function setLike($comment_id, $thread_id)
+    public static function setLike($comment_id)
     {
         $db = DB::conn();
         $params = array(
             'comment_id' => $comment_id,
-            'user_id' => $_SESSION['userid'],
-            'thread_id' => $thread_id
+            'user_id' => $_SESSION['userid']
         );
         $db->insert('likes', $params);
     }

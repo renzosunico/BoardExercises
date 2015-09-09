@@ -1,14 +1,14 @@
-<?php if($user->hasError()): ?>
-    <div class="row">
-        <div class="col-xs-12">
+<div class="row">
+    <div class="col-xs-12">
+        <?php if($user->hasError()): ?>
             <div class="alert alert-danger" role="alert">
                 <h4><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
                     <b>Warning</b>
                 </h4>
 
-                <?php if(isset($user->notAuthorized)): ?>
+                <?php if(!empty($user->validation_errors['notAuthorized']['authenticate'])): ?>   
                         Incorrect Password
-                <?php endif; unset($user->notAuthorized) ?>
+                <?php endif ?>
 
                 <?php if(!empty($user->validation_errors['fname']['length'])): ?>   
                     <div><em>First name</em> must be at least 
@@ -124,9 +124,9 @@
                     </div>
                 <?php endif ?>
             </div>
-        </div>
+        <?php endif; unset($user->validation_errors) ?>
     </div>
-<?php endif; unset($user->validation_errors) ?>
+</div>
 
 <?php if(isset($user->editSuccess)): ?>
     <div class="alert alert-success" role="alert"><span class="glyphicon glyphicon-ok"></span>

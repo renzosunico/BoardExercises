@@ -31,6 +31,13 @@ function redirect_to_login()
     }
 }
 
+function redirect_to_index()
+{
+    if(isset($_SESSION['username'])) {
+        redirect('thread/index');
+    }   
+}
+
 function get_welcome_message()
 {
    $welcome_messages = array(

@@ -1,9 +1,13 @@
 <?php
 class Thread extends AppModel
 {
+    CONST TREND_LIMIT = 10;
+    CONST MIN_TITLE_LENGTH = 1;
+    CONST MAX_TITLE_LENGTH = 30;
+
     public $validation  =  array(
         'title'         => array(
-            'length'    => array('validate_between', 1, 30,),
+            'length'    => array('validate_between', self::MIN_TITLE_LENGTH, self::MAX_TITLE_LENGTH),
         ),
         'category'      => array(
             'content'   => array('validate_content'),
@@ -101,8 +105,6 @@ class Thread extends AppModel
 
     public static function delete($thread_id)
     {
-        Comment::deleteAll($thread_id);
-        Follow::delete($thread_id);
         $db = DB::conn();
         $db->query("DELETE FROM thread where id = ?", array($thread_id));
     }
@@ -134,9 +136,10 @@ class Thread extends AppModel
     public static function getTrending()
     {
         $db = DB::conn();
-        return $db->rows("select thread_id, count(*) AS count
-                          FROM comment GROUP BY thread_id
-                          ORDER BY count DESC, created; "
+        return $db->rows(
+            sprintf("select thread_id, count(*) AS count
+            FROM comment GROUP BY thread_id
+            ORDER BY count DESC, created LIMIT %d", self::TREND_LIMIT)
         );
     }
 

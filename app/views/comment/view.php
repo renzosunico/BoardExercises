@@ -52,7 +52,7 @@
                     -->
                     <div class="col-xs-11">
                         <p class="smallsize"> <?php encode_quotes($comment->username)?></p>
-                        <p class="smallersize"><?php encode_quotes(date("l, F d, Y h:i a", strtotime($comment->created))); ?></p>
+                        <?php print_date($comment); ?>
                     </div>
                 </div>
             </div>
@@ -62,13 +62,13 @@
             <div class="panel-footer">
                 <div class="row">
                     <div class="col-xs-6">
-                        <?php if(($like_count = Likes::countLike($comment->id)) <= 1): ?>
+                        <?php if($comment->likecount <= 1): ?>
                             <label class="btn btn-primary btn-xs likes">
-                                <span class="glyphicon glyphicon-hand-right"> <?php encode_quotes("$like_count") ?> person</span> 
+                                <span class="glyphicon glyphicon-hand-right"> <?php encode_quotes("$comment->likecount") ?> person</span> 
                             </label>
                         <?php else: ?>
                             <label class="btn btn-primary btn-xs likes">
-                                <span class="glyphicon glyphicon-hand-right"> <?php encode_quotes("$like_count") ?> people</span>
+                                <span class="glyphicon glyphicon-hand-right"> <?php encode_quotes("$comment->likecount") ?> people</span>
                             </label>
                         <?php endif ?>
 
