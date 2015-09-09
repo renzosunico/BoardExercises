@@ -101,7 +101,6 @@ class ThreadController extends AppController
             Thread::delete($thread_id);
         } catch (PDOException $e) {
             $_SESSION['deleteHasError'] = true;
-            var_dump($e); die();
         }
 
         $page_to_go = Param::get('page');
