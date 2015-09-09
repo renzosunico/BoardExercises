@@ -9,6 +9,13 @@ class UserController extends AppController
     CONST EDIT_PROFILE              = 'profile';
     CONST EDIT_PASSWORD             = 'password';
     CONST EDIT_PAGE                 = 'edit';
+    CONST EDIT_PICTURE              = 'picture';
+
+    public $mime_types = array(
+        'jpg' => 'image/jpg',
+        'png' => 'image/png',
+        'gif' => 'image/gif'
+    );
 
     public function registration()
     {
@@ -168,6 +175,28 @@ class UserController extends AppController
                     $user->editSuccess = true;
                 } catch (ValidationException $e) {
 
+                }
+                break;
+            case self::EDIT_PICTURE:
+            ini_set('post_max_size',52428800); // 50 MB
+            ini_set('upload_max_filesize',52428800) ;
+                $target_directory = "bootstrap/img/users/" . $_SESSION['username'];
+                try {
+                    if(file_exists($file_tmp = $_FILES['picture']['tmp_name'])) {
+                        $finfo = new finfo(FILEINFO_MIME_TYPE);
+                        if(false === $file_extension = array_search(
+                            $finfo->file($_FILES['picture']['tmp_name']), $this->mime_types,true)) {
+                            throw new Exception("Error Processing Request", 1);
+                            
+                        }
+                        if(!move_uploaded_file($_FILES['picture']['tmp_name'], $target_directory . "." .$file_extension)) {
+                            throw new Exception("Error Processing Request", 1);
+                            
+                        }
+                    }
+                } catch () {
+                    echo $e; die();
+                    $_SESSION['upload_error'] = true;
                 }
                 break;
             case self::EDIT_PAGE:

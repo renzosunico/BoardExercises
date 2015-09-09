@@ -133,7 +133,31 @@
     Account has been updated!</div>
 <?php endif; unset($user->editSuccess) ?>
 
+<?php if(isset($_SESSION['upload_error'])): ?>
+    <div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-remove"></span>
+    Upload Failed! <p>Make sure the image you are uploading is jpeg, png, or a gif file.</p></div>
+<?php endif; unset($_SESSION['upload_error']) ?>
+
 <div class="row">
+    <div class="col-xs-12">
+        <div class="well well-large">
+            <div class="page-header">
+              <h1>Upload Picture</h1>
+            </div>
+            <div class="row">
+                <div class="col-xs-3">
+                    <form method="post" action="<?php encode_quotes(url('user/edit')) ?>" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="picture">Upload: </label>
+                            <input name="picture" type="file" class="form-control" id="picture">
+                        </div>
+                        <input type="hidden" name="process" value="picture">
+                        <button type="submit" class="btn btn-default">Save</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="col-xs-12">
         <div class="well well-large">
             <div class="page-header">

@@ -41,7 +41,7 @@
             <div class="row">
                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
                     <a href="#" class="thumbnail">
-                      <img src="..." alt="...">
+                      <img class="" src="..." alt="<?php encode_quotes($user->username) ?>">
                     </a>
                 </div>
                 <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9">
