@@ -16,12 +16,10 @@ class CommentController extends AppController
         $comments = $comment->getAll($pagination->start_index-1, $pagination->count+1, $thread->id, $filter_username);
         $pagination->checkLastPage($comments);
 
-        foreach ($comments as &$comment) {
-            $comment->username = User::getUsernameById($comment->user_id);
-            $comment->likecount = Likes::countLike($comment->id);
-        }
+        $comment->getUserAttributes($comments);
 
         $sort = Param::get('sort', 'created');
+
         if($sort === 'comment') {
             usort($comments, function($a , $b) {
                 return $b->likecount - $a->likecount;

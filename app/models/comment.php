@@ -118,4 +118,12 @@ class Comment extends AppModel
         $db = DB::conn();
         return $db->value("SELECT user_id FROM comment WHERE id=?", array($id));
     }
+
+    public function getUserAttributes($comments)
+    {
+        foreach ($comments as $comment) {
+            $comment->username = User::getUsernameById($comment->user_id);
+            $comment->likecount = Likes::countLike($comment->id);
+        }
+    }
 } 
