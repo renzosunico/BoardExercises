@@ -118,7 +118,7 @@
                                     <div class="form-group">
                                         <label for="body" class="col-sm-1">Comment: </label>
                                         <div class="col-sm-offset-1 col-sm-10">
-                                            <textarea name="body" id="body" class="form-control"><?php get_thread_comment($thread->id) ?></textarea>
+                                            <textarea name="body" id="body" class="form-control"><?php encode_quotes($thread->comment['body']) ?></textarea>
                                         </div>
                                     </div>
                                     <div class="modal-footer">

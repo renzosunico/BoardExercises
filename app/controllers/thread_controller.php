@@ -18,16 +18,10 @@ class ThreadController extends AppController
         $threads = Thread::getAll($pagination->start_index - 1, $pagination->count + 1, $sort_method);
         $pagination->checkLastPage($threads);
 
-        foreach ($threads as $thread) {
-            $thread->username = User::getUsernameById($thread->user_id);
-        }
+        Thread::getUsernameComment($threads);
 
         $trending_threads = Thread::getTrending();
-
-        foreach ($trending_threads as &$thread) {
-            $thread['title'] = Thread::getTitleById($thread['thread_id']);
-        }
-
+        Thread::getTrendTitle($trending_threads);
 
         $total = Thread::countAll();
         $pages = ceil($total/self::MAX_THREADS_PER_PAGE);
