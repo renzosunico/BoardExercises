@@ -32,7 +32,7 @@ class UserController extends AppController
                 try {
                     $user->register();
                 } catch (ValidationException $e) {
-                    $page = self::SUCCESS_REGISTRATION_PAGE;
+                    $page = self::REGISTRATION_PAGE;
                 }
                 break;
             default :
@@ -74,6 +74,7 @@ class UserController extends AppController
                 throw new RecordNotFoundException;
                 break;
         }
+        
         $this->set(get_defined_vars());
         $this->render($page);
     }

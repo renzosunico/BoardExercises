@@ -67,6 +67,8 @@ class User extends AppModel
 
     public function register()
     {
+        $this->validate();
+        
         if(!$this->validate()) {
             throw new ValidationException('Invalid data.');
         }

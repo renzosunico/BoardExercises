@@ -178,7 +178,7 @@
             </div>
             <?php foreach ($trending_threads as $thread): ?>
                 <ul class="list-group">
-                  <li class="list-group-item">
+                  <li class="list-group-item" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread['thread_id']))) ?>'" style="cursor:pointer;">
                     <span class="badge"><?php encode_quotes($thread['count']) ?></span>
                     <?php echo $thread['title'] ?>
                   </li>
