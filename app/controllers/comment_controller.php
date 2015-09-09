@@ -93,7 +93,7 @@ class CommentController extends AppController
         try {
             $comment->edit();
         } catch(ValidationException $e) {
-            $_SESSION['hasError'] = true;
+            $_SESSION['old_comment'] = (array)$comment;
         }
 
         redirect('comment/view', array('thread_id' => $thread_id));

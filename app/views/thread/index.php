@@ -33,7 +33,7 @@
         </div>
       </div>
     </div>
-<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread'])?>
+<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread']); ?>
 
 <?php if(array_key_exists('deleteHasError', $_SESSION)): ?>
 <div class="row">
