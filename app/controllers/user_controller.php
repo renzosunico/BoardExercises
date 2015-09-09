@@ -1,6 +1,14 @@
 <?php
 class UserController extends AppController
 {
+    CONST REGISTRATION_PAGE = 'registration';
+    CONST SUCCESS_REGISTRATION_PAGE = 'registration_end';
+    CONST LOGIN_PAGE = 'login';
+    CONST LOGIN_SUCCESS_PAGE = 'login_end';
+    CONST EDIT_ACCOUNT = 'account';
+    CONST EDIT_PROFILE = 'profile';
+    CONST EDIT_PASSWORD = 'password';
+
     public function registration()
     {
         if(isset($_SESSION['username'])) {
@@ -11,9 +19,9 @@ class UserController extends AppController
         $user = new User();
 
         switch($page) {
-            case "registration":
+            case self::REGISTRATION_PAGE:
                 break;
-            case "registration_end":
+            case self::SUCCESS_REGISTRATION_PAGE:
                 $user->fname = Param::get('fname');
                 $user->lname = Param::get('lname');
                 $user->username = Param::get('username');
@@ -23,7 +31,7 @@ class UserController extends AppController
                 try {
                     $user->register();
                 } catch (ValidationException $e) {
-                    $page = "registration";
+                    $page = self::SUCCESS_REGISTRATION_PAGE;
                 }
                 break;
             default :
@@ -47,15 +55,15 @@ class UserController extends AppController
         $isAuthorized = true;
 
         switch($page) {
-            case "login":
+            case self::LOGIN_PAGE:
                 break;
-            case "login_end":
+            case self::LOGIN_SUCCESS_PAGE:
                 $user->username = $clean_username;
                 $user->password = $clean_hashed_password;
                 $isAuthorized = $user->isRegistered();
                 
                 if(!$isAuthorized) {
-                    $page = "login";
+                    $page = self::LOGIN_PAGE;
                 } else {
                     $_SESSION['username'] = $clean_username;
                     $_SESSION['userid'] = User::getIdByUsername($clean_username);
@@ -110,7 +118,7 @@ class UserController extends AppController
         $process = Param::get('process', 'edit');
 
         switch($process) {
-            case 'account':
+            case self::EDIT_ACCOUNT:
                 unset($user);
                 $user = new User();
                 $user->id = $_SESSION['userid'];
@@ -126,7 +134,7 @@ class UserController extends AppController
 
                 }
                 break;
-            case 'profile':
+            case self::EDIT_PROFILE:
                 unset($user);
                 $user = new User();
                 $user->id = $_SESSION['userid'];
@@ -139,7 +147,7 @@ class UserController extends AppController
                 } catch(ValidationException $e) {
                 }
                 break;
-            case 'password':
+            case self::EDIT_PASSWORD:
                 unset($user);
                 $user = new User();
                 $user->id = $_SESSION['userid'];

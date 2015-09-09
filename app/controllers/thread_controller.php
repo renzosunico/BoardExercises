@@ -2,10 +2,16 @@
 class ThreadController extends AppController
 {
     CONST MAX_THREADS_PER_PAGE = 15;
+    CONST FIRST_PAGE = 1;
+    CONST CREATE_PAGE = 'create';
+    CONST PAGE_AFTER_CREATE = 'create_end';
+    CONST RETURN_PAGE_OF_PROCESS_IN_PROFILE = 'profile';
+    CONST PROCESS_FOLLOW = 'follow';
+    CONST PROCESS_UNFOLLOW = 'unfollow';
     
     public function index()
     {
-        $page = Param::get('page', 1);
+        $page = Param::get('page', self::FIRST_PAGE);
         $sort_method = Param::get('sort','created');
         $pagination = new SimplePagination($page, self::MAX_THREADS_PER_PAGE);
 
@@ -36,9 +42,9 @@ class ThreadController extends AppController
 
         $page = Param::get('page_next', 'create');
         switch($page) {
-            case 'create':
+            case self::CREATE_PAGE:
                 break;
-            case 'create_end':
+            case self::PAGE_AFTER_CREATE:
                 $thread->title = Param::get('title');
                 $thread->user_id = User::getIdByUsername($_SESSION['username']);
                 $thread->category = Param::get('category');
@@ -47,7 +53,7 @@ class ThreadController extends AppController
                 try {
                     $thread->create($comment);
                 } catch(ValidationException $e) {
-                    $page = 'create';
+                    $page = self::PAGE_AFTER_CREATE;
                 }
                 break;
             default:
@@ -85,7 +91,7 @@ class ThreadController extends AppController
 
         $page_to_go = Param::get('page');
 
-        if($page_to_go == "profile") {
+        if($page_to_go === self::RETURN_PAGE_OF_PROCESS_IN_PROFILE) {
             redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
@@ -106,7 +112,7 @@ class ThreadController extends AppController
 
         $page_to_go = Param::get('page');
 
-        if($page_to_go == "profile") {
+        if($page_to_go === self::RETURN_PAGE_OF_PROCESS_IN_PROFILE) {
             redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
@@ -119,10 +125,10 @@ class ThreadController extends AppController
         $process = Param::get('process');
 
         switch ($process) {
-            case 'follow':
+            case self::PROCESS_FOLLOW:
                 Follow::setFollow($thread_id, $_SESSION['userid']);
                 break;
-            case 'unfollow':
+            case self::PROCESS_UNFOLLOW:
                 Follow::unsetFollow($thread_id, $_SESSION['userid']);
                 break;
             default:

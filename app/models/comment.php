@@ -1,13 +1,15 @@
 <?php
 class Comment extends AppModel
 {
+    CONST FIRST_COMMENT = 1;
+    CONST MIN_BODY_LENGTH = 1;
+    CONST MAX_BODY_LENGTH = 200;
+
     public $validation = array(
         'body'       => array(
-            'length' => array('validate_between', 1, 200,),
+            'length' => array('validate_between', self::MIN_BODY_LENGTH, self::MAX_BODY_LENGTH),
         ),
     );
-
-    CONST FIRST_COMMENT = 1;
 
     public function getAll($offset, $limit, $thread_id, $filter_username)
     {

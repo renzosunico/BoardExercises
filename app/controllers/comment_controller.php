@@ -2,6 +2,11 @@
 class CommentController extends AppController
 {
     CONST MAX_ITEM_PER_PAGE = 10;
+    CONST SORT_TYPE_COMMENT = 'comment';
+    CONST CURRENT_PAGE_WRITE = 'write';
+    CONST REDER_PAGE_AFTER_WRITE = 'write_end';
+    CONST METHOD_LIKE = 'like';
+    CONST METHOD_UNLIKE = 'unlike';
 
     public function view()
     {
@@ -18,9 +23,9 @@ class CommentController extends AppController
 
         $comment->getUserAttributes($comments);
 
-        $sort = Param::get('sort', 'created');
+        $sort = Param::get('sort');
 
-        if($sort === 'comment') {
+        if($sort === self::SORT_TYPE_COMMENT) {
             usort($comments, function($a , $b) {
                 return $b->likecount - $a->likecount;
             });
@@ -41,16 +46,16 @@ class CommentController extends AppController
         $page = Param::get('page_next','write');
 
         switch($page) {
-            case 'write':
+            case self::CURRENT_PAGE_WRITE:
                 break;
-            case 'write_end':
+            case self::REDER_PAGE_AFTER_WRITE:
                 $comment->id = $thread->id;
                 $comment->user_id = User::getIdByUsername($_SESSION['username']);
                 $comment->body = Param::get('body');
                 try {
                     $comment->write();
                 } catch (ValidationException $e) {
-                    $page = 'write';
+                    $page = self::CURRENT_PAGE_WRITE;
                 }
                 break;
             default:
@@ -68,10 +73,10 @@ class CommentController extends AppController
         $process = Param::get('process');
         
         switch($process) {
-            case 'like':
+            case self::METHOD_LIKE:
                 Likes::setLike($comment_id);
                 break;
-            case 'unlike':
+            case self::METHOD_UNLIKE:
                 Likes::unsetLike($comment_id);
                 break;
             default:
