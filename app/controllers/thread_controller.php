@@ -47,7 +47,7 @@ class ThreadController extends AppController
                 try {
                     $thread->create($comment);
                 } catch(ValidationException $e) {
-                    $page = self::PAGE_AFTER_CREATE;
+                    $page = self::CREATE_PAGE;
                 }
                 break;
             default:
