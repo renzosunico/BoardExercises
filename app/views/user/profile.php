@@ -11,7 +11,9 @@
     <div class="row">
       <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8s">
         <div class="alert alert-danger">
-            <h4 class="alert-heading">Validation Error!</h4>
+            <h4 class="alert-heading">
+              <span class="glyphicon glyphicon-warning-sign"></span> Warning!
+            </h4>
             <?php if (!empty($old_thread->validation_errors['title']['length'])): ?>
                 <div><em>Title</em> must be between
                     <?php encode_quotes($old_thread->validation['title']['length'][1]) ?> and
@@ -39,12 +41,7 @@
     <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
         <div class="well well-large">
             <div class="row">
-                <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
-                    <a href="#" class="thumbnail">
-                      <img src="..." alt="...">
-                    </a>
-                </div>
-                <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9">
+                <div class="col-xs-6 col-sm-8 col-md-10 col-lg-10">
                     <form action="" class="form-horizontal">
                       <div id="nomnop" class="form-group">
                         <label id="nobottommargin" class="col-sm-3 col-md-3 col-lg-3 control-label">Name:</label>

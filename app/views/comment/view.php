@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
-        <h1 class="title"><?php encode_quotes($thread->title) ?></h1>
+        <h1 class="thread-title"><?php encode_quotes($thread->title) ?></h1>
     </div>
 </div>
 
@@ -13,7 +13,9 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="alert alert-danger">
-            <h4 class="alert-heading">Warning!</h4>
+            <h4 class="alert-heading">
+                <span class="glyphicon glyphicon-warning-sign"></span> Warning!
+            </h4>
             <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
                 <div><em>Comment</em> must be between
                     <?php encode_quotes($old_comment->validation['body']['length'][1]) ?> and

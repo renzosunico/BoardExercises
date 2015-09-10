@@ -11,7 +11,9 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="alert alert-danger">
-            <h4 class="alert-heading">Validation Error!</h4>
+            <h4 class="alert-heading">
+                <span class="glyphicon glyphicon-warning-sign"></span> Warning!
+            </h4>
             <?php if (!empty($old_thread->validation_errors['title']['length'])): ?>
                 <div><em>Title</em> must be between
                     <?php encode_quotes($old_thread->validation['title']['length'][1]) ?> and

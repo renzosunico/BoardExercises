@@ -9,7 +9,7 @@
     <div class="row">
         <div class="col-xs-12 col-md-offset-3 col-md-6 col-lg-offset-3 col-lg-6">
           <div class="alert alert-danger">
-            Your username or password might be incorrect.
+            <span class="glyphicon glyphicon-warning-sign"></span> Your username or password might be incorrect.
           </div>  
         </div>
     </div>
