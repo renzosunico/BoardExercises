@@ -15,7 +15,7 @@ function validate_chars($check)
 function validate_alpha($check)
 {
 
-    return empty($check) ? true : preg_match('/^[[:alpha:] \-()]*$/', $check) && !ctype_space($check);
+    return empty($check) ? true : preg_match('/^[[:alpha:] ]*$/', $check) && !ctype_space($check);
 }
 
 function validate_email($check)
