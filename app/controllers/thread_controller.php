@@ -5,7 +5,7 @@ class ThreadController extends AppController
     CONST FIRST_PAGE = 1;
     CONST CREATE_PAGE = 'create';
     CONST PAGE_AFTER_CREATE = 'create_end';
-    CONST RETURN_TO_PROFILE = 'profile';
+    CONST PROFILE_PAGE = 'profile';
     CONST PROCESS_FOLLOW = 'follow';
     CONST PROCESS_UNFOLLOW = 'unfollow';
     
@@ -85,7 +85,7 @@ class ThreadController extends AppController
 
         $page_to_go = Param::get('page');
 
-        if($page_to_go === self::RETURN_TO_PROFILE) {
+        if($page_to_go === self::PROFILE_PAGE) {
             redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
@@ -105,7 +105,7 @@ class ThreadController extends AppController
 
         $page_to_go = Param::get('page');
 
-        if($page_to_go === self::RETURN_TO_PROFILE) {
+        if($page_to_go === self::PROFILE_PAGE) {
             redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
