@@ -18,13 +18,9 @@ class Follow extends AppModel
             'user_id'       =>  $user_id
         );
         
-        $search = $db->search(self::TABLE_NAME,
-            'thread_id = ? AND user_id = ?',
-            array($thread_id, $user_id)
-        );
-
-        if (!$search) {
+        try {
             $db->insert(self::TABLE_NAME, $params);
+        } catch (PDOException $e) {
         }
     }
 
