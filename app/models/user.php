@@ -18,19 +18,28 @@ class User extends AppModel
     CONST TYPE_EMAIL                = 'email';
     CONST TYPE_USERNAME             = 'username';
     CONST HASH_TYPE                 = '$2a$11$';
-    CONST TABLE_NAME                     = 'user';
+    CONST TABLE_NAME                = 'user';
 
     public $validation = array(
         'fname'           => array(
-            'length'      => array('validate_between', self::MIN_FIRST_NAME_LEGTH, self::MAX_FIRST_NAME_LENGTH),
+            'length'      => array('validate_between', 
+                self::MIN_FIRST_NAME_LEGTH,
+                self::MAX_FIRST_NAME_LENGTH
+            ),
             'alphachars'  => array('validate_alpha'),
         ),
         'lname'           => array(
-            'length'      => array('validate_between', self::MIN_LAST_NAME_LEGTH, self::MAX_LAST_NAME_LENGTH),
+            'length'      => array('validate_between',
+                self::MIN_LAST_NAME_LEGTH,
+                self::MAX_LAST_NAME_LENGTH
+            ),
             'alphachars'  => array('validate_alpha'),
         ),
         'username'        => array(
-            'length'      => array('validate_between', self::MIN_USERNAME_LEGTH, self::MAX_USERNAME_LENGTH),
+            'length'      => array('validate_between',
+                self::MIN_USERNAME_LEGTH,
+                self::MAX_USERNAME_LENGTH
+            ),
             'chars'       => array('validate_chars'),
             'exist'       => array('validate_existence', 'username'),
         ),
@@ -39,7 +48,10 @@ class User extends AppModel
             'exist'       => array('validate_existence', 'email'),
         ),
         'password'        => array(
-            'length'      => array('validate_between', self::MIN_PASSWORD_LEGTH, self::MAX_PASSWORD_LENGTH),
+            'length'      => array('validate_between',
+                self::MIN_PASSWORD_LEGTH,
+                self::MAX_PASSWORD_LENGTH
+            ),
             'chars'       => array('validate_chars'),
         ),
         'confirmpassword' => array(
@@ -53,15 +65,24 @@ class User extends AppModel
         ),
         'company'         => array(
             'alphachars'  => array('validate_alpha'),
-            'length'      => array('validate_between', self::MIN_COMPANY_LEGTH, self::MAX_COMPANY_LENGTH),
+            'length'      => array('validate_between',
+                self::MIN_COMPANY_LEGTH,
+                self::MAX_COMPANY_LENGTH
+            ),
         ),
         'division'        => array(
             'alphachars'  => array('validate_alpha'),
-            'length'      => array('validate_between', self::MIN_DIVISION_LEGTH, self::MAX_DIVISION_LENGTH),
+            'length'      => array('validate_between',
+                self::MIN_DIVISION_LEGTH,
+                self::MAX_DIVISION_LENGTH
+            ),
         ),
         'specialization'  => array(
             'alphachars'  => array('validate_alpha'),
-            'length'      => array('validate_between', self::MIN_SPECIALIZATION_LEGTH, self::MAX_SPECIALIZATION_LENGTH),
+            'length'      => array('validate_between',
+                self::MIN_SPECIALIZATION_LEGTH,
+                self::MAX_SPECIALIZATION_LENGTH
+            ),
         ),
     );
 
@@ -69,7 +90,7 @@ class User extends AppModel
     {
         $this->validate();
         
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             throw new ValidationException('Invalid data.');
         }
 
@@ -91,14 +112,16 @@ class User extends AppModel
     public static function isValidUsernameEmail($value, $type)
     {
         $db = DB::conn();
-        switch($type) {
+        switch ($type) {
             case self::TYPE_USERNAME:
-                if($value) {
-                    return count($db->search(self::TABLE_NAME, 'username=?', array($value))) == 0;
+                if ($value) {
+                    return count($db->search(self::TABLE_NAME, 'username=?',
+                        array($value))) == 0;
                 }
             case self::TYPE_EMAIL:
-                if($value) {
-                    return count($db->search(self::TABLE_NAME, 'email=?', array($value))) == 0;
+                if ($value) {
+                    return count($db->search(self::TABLE_NAME, 'email=?',
+                        array($value))) == 0;
                 }
         }
 
@@ -110,7 +133,9 @@ class User extends AppModel
         $db = DB::conn();
         $result = $db->row("SELECT password, salt FROM user WHERE username LIKE BINARY ?", array($this->username));
 
-        if(crypt($this->password, self::HASH_TYPE . $result['salt']) === $result['password']) {
+        if(crypt($this->password,
+            self::HASH_TYPE . $result['salt']) === $result['password']
+        ) {
             return true;
         }
         return false;
@@ -119,22 +144,29 @@ class User extends AppModel
     public static function getIdByUsername($username)
     {
         $db = DB::conn();
-        return $db->value("SELECT id FROM user WHERE username = ?", array($username));
+        return $db->value("SELECT id FROM user WHERE username = ?",
+            array($username)
+        );
     }
 
     public static function getUsernameById($user_id)
     {
         $db = DB::conn();
-        return $db->value("SELECT username FROM user WHERE id = ?", array($user_id));
+        return $db->value("SELECT username FROM user WHERE id = ?",
+            array($user_id)
+        );
     }
 
     public function getProfile()
     {
         $db = DB::conn();
-        $user_info = $db->row("SELECT fname, lname, username, company, division, specialization, email
-                               FROM user
-                               WHERE id = ?", array($this->id));
-        if($user_info) {
+        $user_info = $db->row(
+            "SELECT fname, lname, username, company, division, specialization, email
+            FROM user WHERE id = ?",
+            array($this->id)
+        );
+
+        if ($user_info) {
             $this->set($user_info);
         }
     }
@@ -151,16 +183,16 @@ class User extends AppModel
 
     public function updateAccount()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             throw new ValidationException;
         }
 
         $db = DB::conn();
         $params = array(
-            'fname' => $this->fname,
-            'lname' => $this->lname,
-            'username' => $this->new_username,
-            'email' => $this->new_email,
+            'fname'     => $this->fname,
+            'lname'     => $this->lname,
+            'username'  => $this->new_username,
+            'email'     => $this->new_email,
         );
         $where = array(
             'id' => $this->id
@@ -181,13 +213,12 @@ class User extends AppModel
 
         $db = DB::conn();
         $params = array(
-            'company' => $this->company,
-            'division' => $this->division,
+            'company'        => $this->company,
+            'division'       => $this->division,
             'specialization' => $this->specialization
         );
-        $where = array(
-            'id' => $this->id
-        );
+        $where = array('id' => $this->id);
+
         try {
             $db->update(self::TABLE_NAME, $params, $where);    
         } catch (PDOException $e) {
@@ -198,7 +229,7 @@ class User extends AppModel
 
     public function updatePassword()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             throw new ValidationException;
         }
 
@@ -208,12 +239,10 @@ class User extends AppModel
 
         $params = array(
             'password' => $password['hash'],
-            'salt' => $password['salt'],
+            'salt'     => $password['salt'],
         );
 
-        $where = array(
-            'id' => $this->id
-        );
+        $where = array('id' => $this->id);
 
         try {
             $db->update(self::TABLE_NAME, $params, $where);    
@@ -225,7 +254,9 @@ class User extends AppModel
     public static function getUsernameEmailById($user_id)
     {
         $db = DB::conn();
-        return $db->row("SELECT username, email FROM user WHERE id = ?", array($user_id));
+        return $db->row("SELECT username, email FROM user WHERE id = ?",
+            array($user_id)
+        );
     }
 
     public static function getFollowedThreadsById(&$thread_ids, &$threads_followed)

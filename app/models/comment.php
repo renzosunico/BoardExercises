@@ -8,7 +8,11 @@ class Comment extends AppModel
 
     public $validation = array(
         'body'       => array(
-            'length' => array('validate_between', self::MIN_BODY_LENGTH, self::MAX_BODY_LENGTH),
+            'length' => array(
+                'validate_between',
+                self::MIN_BODY_LENGTH,
+                self::MAX_BODY_LENGTH
+            ),
             'chars'  => array('validate_space_only'),
         ),
     );
@@ -32,7 +36,9 @@ class Comment extends AppModel
 
             $fetch_query = sprintf(
                 "SELECT * FROM comment WHERE thread_id = ? AND user_id = ?
-                ORDER BY created LIMIT %d, %d", $offset, $limit
+                ORDER BY created LIMIT %d, %d",
+                $offset,
+                $limit
             );
             $rows = $db->rows($fetch_query, array($thread_id, $user_id));
         }
@@ -59,8 +65,8 @@ class Comment extends AppModel
 
         $params = array(
             'thread_id' => $this->id,
-            'user_id' => $this->user_id,
-            'body' => $this->body
+            'user_id'   => $this->user_id,
+            'body'      => $this->body
         );
 
         $db = DB::conn();
@@ -71,7 +77,9 @@ class Comment extends AppModel
     {
         $db = DB::conn();
         return $db->row(
-            sprintf("SELECT * FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
+            sprintf("SELECT * FROM comment WHERE thread_id = ? LIMIT %d",
+                self::FIRST_COMMENT
+            ),
             array($thread_id)
         );
     }
@@ -80,14 +88,16 @@ class Comment extends AppModel
     {
         $db = DB::conn();
         return $db->value(
-            sprintf("SELECT id FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
+            sprintf("SELECT id FROM comment WHERE thread_id = ? LIMIT %d",
+                self::FIRST_COMMENT
+            ),
             array($thread_id)
         );
     }
 
     public function edit()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             throw new ValidationException;
         }
 
@@ -127,10 +137,10 @@ class Comment extends AppModel
     public function getUserAttributes($comments, $session_user)
     {
         foreach ($comments as $comment) {
-            $comment->username = User::getUsernameById($comment->user_id);
+            $comment->username  = User::getUsernameById($comment->user_id);
             $comment->likecount = Likes::countLike($comment->id);
             $comment->is_author = $comment->isAuthor($session_user);
-            $comment->is_liked = Likes::isLiked($comment->id, $session_user);
+            $comment->is_liked  = Likes::isLiked($comment->id, $session_user);
         }
     }
 } 

@@ -2,20 +2,27 @@
 class ThreadController extends AppController
 {
     CONST MAX_THREADS_PER_PAGE = 15;
-    CONST FIRST_PAGE = 1;
-    CONST CREATE_PAGE = 'create';
-    CONST PAGE_AFTER_CREATE = 'create_end';
-    CONST PROFILE_PAGE = 'profile';
-    CONST PROCESS_FOLLOW = 'follow';
-    CONST PROCESS_UNFOLLOW = 'unfollow';
+    CONST FIRST_PAGE           = 1;
+    CONST CREATE_PAGE          = 'create';
+    CONST PAGE_AFTER_CREATE    = 'create_end';
+    CONST PROFILE_PAGE         = 'profile';
+    CONST PROCESS_UNFOLLOW     = 'follow';
+    CONST PROCESS_UNFOLLOW     = 'unfollow';
+    CONST AUTH_THREAD_EDIT     = 'thread';
+    CONST AUTH_THREAD_DELETE   = 'thread';
     
     public function index()
     {
-        $page = Param::get('page', self::FIRST_PAGE);
+        $page        = Param::get('page', self::FIRST_PAGE);
         $sort_method = Param::get('sort', 'created');
-        $pagination = new SimplePagination($page, self::MAX_THREADS_PER_PAGE);
+        $pagination  = new SimplePagination($page, self::MAX_THREADS_PER_PAGE);
 
-        $threads = Thread::getAll($pagination->start_index - 1, $pagination->count + 1, $sort_method);
+        $threads = Thread::getAll(
+            $pagination->start_index - 1,
+            $pagination->count + 1,
+            $sort_method
+        );
+        
         $pagination->checkLastPage($threads);
 
         Thread::getAttributes($threads, $_SESSION['userid']);
@@ -24,7 +31,7 @@ class ThreadController extends AppController
         Thread::getTrendTitle($trending_threads);
 
         $total = Thread::countAll();
-        $pages = ceil($total/self::MAX_THREADS_PER_PAGE);
+        $pages = ceil($total / self::MAX_THREADS_PER_PAGE);
 
         $this->set(get_defined_vars());
     }
@@ -35,15 +42,15 @@ class ThreadController extends AppController
         $comment = new Comment();
 
         $page = Param::get('page_next', 'create');
-        switch($page) {
+        switch ($page) {
             case self::CREATE_PAGE:
                 break;
             case self::PAGE_AFTER_CREATE:
-                $thread->title = Param::get('title');
-                $thread->user_id = User::getIdByUsername($_SESSION['username']);
+                $thread->title    = Param::get('title');
+                $thread->user_id  = User::getIdByUsername($_SESSION['username']);
                 $thread->category = Param::get('category');
                 $comment->user_id = User::getIdByUsername($_SESSION['username']);
-                $comment->body = Param::get('body');
+                $comment->body    = Param::get('body');
                 try {
                     $thread->create($comment);
                 } catch(ValidationException $e) {
@@ -54,7 +61,7 @@ class ThreadController extends AppController
                 throw new RecordNotFoundException("{$page} is not found");
         }
 
-        if($page === 'create_end') {
+        if ($page === self::PAGE_AFTER_CREATE) {
             redirect('comment/view', array('thread_id' => $comment->id));
         }
 
@@ -65,27 +72,27 @@ class ThreadController extends AppController
     public function edit()
     {
         $thread_id = Param::get('thread_id');
-        authorize_user_request($thread_id, 'thread');
+        authorize_user_request($thread_id, self::AUTH_THREAD_EDIT);
 
-        $thread = new Thread();
+        $thread  = new Thread();
         $comment = new Comment();
 
-        $thread->id = $thread_id;
-        $thread->title = Param::get('title');
+        $thread->id       = $thread_id;
+        $thread->title    = Param::get('title');
         $thread->category = Param::get('category');
-        $comment->id = Comment::getIdByThreadId($thread->id);
-        $comment->body = Param::get('body');
+        $comment->id      = Comment::getIdByThreadId($thread->id);
+        $comment->body    = Param::get('body');
 
         try {
             $thread->edit($comment);
         } catch (ValidationException $e) {
-            $_SESSION['old_thread'] = (array)$thread;
+            $_SESSION['old_thread']  = (array)$thread;
             $_SESSION['old_comment'] = (array)$comment;
         }
 
         $page_to_go = Param::get('page');
 
-        if($page_to_go === self::PROFILE_PAGE) {
+        if ($page_to_go === self::PROFILE_PAGE) {
             redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
@@ -95,7 +102,7 @@ class ThreadController extends AppController
     public function delete()
     {
         $thread_id = Param::get('thread_id');
-        authorize_user_request($thread_id, 'thread');
+        authorize_user_request($thread_id, self::AUTH_THREAD_DELETE);
 
         try {
             Thread::delete($thread_id);
@@ -105,7 +112,7 @@ class ThreadController extends AppController
 
         $page_to_go = Param::get('page');
 
-        if($page_to_go === self::PROFILE_PAGE) {
+        if ($page_to_go === self::PROFILE_PAGE) {
             redirect('user/profile', array("user_id" => $_SESSION['userid']));
         }
 
@@ -131,7 +138,7 @@ class ThreadController extends AppController
         $page = Param::get('page');
         $user_id = Param::get('user_id');
 
-        if($page) {
+        if ($page) {
             redirect($page, array('user_id' => $user_id));
         }
 

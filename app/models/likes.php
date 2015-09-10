@@ -10,7 +10,9 @@ class Likes extends AppModel
             $comment_id,
             $session_user
         );
-        return $db->row("SELECT * FROM likes WHERE comment_id = ? AND user_id = ?", $params);
+        return $db->row("SELECT * FROM likes WHERE comment_id = ? AND user_id = ?",
+            $params
+        );
     }
 
     public static function setLike($comment_id, $session_user)
@@ -18,7 +20,7 @@ class Likes extends AppModel
         $db = DB::conn();
         $params = array(
             'comment_id' => $comment_id,
-            'user_id' => $session_user
+            'user_id'    => $session_user
         );
         $db->insert(self::TABLE_NAME, $params);
     }

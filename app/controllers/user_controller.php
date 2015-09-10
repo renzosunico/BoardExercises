@@ -19,14 +19,14 @@ class UserController extends AppController
         $page = Param::get('page_next','registration');
         $user = new User();
 
-        switch($page) {
+        switch ($page) {
             case self::REGISTRATION_PAGE:
                 break;
             case self::SUCCESS_REGISTRATION_PAGE:
-                $user->fname = Param::get('fname');
-                $user->lname = Param::get('lname');
+                $user->fname    = Param::get('fname');
+                $user->lname    = Param::get('lname');
                 $user->username = Param::get('username');
-                $user->email = Param::get('email');
+                $user->email    = Param::get('email');
                 $user->password = Param::get('password');
                 $user->confirmpassword = Param::get('repassword');
                 try {
@@ -61,9 +61,9 @@ class UserController extends AppController
             case self::LOGIN_SUCCESS_PAGE:
                 $user->username = $clean_username;
                 $user->password = $clean_hashed_password;
-                $isAuthorized = $user->isRegistered();
+                $isAuthorized   = $user->isRegistered();
                 
-                if(!$isAuthorized) {
+                if (!$isAuthorized) {
                     $page = self::LOGIN_PAGE;
                 } else {
                     $_SESSION['username'] = $clean_username;
@@ -93,7 +93,7 @@ class UserController extends AppController
         $user->getProfile();
         $user->is_user = $user->isUser($_SESSION['userid']);
 
-        if(!isset($user->username)) {
+        if (!isset($user->username)) {
             redirect('notfound/pagenotfound');
         }
 
@@ -116,25 +116,24 @@ class UserController extends AppController
         $process = Param::get('process', 'edit');
         $user = new User();
 
-        switch($process) {
+        switch ($process) {
             case self::EDIT_ACCOUNT:
-                $user->id = $_SESSION['userid'];
-                $user->fname = Param::get('firstname');
-                $user->lname = Param::get('lastname');
+                $user->id           = $_SESSION['userid'];
+                $user->fname        = Param::get('firstname');
+                $user->lname        = Param::get('lastname');
                 $user->new_username = Param::get('username');
-                $user->new_email = Param::get('email');
+                $user->new_email    = Param::get('email');
                 try {
                     $user->updateAccount();
                     $_SESSION['username'] = $user->new_username;
-                    $user->editSuccess = true; 
+                    $user->editSuccess    = true; 
                 } catch(ValidationException $e) {
-
                 }
                 break;
             case self::EDIT_PROFILE:
-                $user->id = $_SESSION['userid'];
-                $user->company = Param::get('company');
-                $user->division = Param::get('division');
+                $user->id             = $_SESSION['userid'];
+                $user->company        = Param::get('company');
+                $user->division       = Param::get('division');
                 $user->specialization = Param::get('specialization');
                 try {
                     $user->updateProfile();
@@ -156,7 +155,7 @@ class UserController extends AppController
                 }
                 //Unset username so it won't be included in validation
                 unset($user->username);
-                $user->password = htmlentities(Param::get('password'));
+                $user->password        = htmlentities(Param::get('password'));
                 $user->confirmpassword = htmlentities(Param::get('confirmPassword'));
 
                 try {
