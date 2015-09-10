@@ -22,6 +22,12 @@ class Likes extends AppModel
             'comment_id' => $comment_id,
             'user_id'    => $session_user
         );
+
+        $search = $db->search(self::TABLE_NAME,
+            'comment_id = ? AND user_id = ?',
+            array($thread_id, $user_id)
+        );
+
         $db->insert(self::TABLE_NAME, $params);
     }
 
