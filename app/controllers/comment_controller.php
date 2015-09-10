@@ -4,7 +4,7 @@ class CommentController extends AppController
     CONST MAX_ITEM_PER_PAGE = 10;
     CONST SORT_TYPE_COMMENT = 'comment';
     CONST CURRENT_PAGE_WRITE = 'write';
-    CONST REDER_PAGE_AFTER_WRITE = 'write_end';
+    CONST RENDER_PAGE_AFTER_WRITE = 'write_end';
     CONST METHOD_LIKE = 'like';
     CONST METHOD_UNLIKE = 'unlike';
 
@@ -48,7 +48,7 @@ class CommentController extends AppController
         switch($page) {
             case self::CURRENT_PAGE_WRITE:
                 break;
-            case self::REDER_PAGE_AFTER_WRITE:
+            case self::RENDER_PAGE_AFTER_WRITE:
                 $comment->id = $thread->id;
                 $comment->user_id = User::getIdByUsername($_SESSION['username']);
                 $comment->body = Param::get('body');
