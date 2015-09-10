@@ -68,6 +68,7 @@ class UserController extends AppController
                 } else {
                     $_SESSION['username'] = $clean_username;
                     $_SESSION['userid'] = User::getIdByUsername($clean_username);
+                    redirect('user/login_end');
                 }
                 break;
             default :
@@ -177,5 +178,10 @@ class UserController extends AppController
         
         $user->getProfile();
         $this->set(get_defined_vars());
+    }
+
+    public function login_end()
+    {
+        
     }
 }

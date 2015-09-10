@@ -80,7 +80,7 @@ class Comment extends AppModel
         $db = DB::conn();
         return $db->value(
             sprintf("SELECT id FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
-            $thread_id
+            array($thread_id)
         );
     }
 

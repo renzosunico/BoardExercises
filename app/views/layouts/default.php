@@ -28,7 +28,9 @@
 
             <div class="collapse navbar-collapse navbar-right" id="buttontoggle">
               <ul class="nav navbar-nav">
-                <?php if(isset($page) && (!preg_match('/(registration)|^(login)$/',$page))): ?>
+                <?php if(preg_match('/(registration|user\/login)/', $_SERVER['REQUEST_URI'])): ?>
+                  <?php redirect_to_index() ?>
+                <?php else: ?>
                   <?php redirect_to_login() ?>
                 <?php endif ?>
 
