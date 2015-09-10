@@ -2,7 +2,6 @@
 class CommentController extends AppController
 {
     CONST MAX_ITEM_PER_PAGE         = 10;
-    CONST SORT_TYPE_COMMENT         = 'comment';
     CONST CURRENT_PAGE_WRITE        = 'write';
     CONST RENDER_PAGE_AFTER_WRITE   = 'write_end';
     CONST METHOD_LIKE               = 'like';
@@ -31,12 +30,7 @@ class CommentController extends AppController
 
         $comment->getUserAttributes($comments, $_SESSION['userid']);
 
-        $sort = Param::get('sort');
-        if ($sort === self::SORT_TYPE_COMMENT) {
-            usort($comments, function($a , $b) {
-                return $b->likecount - $a->likecount;
-            });
-        }
+        Comment::sortByLikes($comments, Param::get('sort'));
 
         $total = Comment::countAll();
         $pages = ceil($total / self::MAX_ITEM_PER_PAGE);

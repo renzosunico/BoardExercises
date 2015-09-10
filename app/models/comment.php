@@ -1,10 +1,11 @@
 <?php
 class Comment extends AppModel
 {
-    CONST FIRST_COMMENT   = 1;
-    CONST MIN_BODY_LENGTH = 1;
-    CONST MAX_BODY_LENGTH = 200;
-    CONST TABLE_NAME      = 'comment';
+    CONST FIRST_COMMENT     = 1;
+    CONST MIN_BODY_LENGTH   = 1;
+    CONST MAX_BODY_LENGTH   = 200;
+    CONST TABLE_NAME        = 'comment';
+    CONST SORT_TYPE_COMMENT = 'comment';
 
     public $validation = array(
         'body'       => array(
@@ -143,4 +144,13 @@ class Comment extends AppModel
             $comment->is_liked  = Likes::isLiked($comment->id, $session_user);
         }
     }
-} 
+
+    public static function sortByLikes(&$comments, $sort)
+    {
+        if ($sort === self::SORT_TYPE_COMMENT) {
+            usort($comments, function($a , $b) {
+                return $b->likecount - $a->likecount;
+            });
+        }
+    }
+}
