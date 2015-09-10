@@ -18,13 +18,20 @@
                     <?php encode_quotes($old_thread->validation['title']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
+            <?php if(!empty($old_thread->validation_errors['title']['chars'])): ?>
+                <div><em>Title</em> cannot be spaces only.
+                </div>
+            <?php endif ?>
             <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
                 <div><em>Comment</em> must be between
                     <?php encode_quotes($old_comment->validation['body']['length'][1]) ?> and
                     <?php encode_quotes($old_comment->validation['body']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
-
+            <?php if(!empty($old_comment->validation_errors['body']['chars'])): ?>
+                <div><em>Comment</em> cannot be spaces only.
+                </div>
+            <?php endif ?>
             <?php if(!empty($old_thread->validation_errors['category']['content'])): ?>
                 <div>
                     <em>Category</em> is required.
@@ -33,7 +40,7 @@
         </div>
       </div>
     </div>
-<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread']); ?>
+<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_comment']); ?>
 
 <?php if(array_key_exists('deleteHasError', $_SESSION)): ?>
 <div class="row">

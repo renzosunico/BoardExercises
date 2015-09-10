@@ -17,10 +17,20 @@
                 </div>
             <?php endif ?>
 
+            <?php if(!empty($thread->validation_errors['title']['chars'])): ?>
+                <div><em>Title</em> cannot be spaces only.
+                </div>
+            <?php endif ?>
+
             <?php if(!empty($comment->validation_errors['body']['length'])): ?>
                 <div><em>Comment</em> must be between
                     <?php encode_quotes($comment->validation['body']['length'][1]) ?> and
                     <?php encode_quotes($comment->validation['body']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+
+            <?php if(!empty($comment->validation_errors['body']['chars'])): ?>
+                <div><em>Comment</em> cannot be spaces only.
                 </div>
             <?php endif ?>
 

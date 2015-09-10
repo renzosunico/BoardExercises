@@ -9,6 +9,7 @@ class Comment extends AppModel
     public $validation = array(
         'body'       => array(
             'length' => array('validate_between', self::MIN_BODY_LENGTH, self::MAX_BODY_LENGTH),
+            'chars'  => array('validate_space_only'),
         ),
     );
 

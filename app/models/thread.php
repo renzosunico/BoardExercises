@@ -8,6 +8,7 @@ class Thread extends AppModel
     public $validation  =  array(
         'title'         => array(
             'length'    => array('validate_between', self::MIN_TITLE_LENGTH, self::MAX_TITLE_LENGTH),
+            'chars'     => array('validate_space_only'),
         ),
         'category'      => array(
             'content'   => array('validate_content'),

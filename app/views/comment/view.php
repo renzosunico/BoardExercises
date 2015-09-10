@@ -1,24 +1,3 @@
-<?php 
-    if(isset($_SESSION['old_comment'])) {
-        $old_comment = new Comment($_SESSION['old_comment']);
-    }
-?>
-<?php if(isset($old_comment) && $old_comment->hasError()): ?>
-    <div class="row">
-      <div class="col-xs-12">
-        <div class="alert alert-danger">
-            <h4 class="alert-heading">Warning!</h4>
-            <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
-                <div><em>Comment</em> must be between
-                    <?php encode_quotes($old_comment->validation['body']['length'][1]) ?> and
-                    <?php encode_quotes($old_comment->validation['body']['length'][2]) ?> characters in length.
-                </div>
-            <?php endif ?>
-        </div>
-      </div>
-    </div>
-<?php endif; unset($_SESSION['old_comment']); ?>
-
 <div class="row">
     <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
         <h1 class="title"><?php encode_quotes($thread->title) ?></h1>
@@ -30,7 +9,6 @@
         $old_comment = new Comment($_SESSION['old_comment']);
     }
 ?>
-
 <?php if(isset($old_comment) && $old_comment->hasError()): ?>
     <div class="row">
       <div class="col-xs-12">
@@ -42,10 +20,16 @@
                     <?php encode_quotes($old_comment->validation['body']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
+            <?php if(!empty($old_comment->validation_errors['body']['chars'])): ?>
+                <div><em>Comment</em> cannot be spaces only.
+                </div>
+            <?php endif ?>
         </div>
       </div>
     </div>
 <?php endif; unset($_SESSION['old_comment']); ?>
+
+
 
 <?php
     if(isset($_SESSION['delete_error'])): 

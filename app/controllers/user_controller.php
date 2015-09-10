@@ -109,9 +109,7 @@ class UserController extends AppController
 
         $threads_created = Thread::getByUserId($user->id);
 
-        foreach ($threads_created as $thread) {
-            $thread->username = User::getUsernameById($thread->user_id);
-        }
+        Thread::getUsernameComment($threads_created);
 
         $this->set(get_defined_vars());
     }
