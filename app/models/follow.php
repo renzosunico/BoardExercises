@@ -37,7 +37,7 @@ class Follow extends AppModel
             $thread_id,
             $_SESSION['userid']
         );
-        return $db->row("SELECT * FROM follow where thread_id=? AND user_id=?",$params);
+        return $db->row("SELECT * FROM follow where thread_id=? AND user_id=?", $params);
     }
 
 }

@@ -16,7 +16,7 @@ function readable_text($no_br_string)
     return $no_br_string;
 }
 
-function redirect($url,$params = array())
+function redirect($url, $params = array())
 {
     header("Location: " . url($url, $params));
     die();

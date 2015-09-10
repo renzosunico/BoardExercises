@@ -85,7 +85,7 @@ class User extends AppModel
         );
 
         $db = DB::conn();
-        $db->insert('user',$params);
+        $db->insert('user', $params);
     }
 
     public static function isValidUsernameEmail($value, $type)
