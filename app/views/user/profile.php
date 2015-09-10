@@ -93,15 +93,15 @@
     <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
       <div class="well well-large">
         <div class="page-header">
-          <?php if($user->isUser()): ?>
+          <?php if($user->is_user): ?>
               <h1>Threads<small> you are following:</small></h1>
           <?php else: ?>
               <h1>Threads<small> <?php encode_quotes($user->fname) ?> is following:</small></h1>
           <?php endif ?>
         </div>
-        <?php if($user->isUser() && !$user->hasThreadFollowed()): ?>
+        <?php if($user->is_user && !$user->hasThreadFollowed()): ?>
           <h4>You are not following any threads. </h1>
-        <?php elseif(!$user->isUser() && !$user->hasThreadFollowed()): ?>
+        <?php elseif(!$user->is_user && !$user->hasThreadFollowed()): ?>
           <h4><?php encode_quotes($user->fname) ?> is not following any threads.</h4>
         <?php endif ?>
       </div>
@@ -116,8 +116,8 @@
             </div>
             <div class="panel-footer">
                 <label class="tag"><span class="glyphicon glyphicon-tag"></span> <?php encode_quotes($thread->category_name) ?></label>
-                  <?php if(!$thread->isAuthor()): ?>
-                    <?php if(!Follow::isFollowed($thread->id)): ?>
+                  <?php if(!$thread->is_author): ?>
+                    <?php if(!$thread->is_followed): ?>
                         <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "follow", 'page' => "user/profile", 'user_id' => "$user->id"))) ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-bookmark"></span> Follow</a>
                     <?php else: ?>
                         <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "unfollow", 'page' => "user/profile", 'user_id' => "$user->id"))) ?>" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-minus-sign"></span> Unfollow</a>
@@ -133,15 +133,15 @@
   <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
     <div class="well well-large">
       <div class="page-header">
-        <?php if($user->isUser()): ?>
+        <?php if($user->is_user): ?>
           <h1>Threads<small> you created:</small></h1>
         <?php else: ?>
           <h1>Threads<small> <?php encode_quotes($user->fname) ?> has created:</small></h1>
         <?php endif ?>
       </div>
-      <?php if($user->isUser() && !Thread::hasThread($user->id)): ?>
+      <?php if($user->is_user && !Thread::hasThread($user->id)): ?>
         <h4>You do not have any threads. </h4>
-      <?php elseif(!$user->isUser() && !Thread::hasThread($user->id)): ?>
+      <?php elseif(!$user->is_user && !Thread::hasThread($user->id)): ?>
         <h4><?php encode_quotes($user->fname) ?> has no threads yet. </h4>
       <?php endif ?>
     </div>
@@ -157,7 +157,7 @@
             </div>
             <div class="panel-footer">
                 <label class="tag"><span class="glyphicon glyphicon-tag"></span> <?php encode_quotes($thread->category_name) ?></label>
-                <?php if($thread->isAuthor()): ?>
+                <?php if($thread->is_author): ?>
                     <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font" > </span> Edit</button>
                     <div class="modal" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                       <div class="modal-dialog" role="document">

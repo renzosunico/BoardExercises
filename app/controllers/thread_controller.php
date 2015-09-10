@@ -18,7 +18,7 @@ class ThreadController extends AppController
         $threads = Thread::getAll($pagination->start_index - 1, $pagination->count + 1, $sort_method);
         $pagination->checkLastPage($threads);
 
-        Thread::getUsernameComment($threads);
+        Thread::getAttributes($threads, $_SESSION['userid']);
 
         $trending_threads = Thread::getTrending();
         Thread::getTrendTitle($trending_threads);

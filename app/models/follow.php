@@ -30,12 +30,12 @@ class Follow extends AppModel
         return $db->row("SELECT * FROM follow WHERE user_id = ?", array($user_id));
     }
 
-    public static function isFollowed($thread_id)
+    public static function isFollowed($thread_id, $session_user)
     {
         $db = DB::conn();
         $params = array(
             $thread_id,
-            $_SESSION['userid']
+            $session_user
         );
         return $db->row("SELECT * FROM follow WHERE thread_id=? AND user_id=?", $params);
     }

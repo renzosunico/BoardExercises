@@ -94,16 +94,16 @@ class Comment extends AppModel
         $db = DB::conn();
         $db->query(
             "UPDATE comment SET body=?, last_modified=NOW() WHERE id=? AND user_id = ?",
-            array($this->body, $this->id, $_SESSION['userid'])
+            array($this->body, $this->id, $this->user_id)
         );
     }
 
-    public function isAuthor()
+    public function isAuthor($session_user)
     {
         $db = DB::conn();
         $params = array(
             $this->id,
-            $_SESSION['userid']
+            $session_user
         );
         return $db->search('comment', 'id = ? AND user_id = ?', $params);
     }
@@ -113,10 +113,9 @@ class Comment extends AppModel
         $db = DB::conn();
         $params = array(
             $comment_id,
-            $_SESSION['userid'],
             $thread_id
         );
-        $db->query("DELETE FROM comment WHERE id = ? AND user_id = ? AND $thread_id = ?", $params);
+        $db->query("DELETE FROM comment WHERE id = ? AND $thread_id = ?", $params);
     }
 
     public static function getAuthorById($id)
@@ -125,11 +124,13 @@ class Comment extends AppModel
         return $db->value("SELECT user_id FROM comment WHERE id=?", array($id));
     }
 
-    public function getUserAttributes($comments)
+    public function getUserAttributes($comments, $session_user)
     {
         foreach ($comments as $comment) {
             $comment->username = User::getUsernameById($comment->user_id);
             $comment->likecount = Likes::countLike($comment->id);
+            $comment->is_author = $comment->isAuthor($session_user);
+            $comment->is_liked = Likes::isLiked($comment->id, $session_user);
         }
     }
 } 

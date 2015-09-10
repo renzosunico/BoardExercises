@@ -110,9 +110,9 @@ class Thread extends AppModel
         $db->query("DELETE FROM thread where id = ?", array($thread_id));
     }
 
-    public function isAuthor()
+    public function isAuthor($session_user)
     {
-        return $this->user_id === $_SESSION['userid'];
+        return $this->user_id === $session_user;
     }
 
     public static function hasThread($user_id)
@@ -150,11 +150,13 @@ class Thread extends AppModel
         return $db->value("SELECT title FROM thread WHERE id = ?", array($thread_id));
     }
 
-    public static function getUsernameComment($threads)
+    public static function getAttributes($threads, $session_user)
     {
         foreach ($threads as $thread) {
             $thread->username = User::getUsernameById($thread->user_id);
             $thread->comment = Comment::getByThreadId($thread->id);
+            $thread->is_author = $thread->isAuthor($session_user);
+            $thread->is_followed = Follow::isFollowed($thread->id, $session_user);
         }
     }
 

@@ -3,32 +3,32 @@ class Likes extends AppModel
 {
     CONST TABLE_NAME = 'likes';
 
-    public static function isLiked($thread_id)
-    {
-        $db = DB::conn();
-        $params = array(
-            $thread_id,
-            $_SESSION['userid']
-        );
-        return $db->row("SELECT * FROM likes WHERE comment_id = ? AND user_id = ?", $params);
-    }
-
-    public static function setLike($comment_id)
-    {
-        $db = DB::conn();
-        $params = array(
-            'comment_id' => $comment_id,
-            'user_id' => $_SESSION['userid']
-        );
-        $db->insert(self::TABLE_NAME, $params);
-    }
-
-    public static function unsetLike($comment_id)
+    public static function isLiked($comment_id, $session_user)
     {
         $db = DB::conn();
         $params = array(
             $comment_id,
-            $_SESSION['userid']
+            $session_user
+        );
+        return $db->row("SELECT * FROM likes WHERE comment_id = ? AND user_id = ?", $params);
+    }
+
+    public static function setLike($comment_id, $session_user)
+    {
+        $db = DB::conn();
+        $params = array(
+            'comment_id' => $comment_id,
+            'user_id' => $session_user
+        );
+        $db->insert(self::TABLE_NAME, $params);
+    }
+
+    public static function unsetLike($comment_id, $session_user)
+    {
+        $db = DB::conn();
+        $params = array(
+            $comment_id,
+            $session_user
         );
         $db->query("DELETE FROM likes WHERE comment_id = ? AND user_id = ?", $params);
 

@@ -139,9 +139,9 @@ class User extends AppModel
         }
     }
 
-    public function isUser()
+    public function isUser($session_user)
     {
-        return $this->id === $_SESSION['userid'];
+        return $this->id === $session_user;
     }
 
     public function hasThreadFollowed()
@@ -226,6 +226,13 @@ class User extends AppModel
     {
         $db = DB::conn();
         return $db->row("SELECT username, email FROM user WHERE id = ?", array($user_id));
+    }
+
+    public static function getFollowedThreadsById(&$thread_ids, &$threads_followed)
+    {
+        foreach($thread_ids as $thread) {
+            $threads_followed[] = Thread::getById($thread['thread_id']);
+        }
     }
 
 }

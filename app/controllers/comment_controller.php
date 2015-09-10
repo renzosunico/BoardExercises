@@ -21,7 +21,7 @@ class CommentController extends AppController
         $comments = $comment->getAll($pagination->start_index-1, $pagination->count+1, $thread->id, $filter_username);
         $pagination->checkLastPage($comments);
 
-        $comment->getUserAttributes($comments);
+        $comment->getUserAttributes($comments, $_SESSION['userid']);
 
         $sort = Param::get('sort');
 
@@ -74,10 +74,10 @@ class CommentController extends AppController
         
         switch($process) {
             case self::METHOD_LIKE:
-                Likes::setLike($comment_id);
+                Likes::setLike($comment_id, $_SESSION['userid']);
                 break;
             case self::METHOD_UNLIKE:
-                Likes::unsetLike($comment_id);
+                Likes::unsetLike($comment_id, $_SESSION['userid']);
                 break;
             default:
                 redirect('notfound/pagenotfound');
@@ -91,6 +91,7 @@ class CommentController extends AppController
         $thread_id = Param::get('thread_id');
         $comment = new Comment();
         $comment->id = Param::get('comment_id');
+        $comment->user_id = $_SESSION['userid'];
         $comment->body = Param::get('body');
 
         authorize_user_request($comment->id, 'comment');

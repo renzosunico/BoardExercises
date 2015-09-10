@@ -91,6 +91,7 @@ class UserController extends AppController
         $user = new User();
         $user->id = Param::get('user_id');
         $user->getProfile();
+        $user->is_user = $user->isUser($_SESSION['userid']);
 
         if(!isset($user->username)) {
             redirect('notfound/pagenotfound');
@@ -99,17 +100,13 @@ class UserController extends AppController
         $threads_followed = array();
         $thread_followed_id = Follow::getFollowedThreadIds($user->id);
 
-        foreach($thread_followed_id as $thread) {
-            $threads_followed[] = Thread::getById($thread['thread_id']);
-        }
+        User::getFollowedThreadsById($thread_followed_id, $threads_followed);
 
-        foreach ($threads_followed as $thread) {
-            $thread->username = User::getUsernameById($thread->user_id);
-        }
+        Thread::getAttributes($threads_followed, $_SESSION['userid']);
 
         $threads_created = Thread::getByUserId($user->id);
 
-        Thread::getUsernameComment($threads_created);
+        Thread::getAttributes($threads_created, $_SESSION['userid']);
 
         $this->set(get_defined_vars());
     }

@@ -94,7 +94,7 @@
                 </div>
                 <div class="panel-footer">
                     <span class="tag label label-default"><span class="glyphicon glyphicon-tag"></span> <?php encode_quotes($thread->category_name) ?></span>
-                    <?php if($thread->isAuthor()): ?>
+                    <?php if($thread->is_author): ?>
                         <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font" > </span> Edit</button>
                         <div class="modal" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                           <div class="modal-dialog" role="document">
@@ -166,8 +166,8 @@
                     </div>
                     <?php endif ?>
 
-                    <?php if(!$thread->isAuthor()): ?>
-                        <?php if(!Follow::isFollowed($thread->id)): ?>
+                    <?php if(!$thread->is_author): ?>
+                        <?php if(!$thread->is_followed): ?>
                             <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "follow"))) ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-bookmark"></span> Follow</a>
                         <?php else: ?>
                             <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "unfollow"))) ?>" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-minus-sign"></span> Unfollow</a>

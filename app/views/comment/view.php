@@ -138,7 +138,7 @@
                             </label>
                         <?php endif ?>
 
-                        <?php if(!Likes::isLiked($comment->id)): ?>
+                        <?php if(!$comment->is_liked): ?>
                             <a class="btn btn-default btn-xs btn-info" href="<?php encode_quotes(url('comment/like', array('thread_id' => $thread->id, 'comment_id' => $comment->id, 'process' => 'like'))) ?>">
                                 <span class="glyphicon glyphicon-hand-right"></span> Like
                             </a>
@@ -149,7 +149,7 @@
                         <?php endif ?>
                     </div>
                     <div class="col-xs-6 text-right">
-                        <?php if($comment->isAuthor()): ?>
+                        <?php if($comment->is_author): ?>
                             <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($comment->id) ?>">
                               <span class="glyphicon glyphicon-font"></span> Edit
                             </button>
