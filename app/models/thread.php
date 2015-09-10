@@ -31,7 +31,7 @@ class Thread extends AppModel
         $threads = array();
         $db = DB::conn();
         $rows = $db->rows(sprintf("SELECT * FROM thread ORDER BY %s LIMIT %d,%d ",
-                                                        $order, $offset, $limit)
+            $order, $offset, $limit)
         );
 
         foreach($rows as $row) {

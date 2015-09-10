@@ -64,7 +64,7 @@ class Comment extends AppModel
         );
 
         $db = DB::conn();
-        $db->insert(self::TABLE,$params);
+        $db->insert(self::TABLE, $params);
     }
 
     public static function getByThreadId($thread_id)
