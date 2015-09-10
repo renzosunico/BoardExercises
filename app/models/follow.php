@@ -1,7 +1,7 @@
 <?php
 class Follow extends AppModel
 {
-    CONST TABLE = 'follow';
+    CONST TABLE_NAME = 'follow';
     public static function unsetFollow($thread_id, $user_id)
     {
         $db = DB::conn();
@@ -15,7 +15,7 @@ class Follow extends AppModel
             'thread_id'     =>  $thread_id,
             'user_id'       =>  $user_id
         );
-        $db->insert(self::TABLE, $params);
+        $db->insert(self::TABLE_NAME, $params);
     }
 
     public static function getFollowedThreadIds($user_id)

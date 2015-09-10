@@ -2,6 +2,7 @@
 class Thread extends AppModel
 {
     CONST TREND_LIMIT = 10;
+    CONST TABLE_NAME = 'thread';
     CONST MIN_TITLE_LENGTH = 1;
     CONST MAX_TITLE_LENGTH = 30;
 
@@ -64,7 +65,7 @@ class Thread extends AppModel
                 'user_id'       =>      $this->user_id,
                 'category_name' =>      $this->category
             );
-            $db->insert('thread', $params);
+            $db->insert(self::TABLE_NAME, $params);
             $comment->id = $db->lastInsertId();
             $comment->write();
             $db->commit();
@@ -93,7 +94,6 @@ class Thread extends AppModel
             $comment->edit();
             $db->commit();
         } catch (PDOException $e) {
-            echo $e; die();
             $db->rollback();
         }
     }

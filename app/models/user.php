@@ -18,7 +18,7 @@ class User extends AppModel
     CONST TYPE_EMAIL                = 'email';
     CONST TYPE_USERNAME             = 'username';
     CONST HASH_TYPE                 = '$2a$11$';
-    CONST TABLE                     = 'user';
+    CONST TABLE_NAME                     = 'user';
 
     public $validation = array(
         'fname'           => array(
@@ -94,11 +94,11 @@ class User extends AppModel
         switch($type) {
             case self::TYPE_USERNAME:
                 if($value) {
-                    return count($db->search(self::TABLE,'username=?',array($value))) == 0;
+                    return count($db->search(self::TABLE_NAME, 'username=?', array($value))) == 0;
                 }
             case self::TYPE_EMAIL:
                 if($value) {
-                    return count($db->search(self::TABLE,'email=?',array($value))) == 0;
+                    return count($db->search(self::TABLE_NAME, 'email=?', array($value))) == 0;
                 }
         }
 
@@ -166,7 +166,7 @@ class User extends AppModel
             'id' => $this->id
         );
         try {
-            $db->update(self::TABLE, $params, $where);    
+            $db->update(self::TABLE_NAME, $params, $where);    
         } catch (PDOException $e) {
 
         }
@@ -189,7 +189,7 @@ class User extends AppModel
             'id' => $this->id
         );
         try {
-            $db->update(self::TABLE, $params, $where);    
+            $db->update(self::TABLE_NAME, $params, $where);    
         } catch (PDOException $e) {
 
         }
@@ -216,7 +216,7 @@ class User extends AppModel
         );
 
         try {
-            $db->update(self::TABLE, $params, $where);    
+            $db->update(self::TABLE_NAME, $params, $where);    
         } catch (PDOException $e) {
 
         }

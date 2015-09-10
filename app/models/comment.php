@@ -4,7 +4,7 @@ class Comment extends AppModel
     CONST FIRST_COMMENT   = 1;
     CONST MIN_BODY_LENGTH = 1;
     CONST MAX_BODY_LENGTH = 200;
-    CONST TABLE           = 'comment';
+    CONST TABLE_NAME      = 'comment';
 
     public $validation = array(
         'body'       => array(
@@ -64,7 +64,7 @@ class Comment extends AppModel
         );
 
         $db = DB::conn();
-        $db->insert(self::TABLE, $params);
+        $db->insert(self::TABLE_NAME, $params);
     }
 
     public static function getByThreadId($thread_id)
