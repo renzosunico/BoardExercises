@@ -5,7 +5,7 @@ class Follow extends AppModel
     public static function unsetFollow($thread_id, $user_id)
     {
         $db = DB::conn();
-        $db->query("DELETE FROM follow where thread_id = ? AND user_id = ?", array($thread_id, $user_id));
+        $db->query("DELETE FROM follow WHERE thread_id = ? AND user_id = ?", array($thread_id, $user_id));
     }
 
     public static function setFollow($thread_id, $user_id)
@@ -27,7 +27,7 @@ class Follow extends AppModel
     public static function getFollowedThreadByUserId($user_id)
     {
         $db = DB::conn();
-        return $db->row("SELECT * FROM follow where user_id = ?", array($user_id));
+        return $db->row("SELECT * FROM follow WHERE user_id = ?", array($user_id));
     }
 
     public static function isFollowed($thread_id)
@@ -37,7 +37,7 @@ class Follow extends AppModel
             $thread_id,
             $_SESSION['userid']
         );
-        return $db->row("SELECT * FROM follow where thread_id=? AND user_id=?", $params);
+        return $db->row("SELECT * FROM follow WHERE thread_id=? AND user_id=?", $params);
     }
 
 }

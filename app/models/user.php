@@ -119,7 +119,7 @@ class User extends AppModel
     public static function getIdByUsername($username)
     {
         $db = DB::conn();
-        return $db->value("SELECT id FROM user where username = ?", array($username));
+        return $db->value("SELECT id FROM user WHERE username = ?", array($username));
     }
 
     public static function getUsernameById($user_id)
@@ -225,7 +225,7 @@ class User extends AppModel
     public static function getUsernameEmailById($user_id)
     {
         $db = DB::conn();
-        return $db->row("SELECT username, email from user WHERE id = ?", array($user_id));
+        return $db->row("SELECT username, email FROM user WHERE id = ?", array($user_id));
     }
 
 }
