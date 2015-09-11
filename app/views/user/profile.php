@@ -102,7 +102,7 @@
           <h4><?php encode_quotes($user->fname) ?> is not following any threads.</h4>
         <?php endif ?>
       </div>
-      <?php foreach($threads_followed as $thread): ?>
+      <?php foreach($user->threads_followed as $thread): ?>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <p class="smallsize"> <?php echo "{$thread->username}"?></p>
@@ -143,7 +143,7 @@
       <?php endif ?>
     </div>
     
-      <?php foreach($threads_created as $thread): ?>
+      <?php foreach($user->threads_created as $thread): ?>
         <div class="panel panel-primary">
             <div class="panel-heading">
                 <p class="smallsize"> <?php echo "{$thread->username}"?></p>

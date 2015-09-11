@@ -173,7 +173,7 @@ class User extends AppModel
 
     public function isUser($session_user)
     {
-        return $this->id === $session_user;
+        $this->is_user = $this->id === $session_user;
     }
 
     public function hasThreadFollowed()
@@ -264,6 +264,24 @@ class User extends AppModel
         foreach($thread_ids as $thread) {
             $threads_followed[] = Thread::getById($thread['thread_id']);
         }
+    }
+
+    public function getFollowedThreads($session_user)
+    {
+        $this->threads_followed = array();
+        $followed_ids = Follow::getFollowedThreadIds($this->id);
+
+        foreach ($followed_ids as $thread) {
+            $this->threads_followed[] = Thread::getById($thread['thread_id']);
+        }
+
+        Thread::getAttributes($this->threads_followed, $session_user);
+    }
+
+    public function getCreatedThreads($session_user)
+    {        
+        $this->threads_created = Thread::getByUserId($this->id);
+        Thread::getAttributes($this->threads_created, $session_user);
     }
 
 }

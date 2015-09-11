@@ -91,23 +91,14 @@ class UserController extends AppController
         $user = new User();
         $user->id = Param::get('user_id');
         $user->getProfile();
-        $user->is_user = $user->isUser($_SESSION['userid']);
+        $user->isUser($_SESSION['userid']);
 
         if (!isset($user->username)) {
             redirect('notfound/pagenotfound');
         }
 
-        $threads_followed = array();
-        $thread_followed_id = Follow::getFollowedThreadIds($user->id);
-
-        User::getFollowedThreadsById($thread_followed_id, $threads_followed);
-
-        Thread::getAttributes($threads_followed, $_SESSION['userid']);
-
-        $threads_created = Thread::getByUserId($user->id);
-
-        Thread::getAttributes($threads_created, $_SESSION['userid']);
-
+        $user->getFollowedThreads($_SESSION['userid']);
+        $user->getCreatedThreads($_SESSION['userid']);
         $this->set(get_defined_vars());
     }
 
