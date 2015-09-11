@@ -17,7 +17,7 @@
         <nav class="navbar navbar-default navbar-fixed-top">
           <div class="container-fluid">
             <div class="navbar-header">
-              <a class="navbar-brand" href="#">My Classroom</a>
+              <a class="navbar-brand" href="<?php encode_quotes(url('thread/index')) ?>">My Classroom</a>
                   <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#buttontoggle" aria-expanded="false">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>

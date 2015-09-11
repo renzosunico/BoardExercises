@@ -1,6 +1,6 @@
     <div class="row">
         <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5 col-lg-offset-0 col-lg-4">
-            <h1><font color="white" style="font-family: 'Fjalla One', sans-serif;"> Create an account </font></h1>
+            <h1 class="title">Create an account</h1>
         </div>
     </div>
 <?php if($user->hasError()): ?>
