@@ -109,9 +109,9 @@ class UserController extends AppController
 
         switch ($process) {
             case self::EDIT_ACCOUNT:
-                $user->id           = $_SESSION['userid'];
-                $user->fname        = Param::get('firstname');
-                $user->lname        = Param::get('lastname');
+                $user->id = get_authenticated_user_id($_SESSION['userid']);
+                $user->fname = Param::get('firstname');
+                $user->lname = Param::get('lastname');
                 $user->new_username = Param::get('username');
                 $user->new_email    = Param::get('email');
                 try {
@@ -122,9 +122,9 @@ class UserController extends AppController
                 }
                 break;
             case self::EDIT_PROFILE:
-                $user->id             = $_SESSION['userid'];
-                $user->company        = Param::get('company');
-                $user->division       = Param::get('division');
+                $user->id = get_authenticated_user_id($_SESSION['userid']);
+                $user->company = Param::get('company');
+                $user->division = Param::get('division');
                 $user->specialization = Param::get('specialization');
                 try {
                     $user->updateProfile();
@@ -133,7 +133,7 @@ class UserController extends AppController
                 }
                 break;
             case self::EDIT_PASSWORD:
-                $user->id = $_SESSION['userid'];
+                $user->id = get_authenticated_user_id($_SESSION['userid']);
 
                 //set username and old password to password
                 //property to authenticate user
@@ -164,6 +164,7 @@ class UserController extends AppController
         $user->getProfile();
         $this->set(get_defined_vars());
     }
+
 
     public function login_end()
     {

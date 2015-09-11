@@ -48,7 +48,7 @@ class CommentController extends AppController
                 break;
             case self::RENDER_PAGE_AFTER_WRITE:
                 $comment->id      = $thread->id;
-                $comment->user_id = User::getIdByUsername($_SESSION['username']);
+                $comment->user_id = get_authenticated_user_id($_SESSION['userid']);
                 $comment->body    = Param::get('body');
                 try {
                     $comment->write();
@@ -69,13 +69,14 @@ class CommentController extends AppController
         $thread_id  = Param::get('thread_id');
         $comment_id = Param::get('comment_id');
         $process    = Param::get('process');
-        
+        $user_id    = get_authenticated_user_id($_SESSION['userid']);
+
         switch ($process) {
             case self::METHOD_LIKE:
-                Likes::setLike($comment_id, $_SESSION['userid']);
+                Likes::setLike($comment_id, $user_id);
                 break;
             case self::METHOD_UNLIKE:
-                Likes::unsetLike($comment_id, $_SESSION['userid']);
+                Likes::unsetLike($comment_id, $user_id);
                 break;
             default:
                 redirect('notfound/pagenotfound');
@@ -89,7 +90,7 @@ class CommentController extends AppController
         $thread_id        = Param::get('thread_id');
         $comment          = new Comment();
         $comment->id      = Param::get('comment_id');
-        $comment->user_id = $_SESSION['userid'];
+        $comment->user_id = get_authenticated_user_id($_SESSION['userid']);
         $comment->body    = Param::get('body');
 
         authorize_user_request($comment->id, self::AUTH_COMMENT_EDIT);

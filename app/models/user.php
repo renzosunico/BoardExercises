@@ -284,4 +284,15 @@ class User extends AppModel
         Thread::getAttributes($this->threads_created, $session_user);
     }
 
+    public static function getAuthenticatedId($user_id)
+    {
+        $db = DB::conn();
+        $row = $db->row("SELECT * FROM user WHERE id = ?", array($user_id));
+
+        if (!$row) {
+            throw new RecordNotFoundException();
+        } else {
+            return $row['id'];
+        }
+    }
 }
