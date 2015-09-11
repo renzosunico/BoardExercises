@@ -24,7 +24,7 @@ function redirect($url, $params = array())
 
 function redirect_to_login()
 {
-    if(!isset($_SESSION['username'])) {
+    if(!isset($_SESSION['username']) && $_SERVER['REQUEST_URI'] != '/') {
         redirect('user/login');
     }
 }

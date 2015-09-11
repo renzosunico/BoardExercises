@@ -12,14 +12,13 @@ class CommentController extends AppController
     public function view()
     {
         $thread = Thread::getById(Param::get('thread_id'));
-        $comment = new Comment();
 
         $page = Param::get('page', 1);
         $pagination = new SimplePagination($page, self::MAX_ITEM_PER_PAGE);
 
         $filter_username = htmlentities(Param::get('username'));
 
-        $comments = $comment->getAll(
+        $comments = Comment::getAll(
             $pagination->start_index-1,
             $pagination->count+1,
             $thread->id,
@@ -28,7 +27,7 @@ class CommentController extends AppController
 
         $pagination->checkLastPage($comments);
 
-        $comment->getUserAttributes($comments, $_SESSION['userid']);
+        Comment::getUserAttributes($comments, $_SESSION['userid']);
 
         Comment::sortByLikes($comments, Param::get('sort'));
 

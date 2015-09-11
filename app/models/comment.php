@@ -18,7 +18,7 @@ class Comment extends AppModel
         ),
     );
 
-    public function getAll($offset, $limit, $thread_id, $filter_username)
+    public static function getAll($offset, $limit, $thread_id, $filter_username)
     {
         $comments = array();
         $db = DB::conn();
@@ -135,7 +135,7 @@ class Comment extends AppModel
         return $db->value("SELECT user_id FROM comment WHERE id=?", array($id));
     }
 
-    public function getUserAttributes($comments, $session_user)
+    public static function getUserAttributes($comments, $session_user)
     {
         foreach ($comments as $comment) {
             $comment->username  = User::getUsernameById($comment->user_id);
