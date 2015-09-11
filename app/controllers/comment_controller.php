@@ -79,10 +79,10 @@ class CommentController extends AppController
                 Likes::unsetLike($comment_id, $user_id);
                 break;
             default:
-                redirect('notfound/pagenotfound');
+                redirect(NOT_FOUND_PAGE);
         }
 
-        redirect('comment/view', array('thread_id' => $thread_id));
+        redirect(VIEW_COMMENT_PAGE, array('thread_id' => $thread_id));
     }
 
     public function edit()
@@ -101,7 +101,7 @@ class CommentController extends AppController
             $_SESSION['old_comment'] = (array)$comment;
         }
 
-        redirect('comment/view', array('thread_id' => $thread_id));
+        redirect(VIEW_COMMENT_PAGE, array('thread_id' => $thread_id));
     }
 
     public function delete()
@@ -115,6 +115,6 @@ class CommentController extends AppController
             $_SESSION['delete_error'] = true;
         }
 
-        redirect('comment/view', array('thread_id' => $thread_id));
+        redirect(VIEW_COMMENT_PAGE, array('thread_id' => $thread_id));
     }
 }

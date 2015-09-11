@@ -30,7 +30,7 @@ function validate_existence($check, $type)
 
 function validate_content($check)
 {
-    return !trim($check);
+    return trim($check);
 }
 
 function confirm_password($check)

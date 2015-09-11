@@ -13,7 +13,7 @@ class UserController extends AppController
     public function registration()
     {
         if(isset($_SESSION['username'])) {
-            redirect('thread/index');
+            redirect(THREAD_PAGE);
         }
 
         $page = Param::get('page_next','registration');

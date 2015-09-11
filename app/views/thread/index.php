@@ -195,10 +195,7 @@
             <?php endforeach ?>
         </div>
     </div>
-</div>
-
-<?php if($pages > 1): ?>
-    <div class="row">
+    <?php if($pages > 1): ?>
         <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
             <div class="well">
                     <ul class="pagination pagination-centerted">
@@ -224,5 +221,5 @@
                     </ul>
             </div>
         </div>
-    </div>
-<?php endif ?>
+    <?php endif ?>
+</div>

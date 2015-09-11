@@ -65,7 +65,7 @@ class ThreadController extends AppController
         }
 
         if ($page === self::PAGE_AFTER_CREATE) {
-            redirect('comment/view', array('thread_id' => $comment->id));
+            redirect(VIEW_COMMENT_PAGE, array('thread_id' => $comment->id));
         }
 
         $this->set(get_defined_vars());
@@ -97,10 +97,10 @@ class ThreadController extends AppController
         $page_to_go = Param::get('page');
 
         if ($page_to_go === self::PROFILE_PAGE) {
-            redirect('user/profile', array("user_id" => $user_id));
+            redirect(PROFILE_PAGE, array("user_id" => $user_id));
         }
 
-        redirect('thread/index');
+        redirect(THREAD_PAGE);
     }
 
     public function delete()
@@ -118,10 +118,10 @@ class ThreadController extends AppController
         $page_to_go = Param::get('page');
 
         if ($page_to_go === self::PROFILE_PAGE) {
-            redirect('user/profile', array("user_id" => $user_id));
+            redirect(PROFILE_PAGE, array("user_id" => $user_id));
         }
 
-        redirect('thread/index');
+        redirect(THREAD_PAGE);
     }
 
     public function follow()
@@ -148,6 +148,6 @@ class ThreadController extends AppController
             redirect($page, array('user_id' => $user_id));
         }
 
-        redirect('thread/index');
+        redirect(THREAD_PAGE);
     }
 }
