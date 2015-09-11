@@ -1,7 +1,6 @@
 <?php
 class Comment extends AppModel
 {
-    CONST FIRST_COMMENT     = 1;
     CONST MIN_BODY_LENGTH   = 1;
     CONST MAX_BODY_LENGTH   = 200;
     CONST TABLE_NAME        = 'comment';
@@ -77,10 +76,7 @@ class Comment extends AppModel
     public static function getByThreadId($thread_id)
     {
         $db = DB::conn();
-        return $db->row(
-            sprintf("SELECT * FROM comment WHERE thread_id = ? LIMIT %d",
-                self::FIRST_COMMENT
-            ),
+        return $db->row("SELECT * FROM comment WHERE thread_id = ?",
             array($thread_id)
         );
     }
@@ -88,10 +84,7 @@ class Comment extends AppModel
     public static function getIdByThreadId($thread_id)
     {
         $db = DB::conn();
-        return $db->value(
-            sprintf("SELECT id FROM comment WHERE thread_id = ? LIMIT %d",
-                self::FIRST_COMMENT
-            ),
+        return $db->value("SELECT id FROM comment WHERE thread_id = ?",
             array($thread_id)
         );
     }
