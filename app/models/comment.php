@@ -1,10 +1,11 @@
 <?php
 class Comment extends AppModel
 {
-    CONST MIN_BODY_LENGTH   = 1;
-    CONST MAX_BODY_LENGTH   = 200;
-    CONST TABLE_NAME        = 'comment';
-    CONST SORT_TYPE_COMMENT = 'comment';
+    const TREND_LIMIT = 10;
+    const MIN_BODY_LENGTH   = 1;
+    const MAX_BODY_LENGTH   = 200;
+    const TABLE_NAME        = 'comment';
+    const SORT_TYPE_COMMENT = 'comment';
 
     public $validation = array(
         'body'       => array(
@@ -145,5 +146,15 @@ class Comment extends AppModel
                 return $b->likecount - $a->likecount;
             });
         }
+    }
+
+    public static function getTrending()
+    {
+        $db = DB::conn();
+        return $db->rows(
+            sprintf("select thread_id, count(*) AS count
+            FROM comment GROUP BY thread_id
+            ORDER BY count DESC, created LIMIT %d", self::TREND_LIMIT)
+        );
     }
 }

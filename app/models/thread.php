@@ -1,10 +1,9 @@
 <?php
 class Thread extends AppModel
 {
-    CONST TREND_LIMIT = 10;
-    CONST TABLE_NAME = 'thread';
-    CONST MIN_TITLE_LENGTH = 1;
-    CONST MAX_TITLE_LENGTH = 30;
+    const TABLE_NAME = 'thread';
+    const MIN_TITLE_LENGTH = 1;
+    const MAX_TITLE_LENGTH = 30;
 
     public $validation  =  array(
         'title'         => array(
@@ -143,16 +142,6 @@ class Thread extends AppModel
         }
 
         return $threads;
-    }
-
-    public static function getTrending()
-    {
-        $db = DB::conn();
-        return $db->rows(
-            sprintf("select thread_id, count(*) AS count
-            FROM comment GROUP BY thread_id
-            ORDER BY count DESC, created LIMIT %d", self::TREND_LIMIT)
-        );
     }
 
     public static function getTitleById($thread_id)

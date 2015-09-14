@@ -1,15 +1,15 @@
 <?php
 class ThreadController extends AppController
 {
-    CONST MAX_THREADS_PER_PAGE = 15;
-    CONST FIRST_PAGE           = 1;
-    CONST CREATE_PAGE          = 'create';
-    CONST PAGE_AFTER_CREATE    = 'create_end';
-    CONST PROFILE_PAGE         = 'profile';
-    CONST PROCESS_FOLLOW     = 'follow';
-    CONST PROCESS_UNFOLLOW     = 'unfollow';
-    CONST AUTH_THREAD_EDIT     = 'thread';
-    CONST AUTH_THREAD_DELETE   = 'thread';
+    const MAX_THREADS_PER_PAGE = 15;
+    const FIRST_PAGE           = 1;
+    const CREATE_PAGE          = 'create';
+    const PAGE_AFTER_CREATE    = 'create_end';
+    const PROFILE_PAGE         = 'profile';
+    const PROCESS_FOLLOW     = 'follow';
+    const PROCESS_UNFOLLOW     = 'unfollow';
+    const AUTH_THREAD_EDIT     = 'thread';
+    const AUTH_THREAD_DELETE   = 'thread';
     
     public function index()
     {
@@ -28,7 +28,7 @@ class ThreadController extends AppController
 
         Thread::getAttributes($threads, $user_id);
 
-        $trending_threads = Thread::getTrending();
+        $trending_threads = Comment::getTrending();
         Thread::getTrendTitle($trending_threads);
 
         $total = Thread::countAll();

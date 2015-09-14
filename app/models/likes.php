@@ -1,7 +1,7 @@
 <?php
 class Likes extends AppModel
 {
-    CONST TABLE_NAME = 'likes';
+    const TABLE_NAME = 'likes';
 
     public static function isLiked($comment_id, $session_user)
     {

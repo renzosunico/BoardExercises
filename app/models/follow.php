@@ -1,7 +1,7 @@
 <?php
 class Follow extends AppModel
 {
-    CONST TABLE_NAME = 'follow';
+    const TABLE_NAME = 'follow';
     public static function unsetFollow($thread_id, $user_id)
     {
         $db = DB::conn();
