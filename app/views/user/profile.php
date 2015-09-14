@@ -43,7 +43,7 @@
             <div class="row">
                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
                     <a href="#" class="thumbnail">
-                      <img src="<?php echo htmlentities("../" . $picture[0]) ?>">
+                      <img class="profile-picture" src="<?php echo htmlentities("../" . $picture[0]) ?>">
                     </a>
                 </div>
                 <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9">

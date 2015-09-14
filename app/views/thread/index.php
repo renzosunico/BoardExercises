@@ -78,8 +78,19 @@
             <div class="panel panel-primary">
 
                 <div class="panel-heading" onclick="location.href='<?php encode_quotes(url('user/profile', array('user_id' => $thread->user_id))) ?>'" style="cursor:pointer;">
-                    <p class="smallsize"> <?php echo "{$thread->username}"?></p>
-                    <?php print_date($thread) ?>
+                    <div class="col-xs-2 picture text-left">
+                        <?php $picture = glob('bootstrap/img/users/' . $thread->username . '.*'); ?>
+                        <?php if($picture): ?>
+                            <img class="image" src="<?php echo htmlentities("../" . $picture[0]) ?>">
+                        <?php else: ?>
+                            <img class="image" src="../bootstrap/img/users/default_classroomuser.jpg">
+                        <?php endif ?>
+                    </div>
+                    <div class="col-xs-9 details">
+                        <p class="smallsize"> <?php echo "{$thread->username}"?></p>
+                        <?php print_date($thread) ?>
+                    </div>
+                    
                 </div>
 
                 <div class="showfooter panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
