@@ -12,7 +12,7 @@ class UserController extends AppController
     CONST EDIT_PICTURE              = 'picture';
 
     public $mime_types = array(
-        'jpg' => 'image/jpg',
+        'jpg' => 'image/jpeg',
         'png' => 'image/png',
         'gif' => 'image/gif'
     );
@@ -178,8 +178,7 @@ class UserController extends AppController
                 }
                 break;
             case self::EDIT_PICTURE:
-            ini_set('post_max_size',52428800); // 50 MB
-            ini_set('upload_max_filesize',52428800) ;
+                $user = new User();
                 $target_directory = "bootstrap/img/users/" . $_SESSION['username'];
                 try {
                     if(file_exists($file_tmp = $_FILES['picture']['tmp_name'])) {
@@ -189,13 +188,21 @@ class UserController extends AppController
                             throw new Exception("Error Processing Request", 1);
                             
                         }
-                        if(!move_uploaded_file($_FILES['picture']['tmp_name'], $target_directory . "." .$file_extension)) {
-                            throw new Exception("Error Processing Request", 1);
-                            
+                        $user_profile = glob("bootstrap/img/users/" . $_SESSION['username'] . ".*");
+                        if ($user_profile) {
+                            foreach ($user_profile as $picture) {
+                                exec("rm $picture");
+                            }
                         }
+                        if(!move_uploaded_file($_FILES['picture']['tmp_name'], $target_directory . "." .$file_extension)) {
+                            throw new Exception("Error Processing Request", 1); 
+                        }
+                    } else {
+                        throw new Exception('File not found.');
                     }
-                } catch () {
-                    echo $e; die();
+
+                    $user->editSuccess = true;
+                } catch (Exception $e) {
                     $_SESSION['upload_error'] = true;
                 }
                 break;

@@ -1,4 +1,6 @@
 <?php 
+    $picture = glob('bootstrap/img/users/' . $user->username . '.*');
+    //var_dump($picture); die();
     if(isset($_SESSION['old_thread'])) {
         $old_thread = new Thread($_SESSION['old_thread']); 
     }
@@ -41,7 +43,7 @@
             <div class="row">
                 <div class="col-xs-6 col-sm-4 col-md-3 col-lg-3">
                     <a href="#" class="thumbnail">
-                      <img class="" src="..." alt="<?php encode_quotes($user->username) ?>">
+                      <img src="<?php echo htmlentities("../" . $picture[0]) ?>">
                     </a>
                 </div>
                 <div class="col-xs-6 col-sm-8 col-md-9 col-lg-9">
