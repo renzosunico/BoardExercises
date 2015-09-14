@@ -16,16 +16,24 @@ function readable_text($no_br_string)
     return $no_br_string;
 }
 
-function redirect($url)
+function redirect($url, $params = array())
 {
-    header("Location: " . url($url));
+    header("Location: " . url($url, $params));
+    die();
 }
 
 function redirect_to_login()
 {
-    if(!isset($_SESSION['username'])) {
+    if(!isset($_SESSION['username']) && $_SERVER['REQUEST_URI'] != '/') {
         redirect('user/login');
     }
+}
+
+function redirect_to_index()
+{
+    if(isset($_SESSION['username'])) {
+        redirect('thread/index');
+    }   
 }
 
 function get_welcome_message()
@@ -42,4 +50,21 @@ function get_welcome_message()
     );
 
    return $welcome_messages[rand(START_RAND_NO, END_RAND_NO)];
+}
+
+function print_date($object)
+{
+    if($object instanceof Thread || $object instanceof Comment) {
+        $date_string = "<p class=\"smallersize\">";
+        //add date created
+        $date_string .= " Created: " . date("h:i a l, F d, Y", strtotime($object->created));
+
+        if($object->last_modified != "0000-00-00 00:00:00") {
+            $date_string .= " Last Modified: " . date("h:i a l, F d, Y", strtotime($object->last_modified));
+        }
+
+        $date_string .= "</p>";
+
+        echo $date_string;
+    }
 }
