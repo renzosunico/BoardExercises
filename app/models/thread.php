@@ -133,9 +133,7 @@ class Thread extends AppModel
     {
         $db = DB::conn();
         $threads = array();
-        $rows = $db->rows("SELECT * FROM thread WHERE user_id = ?",
-            array($user_id)
-        );
+        $rows = $db->rows("SELECT * FROM thread WHERE user_id = ?", array($user_id));
 
         foreach ($rows as $row) {
             $threads[] = new self($row);
@@ -147,9 +145,7 @@ class Thread extends AppModel
     public static function getTitleById($thread_id)
     {
         $db = DB::conn();
-        return $db->value("SELECT title FROM thread WHERE id = ?",
-            array($thread_id)
-        );
+        return $db->value("SELECT title FROM thread WHERE id = ?", array($thread_id));
     }
 
     public static function getAttributes($threads, $session_user)

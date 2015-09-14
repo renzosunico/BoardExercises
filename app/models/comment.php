@@ -31,9 +31,7 @@ class Comment extends AppModel
             $rows = $db->rows($fetch_query, array($thread_id));
         } else {
             $user_id = $db->value(
-                "SELECT id FROM user WHERE username LIKE ?",
-                array("%$filter_username%")
-            );
+                "SELECT id FROM user WHERE username LIKE ?", array("%$filter_username%"));
 
             $fetch_query = sprintf(
                 "SELECT * FROM comment WHERE thread_id = ? AND user_id = ?
