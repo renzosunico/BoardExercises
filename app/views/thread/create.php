@@ -9,7 +9,9 @@
       <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
 
         <div class="alert alert-danger">
-            <h4 class="alert-heading">Validation Error!</h4>
+            <h4 class="alert-heading">
+                <span class="glyphicon glyphicon-warning-sign"></span> Warning!
+            </h4>
             <?php if (!empty($thread->validation_errors['title']['length'])): ?>
                 <div><em>Title</em> must be between
                     <?php encode_quotes($thread->validation['title']['length'][1]) ?> and
@@ -17,10 +19,20 @@
                 </div>
             <?php endif ?>
 
+            <?php if(!empty($thread->validation_errors['title']['chars'])): ?>
+                <div><em>Title</em> cannot be spaces only.
+                </div>
+            <?php endif ?>
+
             <?php if(!empty($comment->validation_errors['body']['length'])): ?>
                 <div><em>Comment</em> must be between
                     <?php encode_quotes($comment->validation['body']['length'][1]) ?> and
                     <?php encode_quotes($comment->validation['body']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+
+            <?php if(!empty($comment->validation_errors['body']['chars'])): ?>
+                <div><em>Comment</em> cannot be spaces only.
                 </div>
             <?php endif ?>
 

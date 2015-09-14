@@ -1,18 +1,23 @@
 <?php
 class Comment extends AppModel
 {
-    CONST FIRST_COMMENT   = 1;
-    CONST MIN_BODY_LENGTH = 1;
-    CONST MAX_BODY_LENGTH = 200;
-    CONST TABLE           = 'comment';
+    CONST MIN_BODY_LENGTH   = 1;
+    CONST MAX_BODY_LENGTH   = 200;
+    CONST TABLE_NAME        = 'comment';
+    CONST SORT_TYPE_COMMENT = 'comment';
 
     public $validation = array(
         'body'       => array(
-            'length' => array('validate_between', self::MIN_BODY_LENGTH, self::MAX_BODY_LENGTH),
+            'length' => array(
+                'validate_between',
+                self::MIN_BODY_LENGTH,
+                self::MAX_BODY_LENGTH
+            ),
+            'chars'  => array('validate_space_only'),
         ),
     );
 
-    public function getAll($offset, $limit, $thread_id, $filter_username)
+    public static function getAll($offset, $limit, $thread_id, $filter_username)
     {
         $comments = array();
         $db = DB::conn();
@@ -31,7 +36,9 @@ class Comment extends AppModel
 
             $fetch_query = sprintf(
                 "SELECT * FROM comment WHERE thread_id = ? AND user_id = ?
-                ORDER BY created LIMIT %d, %d", $offset, $limit
+                ORDER BY created LIMIT %d, %d",
+                $offset,
+                $limit
             );
             $rows = $db->rows($fetch_query, array($thread_id, $user_id));
         }
@@ -58,19 +65,18 @@ class Comment extends AppModel
 
         $params = array(
             'thread_id' => $this->id,
-            'user_id' => $this->user_id,
-            'body' => $this->body
+            'user_id'   => $this->user_id,
+            'body'      => $this->body
         );
 
         $db = DB::conn();
-        $db->insert(self::TABLE,$params);
+        $db->insert(self::TABLE_NAME, $params);
     }
 
     public static function getByThreadId($thread_id)
     {
         $db = DB::conn();
-        return $db->row(
-            sprintf("SELECT * FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
+        return $db->row("SELECT * FROM comment WHERE thread_id = ?",
             array($thread_id)
         );
     }
@@ -78,31 +84,30 @@ class Comment extends AppModel
     public static function getIdByThreadId($thread_id)
     {
         $db = DB::conn();
-        return $db->value(
-            sprintf("SELECT id FROM comment WHERE thread_id = ? LIMIT %d", self::FIRST_COMMENT),
-            $thread_id
+        return $db->value("SELECT id FROM comment WHERE thread_id = ?",
+            array($thread_id)
         );
     }
 
     public function edit()
     {
-        if(!$this->validate()) {
+        if (!$this->validate()) {
             throw new ValidationException;
         }
 
         $db = DB::conn();
         $db->query(
             "UPDATE comment SET body=?, last_modified=NOW() WHERE id=? AND user_id = ?",
-            array($this->body, $this->id, $_SESSION['userid'])
+            array($this->body, $this->id, $this->user_id)
         );
     }
 
-    public function isAuthor()
+    public function isAuthor($session_user)
     {
         $db = DB::conn();
         $params = array(
             $this->id,
-            $_SESSION['userid']
+            $session_user
         );
         return $db->search('comment', 'id = ? AND user_id = ?', $params);
     }
@@ -112,10 +117,9 @@ class Comment extends AppModel
         $db = DB::conn();
         $params = array(
             $comment_id,
-            $_SESSION['userid'],
             $thread_id
         );
-        $db->query("DELETE FROM comment WHERE id = ? AND user_id = ? AND $thread_id = ?", $params);
+        $db->query("DELETE FROM comment WHERE id = ? AND $thread_id = ?", $params);
     }
 
     public static function getAuthorById($id)
@@ -124,11 +128,22 @@ class Comment extends AppModel
         return $db->value("SELECT user_id FROM comment WHERE id=?", array($id));
     }
 
-    public function getUserAttributes($comments)
+    public static function getUserAttributes($comments, $session_user)
     {
         foreach ($comments as $comment) {
-            $comment->username = User::getUsernameById($comment->user_id);
+            $comment->username  = User::getUsernameById($comment->user_id);
             $comment->likecount = Likes::countLike($comment->id);
+            $comment->is_author = $comment->isAuthor($session_user);
+            $comment->is_liked  = Likes::isLiked($comment->id, $session_user);
         }
     }
-} 
+
+    public static function sortByLikes(&$comments, $sort)
+    {
+        if ($sort === self::SORT_TYPE_COMMENT) {
+            usort($comments, function($a , $b) {
+                return $b->likecount - $a->likecount;
+            });
+        }
+    }
+}
