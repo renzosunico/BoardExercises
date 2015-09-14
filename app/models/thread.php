@@ -1,7 +1,7 @@
 <?php
 class Thread extends AppModel
 {
-    const TABLE_NAME = 'thread';
+    const TABLE_NAME       = 'thread';
     const MIN_TITLE_LENGTH = 1;
     const MAX_TITLE_LENGTH = 30;
 

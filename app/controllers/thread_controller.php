@@ -6,7 +6,7 @@ class ThreadController extends AppController
     const CREATE_PAGE          = 'create';
     const PAGE_AFTER_CREATE    = 'create_end';
     const PROFILE_PAGE         = 'profile';
-    const PROCESS_FOLLOW     = 'follow';
+    const PROCESS_FOLLOW       = 'follow';
     const PROCESS_UNFOLLOW     = 'unfollow';
     const AUTH_THREAD_EDIT     = 'thread';
     const AUTH_THREAD_DELETE   = 'thread';
