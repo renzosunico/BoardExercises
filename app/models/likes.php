@@ -1,7 +1,7 @@
 <?php
 class Likes extends AppModel
 {
-    CONST TABLE_NAME = 'likes';
+    const TABLE_NAME = 'likes';
 
     public static function isLiked($comment_id, $session_user)
     {
@@ -10,9 +10,7 @@ class Likes extends AppModel
             $comment_id,
             $session_user
         );
-        return $db->row("SELECT * FROM likes WHERE comment_id = ? AND user_id = ?",
-            $params
-        );
+        return $db->row("SELECT * FROM likes WHERE comment_id = ? AND user_id = ?", $params);
     }
 
     public static function setLike($comment_id, $session_user)

@@ -1,13 +1,13 @@
 <?php
 class CommentController extends AppController
 {
-    CONST MAX_ITEM_PER_PAGE         = 10;
-    CONST CURRENT_PAGE_WRITE        = 'write';
-    CONST RENDER_PAGE_AFTER_WRITE   = 'write_end';
-    CONST METHOD_LIKE               = 'like';
-    CONST METHOD_UNLIKE             = 'unlike';
-    CONST AUTH_COMMENT_EDIT         = 'comment';
-    CONST AUTH_COMMENT_DELETE       = 'comment';
+    const MAX_ITEM_PER_PAGE         = 10;
+    const CURRENT_PAGE_WRITE        = 'write';
+    const RENDER_PAGE_AFTER_WRITE   = 'write_end';
+    const METHOD_LIKE               = 'like';
+    const METHOD_UNLIKE             = 'unlike';
+    const AUTH_COMMENT_EDIT         = 'comment';
+    const AUTH_COMMENT_DELETE       = 'comment';
 
     public function view()
     {

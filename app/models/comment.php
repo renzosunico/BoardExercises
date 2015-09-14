@@ -1,10 +1,11 @@
 <?php
 class Comment extends AppModel
 {
-    CONST MIN_BODY_LENGTH   = 1;
-    CONST MAX_BODY_LENGTH   = 200;
-    CONST TABLE_NAME        = 'comment';
-    CONST SORT_TYPE_COMMENT = 'comment';
+    const TREND_LIMIT = 10;
+    const MIN_BODY_LENGTH   = 1;
+    const MAX_BODY_LENGTH   = 200;
+    const TABLE_NAME        = 'comment';
+    const SORT_TYPE_COMMENT = 'comment';
 
     public $validation = array(
         'body'       => array(
@@ -30,9 +31,7 @@ class Comment extends AppModel
             $rows = $db->rows($fetch_query, array($thread_id));
         } else {
             $user_id = $db->value(
-                "SELECT id FROM user WHERE username LIKE ?",
-                array("%$filter_username%")
-            );
+                "SELECT id FROM user WHERE username LIKE ?", array("%$filter_username%"));
 
             $fetch_query = sprintf(
                 "SELECT * FROM comment WHERE thread_id = ? AND user_id = ?
@@ -145,5 +144,15 @@ class Comment extends AppModel
                 return $b->likecount - $a->likecount;
             });
         }
+    }
+
+    public static function getTrending()
+    {
+        $db = DB::conn();
+        return $db->rows(
+            sprintf("select thread_id, count(*) AS count
+            FROM comment GROUP BY thread_id
+            ORDER BY count DESC, created LIMIT %d", self::TREND_LIMIT)
+        );
     }
 }

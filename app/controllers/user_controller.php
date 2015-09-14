@@ -1,14 +1,14 @@
 <?php
 class UserController extends AppController
 {
-    CONST REGISTRATION_PAGE         = 'registration';
-    CONST SUCCESS_REGISTRATION_PAGE = 'registration_end';
-    CONST LOGIN_PAGE                = 'login';
-    CONST LOGIN_SUCCESS_PAGE        = 'login_end';
-    CONST EDIT_ACCOUNT              = 'account';
-    CONST EDIT_PROFILE              = 'profile';
-    CONST EDIT_PASSWORD             = 'password';
-    CONST EDIT_PAGE                 = 'edit';
+    const REGISTRATION_PAGE         = 'registration';
+    const SUCCESS_REGISTRATION_PAGE = 'registration_end';
+    const LOGIN_PAGE                = 'login';
+    const LOGIN_SUCCESS_PAGE        = 'login_end';
+    const EDIT_ACCOUNT              = 'account';
+    const EDIT_PROFILE              = 'profile';
+    const EDIT_PASSWORD             = 'password';
+    const EDIT_PAGE                 = 'edit';
 
     public function registration()
     {

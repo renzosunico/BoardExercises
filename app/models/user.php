@@ -1,24 +1,24 @@
 <?php
 class User extends AppModel
 {
-    CONST MIN_FIRST_NAME_LEGTH      = 1;
-    CONST MAX_FIRST_NAME_LENGTH     = 30;
-    CONST MIN_LAST_NAME_LEGTH       = 1;
-    CONST MAX_LAST_NAME_LENGTH      = 30;
-    CONST MIN_USERNAME_LEGTH        = 6;
-    CONST MAX_USERNAME_LENGTH       = 30;
-    CONST MIN_PASSWORD_LEGTH        = 6;
-    CONST MAX_PASSWORD_LENGTH       = 30;
-    CONST MIN_COMPANY_LEGTH         = 1;
-    CONST MAX_COMPANY_LENGTH        = 60;
-    CONST MIN_DIVISION_LEGTH        = 1;
-    CONST MAX_DIVISION_LENGTH       = 30;
-    CONST MIN_SPECIALIZATION_LEGTH  = 1;
-    CONST MAX_SPECIALIZATION_LENGTH = 30;
-    CONST TYPE_EMAIL                = 'email';
-    CONST TYPE_USERNAME             = 'username';
-    CONST HASH_TYPE                 = '$2a$11$';
-    CONST TABLE_NAME                = 'user';
+    const MIN_FIRST_NAME_LEGTH      = 1;
+    const MAX_FIRST_NAME_LENGTH     = 30;
+    const MIN_LAST_NAME_LEGTH       = 1;
+    const MAX_LAST_NAME_LENGTH      = 30;
+    const MIN_USERNAME_LEGTH        = 6;
+    const MAX_USERNAME_LENGTH       = 30;
+    const MIN_PASSWORD_LEGTH        = 6;
+    const MAX_PASSWORD_LENGTH       = 30;
+    const MIN_COMPANY_LEGTH         = 1;
+    const MAX_COMPANY_LENGTH        = 60;
+    const MIN_DIVISION_LEGTH        = 1;
+    const MAX_DIVISION_LENGTH       = 30;
+    const MIN_SPECIALIZATION_LEGTH  = 1;
+    const MAX_SPECIALIZATION_LENGTH = 30;
+    const TYPE_EMAIL                = 'email';
+    const TYPE_USERNAME             = 'username';
+    const HASH_TYPE                 = '$2a$11$';
+    const TABLE_NAME                = 'user';
 
     public $validation = array(
         'fname'           => array(
