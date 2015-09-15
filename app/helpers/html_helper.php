@@ -60,7 +60,7 @@ function print_date($object)
         $date_string .= " Created: " . date("h:i a l, F d, Y", strtotime($object->created));
 
         if($object->last_modified != "0000-00-00 00:00:00") {
-            $date_string .= " Last Modified: " . date("h:i a l, F d, Y", strtotime($object->last_modified));
+            $date_string .= "<br/>Last Modified: " . date("h:i a l, F d, Y", strtotime($object->last_modified));
         }
 
         $date_string .= "</p>";

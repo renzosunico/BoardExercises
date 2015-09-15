@@ -1,4 +1,5 @@
 <?php 
+    $picture = glob('bootstrap/img/users/' . $user->username . '.*');
     if(isset($_SESSION['old_thread'])) {
         $old_thread = new Thread($_SESSION['old_thread']); 
     }
@@ -41,41 +42,46 @@
     <div class="col-xs-12 col-md-offset-2 col-md-8 col-lg-offset-2 col-lg-8">
         <div class="well well-large">
             <div class="row">
-                <div class="col-xs-6 col-sm-8 col-md-10 col-lg-10">
+                <div class="col-xs-4 col-sm-4 col-md-3 col-lg-3">
+                    <a href="#" class="thumbnail">
+                      <img class="profile-picture" src="<?php echo htmlentities("../" . $picture[0]) ?>">
+                    </a>
+                </div>
+                <div class="col-xs-8 col-sm-8 col-md-9 col-lg-9">
                     <form action="" class="form-horizontal">
                       <div id="nomnop" class="form-group">
-                        <label id="nobottommargin" class="col-sm-3 col-md-3 col-lg-3 control-label">Name:</label>
-                        <div class="col-sm-9 col-md-9 col-lg-9">
-                          <p class="form-control-static"><?php encode_quotes("$user->fname" . " " . "$user->lname"); ?></p>
+                        <label id="nobottommargin" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Name:</label>
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                          <p class="form-control-static no-padding"><?php encode_quotes("$user->fname" . " " . "$user->lname"); ?></p>
                         </div>
                       </div>
                       <div id="nomnop" class="form-group">
-                        <label id="nobottommargin" class="col-sm-3 col-md-3 col-lg-3 control-label">Username:</label>
-                        <div class="col-sm-9 col-md-9 col-lg-9">
-                          <p class="form-control-static"><?php encode_quotes("$user->username"); ?></p>
+                        <label id="nobottommargin" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Username:</label>
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                          <p class="form-control-static no-padding"><?php encode_quotes("$user->username"); ?></p>
                         </div>
                       </div>
                       <?php if(isset($user->company)): ?>
                       <div id="nomnop" class="form-group">
-                        <label id="nobottommargin" class="col-sm-3 col-md-3 col-lg-3 control-label">Company:</label>
-                        <div class="col-sm-9 col-md-9 col-lg-9">
-                          <p class="form-control-static"><?php encode_quotes("$user->company"); ?></p>
+                        <label id="nobottommargin" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Company:</label>
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                          <p class="form-control-static no-padding"><?php encode_quotes("$user->company"); ?></p>
                         </div>
                       </div>
                       <?php endif ?>
                       <?php if(isset($user->division)): ?>
                       <div id="nomnop" class="form-group">
-                        <label id="nobottommargin" class="col-sm-3 col-md-3 col-lg-3 control-label">Division:</label>
-                        <div class="col-sm-9 col-md-9 col-lg-9">
-                          <p class="form-control-static"><?php encode_quotes("$user->division"); ?></p>
+                        <label id="nobottommargin" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Division:</label>
+                        <div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
+                          <p class="form-control-static no-padding"><?php encode_quotes("$user->division"); ?></p>
                         </div>
                       </div>
                       <?php endif ?>
                       <?php if(isset($user->specialization)): ?>
                       <div id="nomnop" class="form-group">
-                        <label id="nobottommargin" class="col-sm-3 col-md-3 col-lg-3 control-label">Specialization:</label>
-                        <div class="col-sm-9  col-md-9 col-lg-9">
-                          <p class="form-control-static"><?php encode_quotes("$user->specialization"); ?></p>
+                        <label id="nobottommargin" class="col-xs-3 col-sm-3 col-md-3 col-lg-3 control-label">Specialization:</label>
+                        <div class="col-xs-9 col-sm-9  col-md-9 col-lg-9">
+                          <p class="form-control-static no-padding"><?php encode_quotes("$user->specialization"); ?></p>
                         </div>
                       </div>
                       <?php endif ?>

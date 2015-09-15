@@ -90,9 +90,37 @@
         <?php foreach($threads as $thread): ?>
             <div class="panel panel-primary">
 
-                <div class="panel-heading" onclick="location.href='<?php encode_quotes(url('user/profile', array('user_id' => $thread->user_id))) ?>'" style="cursor:pointer;">
-                    <p class="smallsize"> <?php echo "{$thread->username}"?></p>
-                    <?php print_date($thread) ?>
+                <div class="panel-heading">
+                    <div class="col-xs-2 picture text-left">
+                        <?php $picture = glob('bootstrap/img/users/' . $thread->username . '.*'); ?>
+                        <?php if($picture): ?>
+                            <a href="#" data-toggle="modal" data-target="#picture<?php encode_quotes($thread->id) ?>" class="thumbnail"><img class="image" src="<?php echo htmlentities("../" . $picture[0]) ?>"></a>
+                        <?php else: ?>
+                            <a href="#" data-toggle="modal" data-target="#picture<?php encode_quotes($thread->id) ?>" class="thumbnail"><img class="image" src="../bootstrap/img/users/default_classroomuser.jpg"></a>
+                        <?php endif ?>
+                        <div class="modal" id="picture<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <br>
+                              </div>
+                              <div class="modal-body">
+                                <?php if($picture): ?>
+                                    <a href="#" class="zoom-in-picture"><img class="modal-image" src="<?php echo htmlentities("../" . $picture[0]) ?>"></a>
+                                <?php else: ?>
+                                    <a href="#" class="zoom-in-picture"><img class="modal-image" src="../bootstrap/img/users/default_classroomuser.jpg"></a>
+                                <?php endif ?>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-10 details" onclick="location.href='<?php encode_quotes(url('user/profile', array('user_id' => $thread->user_id))) ?>'" style="cursor:pointer;">
+                        <p class="smallsize"> <?php echo "{$thread->username}"?></p>
+                        <?php print_date($thread) ?>
+                    </div>
+                    
                 </div>
 
                 <div class="showfooter panel-body" onclick="location.href='<?php encode_quotes(url('comment/view', array('thread_id' => $thread->id))) ?>'" style="cursor:pointer;">
@@ -225,5 +253,6 @@
                     </ul>
             </div>
         </div>
-    <?php endif ?>
-</div>
+    </div>
+<?php endif ?>
+

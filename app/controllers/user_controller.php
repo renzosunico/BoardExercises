@@ -1,14 +1,22 @@
 <?php
 class UserController extends AppController
 {
-    const REGISTRATION_PAGE         = 'registration';
-    const SUCCESS_REGISTRATION_PAGE = 'registration_end';
-    const LOGIN_PAGE                = 'login';
-    const LOGIN_SUCCESS_PAGE        = 'login_end';
-    const EDIT_ACCOUNT              = 'account';
-    const EDIT_PROFILE              = 'profile';
-    const EDIT_PASSWORD             = 'password';
-    const EDIT_PAGE                 = 'edit';
+
+    CONST REGISTRATION_PAGE         = 'registration';
+    CONST SUCCESS_REGISTRATION_PAGE = 'registration_end';
+    CONST LOGIN_PAGE                = 'login';
+    CONST LOGIN_SUCCESS_PAGE        = 'login_end';
+    CONST EDIT_ACCOUNT              = 'account';
+    CONST EDIT_PROFILE              = 'profile';
+    CONST EDIT_PASSWORD             = 'password';
+    CONST EDIT_PAGE                 = 'edit';
+    CONST EDIT_PICTURE              = 'picture';
+
+    public $mime_types = array(
+        'jpg' => 'image/jpeg',
+        'png' => 'image/png',
+        'gif' => 'image/gif'
+    );
 
     public function registration()
     {
@@ -156,6 +164,37 @@ class UserController extends AppController
 
                 }
                 break;
+            case self::EDIT_PICTURE:
+                $user = new User();
+                $target_directory = "bootstrap/img/users/" . $_SESSION['username'];
+                try {
+                    if(file_exists($file_tmp = $_FILES['picture']['tmp_name'])) {
+                        $finfo = new finfo(FILEINFO_MIME_TYPE);
+                        if(false === $file_extension = array_search(
+                            $finfo->file($_FILES['picture']['tmp_name']), $this->mime_types,true)) {
+                            throw new PictureFormatException("Invalid file format.");
+                            
+                        }
+                        $user_profile = glob("bootstrap/img/users/" . $_SESSION['username'] . ".*");
+                        if ($user_profile) {
+                            foreach ($user_profile as $picture) {
+                                exec("rm $picture");
+                            }
+                        }
+                        if(!move_uploaded_file($_FILES['picture']['tmp_name'], $target_directory . "." .$file_extension)) {
+                            throw new FileNotFound("File not found.");
+                        }
+                    } else {
+                        throw new FileNotFound('File not found.');
+                    }
+
+                    $user->editSuccess = true;
+                } catch (FileNotFound $e) {
+                    $_SESSION['upload_error'] = true;
+                } catch (PictureFormatException $e) {
+                    $_SESSION['upload_error'] = true;
+                }
+                break;
             case self::EDIT_PAGE:
                 $user->id = $_SESSION['userid'];
                 break;
@@ -164,10 +203,10 @@ class UserController extends AppController
         $user->getProfile();
         $this->set(get_defined_vars());
     }
-
-
+    
     public function login_end()
     {
         
     }
+
 }
