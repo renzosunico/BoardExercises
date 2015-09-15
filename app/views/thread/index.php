@@ -1,3 +1,7 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+<script type="text/javascript" src="http://arrow.scrolltotop.com/arrow13.js"></script>
+<noscript>Not seeing a <a href="http://www.scrolltotop.com/">Scroll to Top Button</a>? Go to our FAQ page for more info.</noscript>
+
 <?php 
     if(isset($_SESSION['old_thread'])) {
         $old_thread = new Thread($_SESSION['old_thread']); 
@@ -11,11 +15,17 @@
     <div class="row">
       <div class="col-xs-12">
         <div class="alert alert-danger">
-            <h4 class="alert-heading">Validation Error!</h4>
+            <h4 class="alert-heading">
+                <span class="glyphicon glyphicon-warning-sign"></span> Warning!
+            </h4>
             <?php if (!empty($old_thread->validation_errors['title']['length'])): ?>
                 <div><em>Title</em> must be between
                     <?php encode_quotes($old_thread->validation['title']['length'][1]) ?> and
                     <?php encode_quotes($old_thread->validation['title']['length'][2]) ?> characters in length.
+                </div>
+            <?php endif ?>
+            <?php if(!empty($old_thread->validation_errors['title']['chars'])): ?>
+                <div><em>Title</em> cannot be spaces only.
                 </div>
             <?php endif ?>
             <?php if(!empty($old_comment->validation_errors['body']['length'])): ?>
@@ -24,7 +34,10 @@
                     <?php encode_quotes($old_comment->validation['body']['length'][2]) ?> characters in length.
                 </div>
             <?php endif ?>
-
+            <?php if(!empty($old_comment->validation_errors['body']['chars'])): ?>
+                <div><em>Comment</em> cannot be spaces only.
+                </div>
+            <?php endif ?>
             <?php if(!empty($old_thread->validation_errors['category']['content'])): ?>
                 <div>
                     <em>Category</em> is required.
@@ -33,7 +46,7 @@
         </div>
       </div>
     </div>
-<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_thread']); ?>
+<?php endif; unset($_SESSION['old_thread']); unset($_SESSION['old_comment']); ?>
 
 <?php if(array_key_exists('deleteHasError', $_SESSION)): ?>
 <div class="row">
@@ -77,16 +90,33 @@
         <?php foreach($threads as $thread): ?>
             <div class="panel panel-primary">
 
-                <div class="panel-heading" onclick="location.href='<?php encode_quotes(url('user/profile', array('user_id' => $thread->user_id))) ?>'" style="cursor:pointer;">
+                <div class="panel-heading">
                     <div class="col-xs-2 picture text-left">
                         <?php $picture = glob('bootstrap/img/users/' . $thread->username . '.*'); ?>
                         <?php if($picture): ?>
-                            <img class="image" src="<?php echo htmlentities("../" . $picture[0]) ?>">
+                            <a href="#" data-toggle="modal" data-target="#picture<?php encode_quotes($thread->id) ?>" class="thumbnail"><img class="image" src="<?php echo htmlentities("../" . $picture[0]) ?>"></a>
                         <?php else: ?>
-                            <img class="image" src="../bootstrap/img/users/default_classroomuser.jpg">
+                            <a href="#" data-toggle="modal" data-target="#picture<?php encode_quotes($thread->id) ?>" class="thumbnail"><img class="image" src="../bootstrap/img/users/default_classroomuser.jpg"></a>
                         <?php endif ?>
+                        <div class="modal" id="picture<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                          <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                <br>
+                              </div>
+                              <div class="modal-body">
+                                <?php if($picture): ?>
+                                    <a href="#" class="zoom-in-picture"><img class="modal-image" src="<?php echo htmlentities("../" . $picture[0]) ?>"></a>
+                                <?php else: ?>
+                                    <a href="#" class="zoom-in-picture"><img class="modal-image" src="../bootstrap/img/users/default_classroomuser.jpg"></a>
+                                <?php endif ?>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
                     </div>
-                    <div class="col-xs-9 details">
+                    <div class="col-xs-10 details" onclick="location.href='<?php encode_quotes(url('user/profile', array('user_id' => $thread->user_id))) ?>'" style="cursor:pointer;">
                         <p class="smallsize"> <?php echo "{$thread->username}"?></p>
                         <?php print_date($thread) ?>
                     </div>
@@ -98,7 +128,7 @@
                 </div>
                 <div class="panel-footer">
                     <span class="tag label label-default"><span class="glyphicon glyphicon-tag"></span> <?php encode_quotes($thread->category_name) ?></span>
-                    <?php if($thread->isAuthor()): ?>
+                    <?php if($thread->is_author): ?>
                         <button type="button" class="btn btn-primary btn-xs" data-toggle="modal" data-target="#edit<?php encode_quotes($thread->id) ?>"><span class="glyphicon glyphicon-font" > </span> Edit</button>
                         <div class="modal" id="edit<?php encode_quotes($thread->id) ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
                           <div class="modal-dialog" role="document">
@@ -170,8 +200,8 @@
                     </div>
                     <?php endif ?>
 
-                    <?php if(!$thread->isAuthor()): ?>
-                        <?php if(!Follow::isFollowed($thread->id)): ?>
+                    <?php if(!$thread->is_author): ?>
+                        <?php if(!$thread->is_followed): ?>
                             <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "follow"))) ?>" class="btn btn-default btn-xs"><span class="glyphicon glyphicon-bookmark"></span> Follow</a>
                         <?php else: ?>
                             <a href="<?php encode_quotes(url('thread/follow', array('thread_id' => $thread->id, 'process' => "unfollow"))) ?>" class="btn btn-info btn-xs"><span class="glyphicon glyphicon-minus-sign"></span> Unfollow</a>
@@ -197,10 +227,7 @@
             <?php endforeach ?>
         </div>
     </div>
-</div>
-
-<?php if($pages > 1): ?>
-    <div class="row">
+    <?php if($pages > 1): ?>
         <div class="col-xs-12 col-md-offset-0 col-md-6 col-lg-offset-0 col-lg-7">
             <div class="well">
                     <ul class="pagination pagination-centerted">
@@ -228,3 +255,4 @@
         </div>
     </div>
 <?php endif ?>
+

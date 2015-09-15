@@ -1,6 +1,7 @@
 <?php
 class UserController extends AppController
 {
+
     CONST REGISTRATION_PAGE         = 'registration';
     CONST SUCCESS_REGISTRATION_PAGE = 'registration_end';
     CONST LOGIN_PAGE                = 'login';
@@ -20,20 +21,20 @@ class UserController extends AppController
     public function registration()
     {
         if(isset($_SESSION['username'])) {
-            redirect('thread/index');
+            redirect(THREAD_PAGE);
         }
 
         $page = Param::get('page_next','registration');
         $user = new User();
 
-        switch($page) {
+        switch ($page) {
             case self::REGISTRATION_PAGE:
                 break;
             case self::SUCCESS_REGISTRATION_PAGE:
-                $user->fname = Param::get('fname');
-                $user->lname = Param::get('lname');
+                $user->fname    = Param::get('fname');
+                $user->lname    = Param::get('lname');
                 $user->username = Param::get('username');
-                $user->email = Param::get('email');
+                $user->email    = Param::get('email');
                 $user->password = Param::get('password');
                 $user->confirmpassword = Param::get('repassword');
                 try {
@@ -68,13 +69,14 @@ class UserController extends AppController
             case self::LOGIN_SUCCESS_PAGE:
                 $user->username = $clean_username;
                 $user->password = $clean_hashed_password;
-                $isAuthorized = $user->isRegistered();
+                $isAuthorized   = $user->isRegistered();
                 
-                if(!$isAuthorized) {
+                if (!$isAuthorized) {
                     $page = self::LOGIN_PAGE;
                 } else {
                     $_SESSION['username'] = $clean_username;
                     $_SESSION['userid'] = User::getIdByUsername($clean_username);
+                    redirect('user/login_end');
                 }
                 break;
             default :
@@ -97,28 +99,14 @@ class UserController extends AppController
         $user = new User();
         $user->id = Param::get('user_id');
         $user->getProfile();
+        $user->isUser($_SESSION['userid']);
 
-        if(!isset($user->username)) {
+        if (!isset($user->username)) {
             redirect('notfound/pagenotfound');
         }
 
-        $threads_followed = array();
-        $thread_followed_id = Follow::getFollowedThreadIds($user->id);
-
-        foreach($thread_followed_id as $thread) {
-            $threads_followed[] = Thread::getById($thread['thread_id']);
-        }
-
-        foreach ($threads_followed as $thread) {
-            $thread->username = User::getUsernameById($thread->user_id);
-        }
-
-        $threads_created = Thread::getByUserId($user->id);
-
-        foreach ($threads_created as $thread) {
-            $thread->username = User::getUsernameById($thread->user_id);
-        }
-
+        $user->getFollowedThreads($_SESSION['userid']);
+        $user->getCreatedThreads($_SESSION['userid']);
         $this->set(get_defined_vars());
     }
 
@@ -127,23 +115,22 @@ class UserController extends AppController
         $process = Param::get('process', 'edit');
         $user = new User();
 
-        switch($process) {
+        switch ($process) {
             case self::EDIT_ACCOUNT:
-                $user->id = $_SESSION['userid'];
+                $user->id = get_authenticated_user_id($_SESSION['userid']);
                 $user->fname = Param::get('firstname');
                 $user->lname = Param::get('lastname');
                 $user->new_username = Param::get('username');
-                $user->new_email = Param::get('email');
+                $user->new_email    = Param::get('email');
                 try {
                     $user->updateAccount();
                     $_SESSION['username'] = $user->new_username;
-                    $user->editSuccess = true; 
+                    $user->editSuccess    = true; 
                 } catch(ValidationException $e) {
-
                 }
                 break;
             case self::EDIT_PROFILE:
-                $user->id = $_SESSION['userid'];
+                $user->id = get_authenticated_user_id($_SESSION['userid']);
                 $user->company = Param::get('company');
                 $user->division = Param::get('division');
                 $user->specialization = Param::get('specialization');
@@ -154,7 +141,7 @@ class UserController extends AppController
                 }
                 break;
             case self::EDIT_PASSWORD:
-                $user->id = $_SESSION['userid'];
+                $user->id = get_authenticated_user_id($_SESSION['userid']);
 
                 //set username and old password to password
                 //property to authenticate user
@@ -167,7 +154,7 @@ class UserController extends AppController
                 }
                 //Unset username so it won't be included in validation
                 unset($user->username);
-                $user->password = htmlentities(Param::get('password'));
+                $user->password        = htmlentities(Param::get('password'));
                 $user->confirmpassword = htmlentities(Param::get('confirmPassword'));
 
                 try {
@@ -185,7 +172,7 @@ class UserController extends AppController
                         $finfo = new finfo(FILEINFO_MIME_TYPE);
                         if(false === $file_extension = array_search(
                             $finfo->file($_FILES['picture']['tmp_name']), $this->mime_types,true)) {
-                            throw new Exception("Error Processing Request", 1);
+                            throw new PictureFormatException("Invalid file format.");
                             
                         }
                         $user_profile = glob("bootstrap/img/users/" . $_SESSION['username'] . ".*");
@@ -195,14 +182,16 @@ class UserController extends AppController
                             }
                         }
                         if(!move_uploaded_file($_FILES['picture']['tmp_name'], $target_directory . "." .$file_extension)) {
-                            throw new Exception("Error Processing Request", 1); 
+                            throw new FileNotFound("File not found.");
                         }
                     } else {
-                        throw new Exception('File not found.');
+                        throw new FileNotFound('File not found.');
                     }
 
                     $user->editSuccess = true;
-                } catch (Exception $e) {
+                } catch (FileNotFound $e) {
+                    $_SESSION['upload_error'] = true;
+                } catch (PictureFormatException $e) {
                     $_SESSION['upload_error'] = true;
                 }
                 break;
@@ -214,4 +203,10 @@ class UserController extends AppController
         $user->getProfile();
         $this->set(get_defined_vars());
     }
+    
+    public function login_end()
+    {
+        
+    }
+
 }

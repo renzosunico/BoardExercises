@@ -14,7 +14,8 @@ function validate_chars($check)
 
 function validate_alpha($check)
 {
-    return empty($check) ? true : preg_match('/^[[:alpha:] \-()]*$/', $check);
+
+    return empty($check) ? true : preg_match('/^[[:alpha:] ]*$/', $check) && !ctype_space($check);
 }
 
 function validate_email($check)
@@ -29,13 +30,18 @@ function validate_existence($check, $type)
 
 function validate_content($check)
 {
-    return empty($check) ? false : true;
+    return trim($check);
 }
 
 function confirm_password($check)
 {
     $password = Param::get('password');
     return $check === $password;
+}
+
+function validate_space_only($check)
+{
+    return !ctype_space($check);
 }
 
 function validate_changes($check, $column)

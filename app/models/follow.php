@@ -1,11 +1,13 @@
 <?php
 class Follow extends AppModel
 {
-    CONST TABLE = 'follow';
+    const TABLE_NAME = 'follow';
     public static function unsetFollow($thread_id, $user_id)
     {
         $db = DB::conn();
-        $db->query("DELETE FROM follow where thread_id = ? AND user_id = ?", array($thread_id, $user_id));
+        $db->query("DELETE FROM follow WHERE thread_id = ? AND user_id = ?",
+            array($thread_id, $user_id)
+        );
     }
 
     public static function setFollow($thread_id, $user_id)
@@ -15,29 +17,37 @@ class Follow extends AppModel
             'thread_id'     =>  $thread_id,
             'user_id'       =>  $user_id
         );
-        $db->insert(self::TABLE, $params);
+        
+        try {
+            $db->insert(self::TABLE_NAME, $params);
+        } catch (PDOException $e) {
+        }
     }
 
     public static function getFollowedThreadIds($user_id)
     {
         $db = DB::conn();
-        return $db->rows("SELECT thread_id FROM follow WHERE user_id = ?", array($user_id));
+        return $db->rows("SELECT thread_id FROM follow WHERE user_id = ?",
+            array($user_id)
+        );
     }
 
     public static function getFollowedThreadByUserId($user_id)
     {
         $db = DB::conn();
-        return $db->row("SELECT * FROM follow where user_id = ?", array($user_id));
+        return $db->row("SELECT * FROM follow WHERE user_id = ?", array($user_id));
     }
 
-    public static function isFollowed($thread_id)
+    public static function isFollowed($thread_id, $session_user)
     {
         $db = DB::conn();
         $params = array(
             $thread_id,
-            $_SESSION['userid']
+            $session_user
         );
-        return $db->row("SELECT * FROM follow where thread_id=? AND user_id=?",$params);
+        return $db->row("SELECT * FROM follow WHERE thread_id=? AND user_id=?",
+            $params
+        );
     }
 
 }

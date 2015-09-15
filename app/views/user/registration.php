@@ -1,12 +1,12 @@
     <div class="row">
         <div class="col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5 col-lg-offset-0 col-lg-4">
-            <h1><font color="white" style="font-family: 'Fjalla One', sans-serif;"> Create an account </font></h1>
+            <h1 class="title">Create an account</h1>
         </div>
     </div>
 <?php if($user->hasError()): ?>
     <div class="row">
         <div class="custom-text-center alert alert-danger col-xs-offset-1 col-xs-10 col-md-offset-0 col-md-5 col-lg-offset-0 col-lg-4" role="alert">
-            <h4><b>Warning</b></h4>
+            <h4><span class="glyphicon glyphicon-warning-sign"></span> Warning</h4>
                 <?php if(!empty($user->validation_errors['fname']['length'])): ?>   
                     <div><em>First name</em> must be at least 
                     <?php encode_quotes($user->validation['fname']['length'][1]) ?> to
