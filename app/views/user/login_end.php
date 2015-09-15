@@ -1,4 +1,4 @@
-<div class="hero-unit">
+<div class="jumbotron">
     <h1><?php echo get_welcome_message() . " {$_SESSION['username']}!"?></h1>
     <p>You have successfully signed in to your account.</p>
     <p>

@@ -1,4 +1,11 @@
-<link href='http://fonts.googleapis.com/css?family=Lobster' rel='stylesheet' type='text/css'>
-<a class="link-decor-off" href="<?php encode_quotes(url('user/registration')) ?>">
-    <h1 class="h1-big custom-link">404 Page Not Found<br/><br/>Go Back</h1>
-</a>
+<div class="row">
+    <div class="col-xs-12">
+        <div class="well well-large pagenotfound">
+            <h1 class="">404 Page Not Found</h1>
+            <br/><br/><br/><br/><br/>
+            <a class="btn btn-lg btn-primary btn-block" href="<?php encode_quotes(url('user/registration')) ?>">
+            <span class="glyphicon glyphicon-share-alt"></span> Go to Classroom 
+            </a>
+        </div>
+    </div>
+</div>
